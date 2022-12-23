@@ -1,0 +1,23 @@
+{
+  "name": "limelight",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development node app.js",
+    "start": "cross-env NODE_ENV=production pm2 start app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "create-react-app": "^5.0.1",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "firebase": "^9.11.0",
+    "firebase-admin": "^11.3.0",
+    "undici": "^5.12.0"
+  }
+}

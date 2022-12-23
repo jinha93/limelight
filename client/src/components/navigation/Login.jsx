@@ -1,0 +1,97 @@
+import axios from 'axios';
+import { useState, useEffect } from "react";
+import { FaRegTimesCircle } from "react-icons/fa"
+
+function Login() {
+    //로그인여부
+    const [isLogin, setIsLogin] = useState(false);
+    const [userData, setUserData] = useState({});
+
+    const getSession = async () => {
+        const res = await axios.get('/api/auth/session');
+        if (res.data.userId !== '' && res.data.userId !== undefined && res.data.userId !== null) {
+            setIsLogin(true);
+            setUserData({
+                userId: res.data.userId,
+                userName: res.data.userName,
+                discriminator: res.data.discriminator
+            })
+            getPoint(res.data);
+        }else{
+            setIsLogin(false);
+        }
+    }
+
+    const getPoint = async (data) => {
+        const res = await axios.get(`/api/point/${data.userId}`);
+        if(res){
+            setUserData({
+                userId: data.userId,
+                userName: data.userName,
+                discriminator: data.discriminator,
+                point: res.data['총 획득 포인트']
+            })
+        }
+    }
+
+    useEffect(() => {
+        const run = async () => {
+            await getSession();
+        };
+        run();
+    },[])
+
+    const signOut = () => {
+        try {
+            async function fetchData() {
+                const res = await axios.get('/api/auth/signOut');
+                if (res.data.success) {
+                    setIsLogin(false);
+                }
+            }
+            fetchData();
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    let discordUrl = '';
+    if (process.env.NODE_ENV === 'development') {
+        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2Flocalhost:3001%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
+    } else {
+        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2F43.200.80.85%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
+    }
+
+    return (
+        <div className=''>
+            {
+                isLogin
+                    ?
+                    <div >
+                        <div className='flex items-center gap-1'>
+                            {userData.userName}
+                            #{userData.discriminator}
+                            <FaRegTimesCircle
+                                color='red'
+                                className='ml-auto cursor-pointer'
+                                onClick={() => signOut()}
+                            />
+                        </div>
+                        {
+                            userData.point && 
+                            <span className='text-xs'>{userData.point}P</span>
+                        }
+                    </div>
+                    :
+                    <div className=''>
+                        <a href={discordUrl}>
+                            LOGIN
+                        </a>
+                    </div>
+            }
+        </div>
+    );
+}
+
+export default Login;
