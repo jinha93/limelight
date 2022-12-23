@@ -1,6 +1,5 @@
 import logo from "../../assets/images/lime.png";
 import { NavLink } from "react-router-dom";
-import { Link } from "react-scroll";
 import { FaListUl } from "react-icons/fa"
 import { useState, useEffect } from "react";
 import Login from './Login';
@@ -9,12 +8,12 @@ import DropDown from './DropDown';
 const menus = [
     {
         name: 'ABOUT',
-        href: '/',
+        href: 'about',
         spaYn: 'Y'
     },
     {
         name: 'TEAM',
-        href: '/',
+        href: 'team',
         spaYn: 'Y'
     },
     {
@@ -41,6 +40,7 @@ function Navigation() {
     const [isSpa, setIsSpa] = useState(false);
     useEffect(() => {
         const pathname = window.location.pathname;
+        console.log(pathname);
         if(pathname === '/'){
             setIsSpa(true)
         }
@@ -52,12 +52,12 @@ function Navigation() {
             <div className="mx-auto rounded-2xl w-10/12 md:w-9/12 p-5 bg-white shadow flex items-center justify-between">
                 {isSpa == true
                 ?
-                <Link to="MAIN" spy={true} smooth={true}>
+                <a href='#main' spy={true} smooth={true}>
                     <span className="text-xl cursor-pointer">
                         <img className="h-8 inline mr-3" alt='logo' src={logo}/>
                         LIMELIGHT
                     </span>
-                </Link>
+                </a>
                 :
                 <NavLink to="/" onClick={()=>setIsSpa(true)}>
                     <span className="text-xl cursor-pointer">
@@ -73,15 +73,15 @@ function Navigation() {
                         ?
                             menu.spaYn == 'Y'
                             ?
-                            <Link 
+                            <a 
                                 key={idx}
-                                to={menu.name}
+                                href={'#'+menu.href}
                                 className="mx-4 cursor-pointer hover:text-[#ABDB25]"
                                 spy={true}
                                 smooth={true}
                             >
                                 {menu.name}
-                            </Link>
+                            </a>
                             :
                             <NavLink
                                 to={menu.href}
@@ -94,7 +94,7 @@ function Navigation() {
                             menu.spaYn == 'Y'
                             ?
                             <NavLink
-                                to={menu.href}
+                                to={'/'}
                                 className="mx-4 cursor-pointer hover:text-[#ABDB25]"
                                 onClick={()=>setIsSpa(true)}
                             >
@@ -115,16 +115,16 @@ function Navigation() {
                     <div className={isOpen ? "" : "hidden"}>
                         <div className="absolute right-0 z-10 w-56 mt-4 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg p-2">
                             {menus.map((menu, idx) => (
-                                <Link
+                                <a
                                     key={menu.idx}
-                                    to={menu.name} 
+                                    href={menu.name} 
                                     className="block px-4 py-2 text-sm rounded-lg"
                                     spy={true}
                                     smooth={true}
                                     onClick={()=>toggleMenu()}
                                 >
                                     {menu.name}
-                                </Link>
+                                </a>
                             ))}
                         </div>
                     </div>

@@ -9,7 +9,6 @@ import About from './components/about/About';
 import Team from './components/team/Team';
 import Rank from './components/rank/Rank';
 import Raffle from './components/raffle/Raffle';
-import Auction from './components/auction/Auction';
 import { Fragment } from 'react';
 
 function App() {
@@ -21,9 +20,9 @@ function App() {
             path='/' 
             element={
               <Fragment>
-                <div id="MAIN" className="content h-screen"><Main/></div>
-                <div id="ABOUT" className="content h-screen"><About/></div>
-                <div id="TEAM" className="content h-screen"><Team/></div>
+                <div id="main" className="content h-screen"><Main/></div>
+                <div id="about" className="content h-screen"><About/></div>
+                <div id="team" className="content h-screen"><Team/></div>
               </Fragment>
             }/>
           <Route path='/rank' element={ <Rank/> }/>
