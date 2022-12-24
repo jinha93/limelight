@@ -6,7 +6,11 @@ html{
     scroll-behavior: smooth;
 }
 .App {
-    /* text-align: center; */
     font-family: 'NanumSquareRoundExtraBold';
-    
+}
+
+.bg{
+    background-image: url(./assets/images/bg-test.png);
+    background-size: 100vh;
+    background-repeat: repeat;
 }

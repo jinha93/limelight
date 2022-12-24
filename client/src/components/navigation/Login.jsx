@@ -68,20 +68,23 @@ function Login() {
             {
                 isLogin
                     ?
-                    <div >
-                        <div className='flex items-center gap-1'>
-                            {userData.userName}
-                            #{userData.discriminator}
-                            <FaRegTimesCircle
-                                color='red'
-                                className='ml-auto cursor-pointer'
-                                onClick={() => signOut()}
-                            />
+                    <div className='flex items-center gap-2'>
+                        <div>
+                            <p className='text-sm'>
+                                {userData.userName}
+                                #{userData.discriminator}
+                            </p>
+                            {
+                                userData.point && 
+                                <p className='text-xs'>{userData.point}P</p>
+                            }
                         </div>
-                        {
-                            userData.point && 
-                            <span className='text-xs'>{userData.point}P</span>
-                        }
+                        <FaRegTimesCircle
+                            color='red'
+                            size='20'
+                            className='ml-auto cursor-pointer'
+                            onClick={() => signOut()}
+                        />
                     </div>
                     :
                     <div className=''>

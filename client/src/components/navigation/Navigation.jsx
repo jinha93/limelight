@@ -7,6 +7,11 @@ import DropDown from './DropDown';
 
 const menus = [
     {
+        name: 'HOME',
+        href: '',
+        spaYn: 'Y'
+    },
+    {
         name: 'ABOUT',
         href: 'about',
         spaYn: 'Y'
@@ -19,11 +24,6 @@ const menus = [
     {
         name: 'RANK',
         href: '/rank',
-        spaYn: 'N'
-    },
-    {
-        name: 'RAFFLE',
-        href: '/raffle',
         spaYn: 'N'
     }
 ]
@@ -48,11 +48,11 @@ function Navigation() {
 
 
     return (
-        <nav className="fixed w-full items-center py-5">
-            <div className="mx-auto rounded-2xl w-10/12 md:w-9/12 p-5 bg-white shadow flex items-center justify-between">
+        <nav className="fixed w-full items-center py-5 z-20">
+            <div className="mx-auto rounded-2xl w-3/4 p-5 h-20 bg-white shadow flex items-center justify-between">
                 {isSpa == true
                 ?
-                <a href='#main' spy={true} smooth={true}>
+                <a href='#home'>
                     <span className="text-xl cursor-pointer">
                         <img className="h-8 inline mr-3" alt='logo' src={logo}/>
                         LIMELIGHT
@@ -77,13 +77,12 @@ function Navigation() {
                                 key={idx}
                                 href={'#'+menu.href}
                                 className="mx-4 cursor-pointer hover:text-[#ABDB25]"
-                                spy={true}
-                                smooth={true}
                             >
                                 {menu.name}
                             </a>
                             :
                             <NavLink
+                                key={idx}
                                 to={menu.href}
                                 className="mx-4 cursor-pointer hover:text-[#ABDB25]"
                                 onClick={()=>setIsSpa(false)}
@@ -94,6 +93,7 @@ function Navigation() {
                             menu.spaYn == 'Y'
                             ?
                             <NavLink
+                                key={idx}
                                 to={'/'}
                                 className="mx-4 cursor-pointer hover:text-[#ABDB25]"
                                 onClick={()=>setIsSpa(true)}
@@ -102,6 +102,7 @@ function Navigation() {
                             </NavLink>
                             :
                             <NavLink
+                                key={idx}
                                 to={menu.href}
                                 className="mx-4 cursor-pointer hover:text-[#ABDB25]"
                             >
@@ -110,22 +111,53 @@ function Navigation() {
                     ))}
                 </ul>
 
-                <div className="relative lg:hidden -my-2 -mr-1">
+                <div className="lg:hidden -my-2 -mr-1">
                     <FaListUl size="24" onClick={()=>toggleMenu()}/>
-                    <div className={isOpen ? "" : "hidden"}>
-                        <div className="absolute right-0 z-10 w-56 mt-4 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg p-2">
+                    <div className={isOpen ? "relative z-20" : "hidden"}>
+                        <div className="absolute right-0 w-56 mt-4 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg p-2" onClick={()=>toggleMenu()}>
+                            <div>
                             {menus.map((menu, idx) => (
-                                <a
-                                    key={menu.idx}
-                                    href={menu.name} 
-                                    className="block px-4 py-2 text-sm rounded-lg"
-                                    spy={true}
-                                    smooth={true}
-                                    onClick={()=>toggleMenu()}
-                                >
-                                    {menu.name}
-                                </a>
+                                isSpa == true
+                                ?
+                                    menu.spaYn == 'Y'
+                                    ?
+                                    <a 
+                                        key={idx}
+                                        href={'#'+menu.href}
+                                        className="block px-4 py-2 text-sm rounded-lg"
+                                    >
+                                        {menu.name}
+                                    </a>
+                                    :
+                                    <NavLink
+                                        key={idx}
+                                        to={menu.href}
+                                        className="block px-4 py-2 text-sm rounded-lg"
+                                        onClick={()=>setIsSpa(false)}
+                                    >
+                                        {menu.name}
+                                    </NavLink>
+                                :
+                                    menu.spaYn == 'Y'
+                                    ?
+                                    <NavLink
+                                        key={idx}
+                                        to={'/'}
+                                        className="block px-4 py-2 text-sm rounded-lg"
+                                        onClick={()=>setIsSpa(true)}
+                                    >
+                                        {menu.name}
+                                    </NavLink>
+                                    :
+                                    <NavLink
+                                        key={idx}
+                                        to={menu.href}
+                                        className="block px-4 py-2 text-sm rounded-lg"
+                                    >
+                                        {menu.name}
+                                    </NavLink>
                             ))}
+                            </div>
                         </div>
                     </div>
                 </div>
