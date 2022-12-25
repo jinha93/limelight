@@ -99,9 +99,9 @@ function RankTable() {
                     {
                         inputData.slice(offset, offset + limit).map((rowData, idx) => (
                             <tr className="border-b" key={idx}>
-                                <td className="pl-3 py-1 whitespace-nowrap">{rowData.rank}</td>
-                                <td className="py-1 whitespace-nowrap truncate">{rowData.nickname}</td>
-                                <td className="py-1 whitespace-nowrap hidden sm:block">{rowData.usePoint}</td>
+                                <td className="pl-3 py-3 whitespace-nowrap">{rowData.rank}</td>
+                                <td className="py-3 whitespace-nowrap truncate">{rowData.nickname}</td>
+                                <td className="py-3 whitespace-nowrap hidden sm:block">{rowData.usePoint}</td>
                                 <td className="pr-3 py-3 whitespace-nowrap">{rowData.totalPoint}</td>
                             </tr>
                         ))
