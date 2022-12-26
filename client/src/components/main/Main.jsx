@@ -10,7 +10,7 @@ function Main() {
                 src={lala_long}
             /> */}
             <img
-                className="w-full align-middle my-auto"
+                className="w-full align-middle"
                 src={lala_long}
             />
             

@@ -52,7 +52,7 @@ function Navigation() {
             <div className="mx-auto rounded-2xl w-3/4 p-5 h-20 bg-white shadow flex items-center justify-between">
                 {isSpa == true
                 ?
-                <a href='#home'>
+                <a href='/#'>
                     <span className="text-xl cursor-pointer">
                         <img className="h-8 inline mr-3" alt='logo' src={logo}/>
                         LIMELIGHT
