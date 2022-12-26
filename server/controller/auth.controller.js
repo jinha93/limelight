@@ -18,7 +18,7 @@ auth.signIn = async function(req, res, next) {
     if(process.env.NODE_ENV === 'development'){
         redirectUri = 'http://localhost:3001/api/auth/signIn'
     }else{
-        redirectUri = 'http://43.200.80.85/api/auth/signIn'
+        redirectUri = 'https://limelight.town/api/auth/signIn'
     }
 
     if (code) {
