@@ -1,0 +1,4 @@
+
+--aws ec2 
+--amazon linux https 인증 (let's encrypt)
+https://dev-jwblog.tistory.com/57

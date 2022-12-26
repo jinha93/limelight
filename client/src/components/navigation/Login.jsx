@@ -60,7 +60,7 @@ function Login() {
     if (process.env.NODE_ENV === 'development') {
         discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2Flocalhost:3001%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
     } else {
-        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2F43.200.80.85%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
+        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=https%3A%2F%2F43.200.80.85%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
     }
 
     return (
