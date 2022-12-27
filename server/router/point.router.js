@@ -6,6 +6,6 @@ const pointController = require("../controller/point.controller");
 
 router.route('/').get(middleware.test, pointController.getAll);
 router.route('/:userId').get(middleware.test, pointController.get);
-router.route('/update/:userId/:paramPoint').get(middleware.test, pointController.update);
+// router.route('/update/:userId/:paramPoint').get(middleware.test, pointController.update);
 
 module.exports = router;
