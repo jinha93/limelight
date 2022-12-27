@@ -10,7 +10,8 @@ html{
 }
 
 .bg{
-    background-image: url(./assets/images/bg-test.png);
-    background-size: 100vh;
-    background-repeat: repeat;
+    background-image: url(./assets/images/bg-1.png);
+    /* background-size: 100vh; */
+    object-fit: cover;
+    background-repeat: no-repeat;
 }
