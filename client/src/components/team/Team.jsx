@@ -28,7 +28,7 @@ const teams = [
     {
         name: 'POGO',
         role: 'Designer',
-        twitter: 'https://twitter.com/pddprof',
+        twitter: 'https://twitter.com/limelight_kor',
         imageSrc: require('../../assets/images/team-pogo.jpg'),
     },
     {
@@ -40,13 +40,13 @@ const teams = [
     {
         name: 'neogulmon',
         role: 'Moderator',
-        twitter: 'https://twitter.com/cowooding',
+        twitter: 'https://twitter.com/raccoon_mon',
         imageSrc: require('../../assets/images/team-neogulmon.png'),
     },
     {
         name: 'Dolphin rice',
         role: 'Story Teller',
-        twitter: 'https://twitter.com/cowooding',
+        twitter: 'https://twitter.com/goraegabab',
         imageSrc: require('../../assets/images/team-dolphinrice.png'),
     },
 ]
