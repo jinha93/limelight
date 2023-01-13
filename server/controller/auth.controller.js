@@ -52,6 +52,7 @@ auth.signIn = async function(req, res, next) {
             req.session.userId = userData.id;
             req.session.userName = userData.username;
             req.session.discriminator = userData.discriminator;
+            req.session.userAvatar = userData.avatar;
 
 		} catch (error) {
 			console.error(error);

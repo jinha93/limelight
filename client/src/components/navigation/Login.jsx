@@ -29,6 +29,7 @@ function Login() {
                 userId: data.userId,
                 userName: data.userName,
                 discriminator: data.discriminator,
+                userAvatar: `https://cdn.discordapp.com/avatars/${data.userId}/${data.userAvatar}.png`,
                 point: res.data['총 획득 포인트']
             })
         }
@@ -69,6 +70,7 @@ function Login() {
                 isLogin
                     ?
                     <div className='flex items-center gap-2'>
+                        <img src={userData.userAvatar} className='object-cover h-10 rounded-full'/>
                         <div>
                             <p className='text-sm'>
                                 {userData.userName}
