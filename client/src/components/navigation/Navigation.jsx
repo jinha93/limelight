@@ -25,7 +25,12 @@ const menus = [
         name: 'RANK',
         href: '/rank',
         spaYn: 'N'
-    }
+    },
+    {
+        name: 'MyPage',
+        href: '/myPage',
+        spaYn: 'N'
+    }    
 ]
 
 
