@@ -2,10 +2,6 @@ const CODE = require("../modules/status-code");
 const MSG = require("../modules/response-message");
 const UTIL = require("../modules/util");
 
-const database2 = require('../config/firebase');
-const { ref, onValue, query, orderByChild, startAfter, update } = require('firebase/database');
-
-
 const database = require('../config/firebase-admin');
 
 const point = {};

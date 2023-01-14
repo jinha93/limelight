@@ -25,12 +25,12 @@ const teams = [
         twitter: 'https://twitter.com/pddprof',
         imageSrc: require('../../assets/images/team-pddprof.png'),
     },
-    {
-        name: 'POGO',
-        role: 'Designer',
-        twitter: 'https://twitter.com/limelight_kor',
-        imageSrc: require('../../assets/images/team-pogo.jpg'),
-    },
+    // {
+    //     name: 'POGO',
+    //     role: 'Designer',
+    //     twitter: 'https://twitter.com/limelight_kor',
+    //     imageSrc: require('../../assets/images/team-pogo.jpg'),
+    // },
     {
         name: 'REX',
         role: 'Developer',
