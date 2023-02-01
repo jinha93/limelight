@@ -71,80 +71,14 @@ function MyPageTable() {
 
     return (
         <div className="mx-auto w-3/4 flex flex-col items-start mb-1 pt-32">
-          <h2 className="mx-auto text-5xl mb-5">나의 포인트 적립내역</h2>
-            <table className="w-full text-center table-fixed bg-white/80 rounded-xl overflow-hidden shadow">
-                <colgroup>
-                    <col className='w-2/12'></col>
-                    <col className='w-6/12 truncate'></col>
-                    <col className='w-2/12 hidden sm:block'></col>
-                    <col className='w-2/12'></col>
-                </colgroup>
-                <thead className="border-b bg-slate-50">
-                    <tr>
-                        <th scope="col" className="pl-3 py-3">RANK</th>
-                        <th scope="col" className="py-3">DISCORD ID</th>
-                        <th scope="col" className="py-3 hidden sm:block">USED POINT</th>
-                        <th scope="col" className="pr-3 py-3">POINT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        inputData.slice(offset, offset + limit).map((rowData, idx) => (
-                            <tr className="border-b" key={idx}>
-                                <td className="pl-3 py-3 whitespace-nowrap">{rowData.rank}</td>
-                                <td className="py-3 whitespace-nowrap truncate">{rowData.nickname}</td>
-                                <td className="py-3 whitespace-nowrap hidden sm:block">{rowData.usePoint}</td>
-                                <td className="pr-3 py-3 whitespace-nowrap">{rowData.totalPoint}</td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
-
-            <Pagination
-                total={inputData.length}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-            />
-          <h2 className="mx-auto text-5xl mb-5">나의 포인트 사용내역</h2>
-            <table className="w-full text-center table-fixed bg-white/80 rounded-xl overflow-hidden shadow">
-                <colgroup>
-                    <col className='w-2/12'></col>
-                    <col className='w-6/12 truncate'></col>
-                    <col className='w-2/12 hidden sm:block'></col>
-                    <col className='w-2/12'></col>
-                </colgroup>
-                <thead className="border-b bg-slate-50">
-                    <tr>
-                        <th scope="col" className="pl-3 py-3">RANK</th>
-                        <th scope="col" className="py-3">DISCORD ID</th>
-                        <th scope="col" className="py-3 hidden sm:block">USED POINT</th>
-                        <th scope="col" className="pr-3 py-3">POINT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        inputData.slice(offset, offset + limit).map((rowData, idx) => (
-                            <tr className="border-b" key={idx}>
-                                <td className="pl-3 py-3 whitespace-nowrap">{rowData.rank}</td>
-                                <td className="py-3 whitespace-nowrap truncate">{rowData.nickname}</td>
-                                <td className="py-3 whitespace-nowrap hidden sm:block">{rowData.usePoint}</td>
-                                <td className="pr-3 py-3 whitespace-nowrap">{rowData.totalPoint}</td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
-
-            <Pagination
-                total={inputData.length}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-            />            
+            <div className="w-full h-96 bg-white">
+                <div className="w-1/2 h-96 float-left bg-orange-200">
+                    <h2 className="mx-auto text-2xl mb-5">나의 페이지</h2>
+                </div>
+                <div className="w-1/2 h-96 float-right text-center bg-red-200">총 포인트</div>
+            </div>
+            <div className="w-full h-96 bg-yellow-200">포인트 적립내역 / 래플 응모내역</div>
         </div>
-        
     )
 }
 
