@@ -17,7 +17,7 @@ function arrOrderDesc(key) {
     }
 }
 
-point.getAll = async function (req, res, next) {
+point.getAll = async function (req, res) {
     try {
         const ref = database.ref(`ID`);
         
@@ -47,7 +47,7 @@ point.getAll = async function (req, res, next) {
     }
 }
 
-point.get = async function (req, res, next) {
+point.get = async function (req, res) {
     try {
         const {userId} = req.params;
 
@@ -65,7 +65,7 @@ point.get = async function (req, res, next) {
     }
 }
 
-point.update = async function (req, res, next) {
+point.update = async function (req, res) {
     try {
         const {userId, paramPoint} = req.params;
 

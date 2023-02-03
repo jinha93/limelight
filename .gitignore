@@ -1,2 +1,8 @@
 # 폴더 무시
 server/config/
+
+# Dependency directories
+node_modules/
+
+# 파일 무시
+.env

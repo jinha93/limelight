@@ -2,16 +2,21 @@ const express = require("express");
 const cors = require('cors');
 const CODE = require("./modules/status-code");
 const createError = require('http-errors');
-const app = express();
 const session = require('express-session');
-const PORT = 3001;
+const dotenv = require('dotenv');
+var cookieParser = require('cookie-parser')
 
+const app = express();
+dotenv.config();
+
+app.use(cookieParser())
 app.use(cors());
 
 // express-session 라이브러리를 이용해 쿠키 설정
 app.use(
   session({
-    secret: '@limelight',
+    key: process.env.SESSION_KEY,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 1000 * 60 * 30 }
@@ -19,14 +24,16 @@ app.use(
 );
 
 // Router 설정
-const testRouter = require("./router/test.router");
-const pointRouter = require("./router/point.router");
-const authRouter = require("./router/auth.router");
+const testRouter = require("./router/testRouter");
+const pointRouter = require("./router/pointRouter");
+const authRouter = require("./router/authRouter");
+const raffleRouter = require("./router/raffleRouter");
 
 // Router 주소 지정
 app.use('/api/test', testRouter);
 app.use('/api/point', pointRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/raffle', raffleRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -34,6 +41,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.listen(PORT, function () {
-  console.log("Express app running on port : ", PORT);
+app.listen(process.env.PORT, function () {
+  console.log("Express app running on port : ", process.env.PORT);
 }); 

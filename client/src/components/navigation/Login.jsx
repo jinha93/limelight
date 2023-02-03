@@ -2,58 +2,43 @@ import axios from 'axios';
 import { useState, useEffect } from "react";
 import { FaRegTimesCircle } from "react-icons/fa"
 
+import { useSelector, useDispatch } from 'react-redux'
+import { signIn, signOut } from '../../reducers/userSlice'
+
 function Login() {
-    //로그인여부
-    const [isLogin, setIsLogin] = useState(false);
-    const [userData, setUserData] = useState({});
+    const user = useSelector(state => state.user.value)
+    const dispatch = useDispatch();
 
-    const getSession = async () => {
-        const res = await axios.get('/api/auth/session');
-        if (res.data.userId !== '' && res.data.userId !== undefined && res.data.userId !== null) {
-            setIsLogin(true);
-            setUserData({
-                userId: res.data.userId,
-                userName: res.data.userName,
-                discriminator: res.data.discriminator
-            })
-            getPoint(res.data);
-        }else{
-            setIsLogin(false);
-        }
-    }
-
-    const getPoint = async (data) => {
-        const res = await axios.get(`/api/point/${data.userId}`);
-        if(res){
-            setUserData({
-                userId: data.userId,
-                userName: data.userName,
-                discriminator: data.discriminator,
-                userAvatar: `https://cdn.discordapp.com/avatars/${data.userId}/${data.userAvatar}.png`,
-                point: res.data['총 획득 포인트']
-            })
-        }
-    }
+    const isLogin = user.isLogin;
+    const userData = user.userData;
 
     useEffect(() => {
-        const run = async () => {
-            await getSession();
-        };
-        run();
+        try {
+            axios({
+                url: '/api/auth/session',
+                method: "GET",
+                withCredentials: true,
+            }).then((result) => {
+                if (result.data.userId !== '' && result.data.userId !== undefined && result.data.userId !== null) {
+                    dispatch(signIn(result.data))
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
     },[])
 
-    const signOut = () => {
+    const LogOut = () => {
         try {
-            async function fetchData() {
-                const res = await axios.get('/api/auth/signOut');
-                if (res.data.success) {
-                    setIsLogin(false);
-                }
-            }
-            fetchData();
-
+            axios({
+                url: '/api/auth/signOut',
+                method: "GET",
+                withCredentials: true,
+            }).then(() => {
+                dispatch(signOut())
+            })
         } catch (error) {
-            console.error(error.message);
+            console.error(error);
         }
     }
 
@@ -85,7 +70,7 @@ function Login() {
                             color='red'
                             size='20'
                             className='ml-auto cursor-pointer'
-                            onClick={() => signOut()}
+                            onClick={() => LogOut()}
                         />
                     </div>
                     :
@@ -100,3 +85,5 @@ function Login() {
 }
 
 export default Login;
+
+
