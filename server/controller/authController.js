@@ -1,7 +1,5 @@
-const database = require('../config/firebase-admin');
-
+const database = require('../config/firebase');
 const { request } = require('undici');
-const { clientId, clientSecret } = require('../config/discord.json');
 
 const auth = {};
 
@@ -28,8 +26,8 @@ auth.signIn = async function(req, res) {
 			const tokenResponseData = await request('https://discord.com/api/oauth2/token', {
 				method: 'POST',
 				body: new URLSearchParams({
-					client_id: clientId,
-					client_secret: clientSecret,
+					client_id: process.env.CLIENT_ID,
+					client_secret: process.env.CLIENT_SECRET,
 					code,
 					grant_type: 'authorization_code',
 					redirect_uri: redirectUri,

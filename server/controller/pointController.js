@@ -2,7 +2,7 @@ const CODE = require("../modules/status-code");
 const MSG = require("../modules/response-message");
 const UTIL = require("../modules/util");
 
-const database = require('../config/firebase-admin');
+const database = require('../config/firebase');
 
 const point = {};
 

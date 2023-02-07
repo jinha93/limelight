@@ -3,9 +3,11 @@ const cors = require('cors');
 const CODE = require("./modules/status-code");
 const createError = require('http-errors');
 const session = require('express-session');
-const dotenv = require('dotenv');
 
 const app = express();
+
+//env
+const dotenv = require('dotenv');
 dotenv.config();
 
 //cors
