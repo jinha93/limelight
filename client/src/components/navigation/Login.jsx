@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { FaRegTimesCircle } from "react-icons/fa"
 
 import { useSelector, useDispatch } from 'react-redux'
 import { signIn, signOut } from '../../reducers/userSlice'
+
+import limemon from '../../assets/images/limemon.jpg';
 
 function Login() {
     const user = useSelector(state => state.user.value)
@@ -13,33 +15,27 @@ function Login() {
     const userData = user.userData;
 
     useEffect(() => {
-        try {
-            axios({
-                url: '/api/auth/session',
-                method: "GET",
-                withCredentials: true,
-            }).then((result) => {
-                if (result.data.userId !== '' && result.data.userId !== undefined && result.data.userId !== null) {
-                    dispatch(signIn(result.data))
-                }
-            })
-        } catch (error) {
+        axios({
+            url: '/api/auth/session',
+            method: "GET",
+        }).then((result) => {
+            if (result.data.userId !== '' && result.data.userId !== undefined && result.data.userId !== null) {
+                dispatch(signIn(result.data))
+            }
+        }).catch((error) => {
             console.log(error);
-        }
+        })
     },[])
 
     const LogOut = () => {
-        try {
-            axios({
-                url: '/api/auth/signOut',
-                method: "GET",
-                withCredentials: true,
-            }).then(() => {
-                dispatch(signOut())
-            })
-        } catch (error) {
-            console.error(error);
-        }
+        axios({
+            url: '/api/auth/signOut',
+            method: "GET",
+        }).then(() => {
+            dispatch(signOut())
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     let discordUrl = '';
@@ -55,7 +51,11 @@ function Login() {
                 isLogin
                     ?
                     <div className='flex items-center gap-2'>
-                        <img src={userData.userAvatar} className='object-cover h-10 rounded-full'/>
+                        <img 
+                            className='object-cover h-10 rounded-full'
+                            src={userData.userAvatar ? userData.userAvatar : limemon}
+                            alt="userAvatar"
+                        />
                         <div>
                             <p className='text-sm'>
                                 {userData.userName}

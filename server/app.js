@@ -4,12 +4,11 @@ const CODE = require("./modules/status-code");
 const createError = require('http-errors');
 const session = require('express-session');
 const dotenv = require('dotenv');
-var cookieParser = require('cookie-parser')
 
 const app = express();
 dotenv.config();
 
-app.use(cookieParser())
+//cors
 app.use(cors());
 
 // express-session 라이브러리를 이용해 쿠키 설정

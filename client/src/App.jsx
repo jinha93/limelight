@@ -11,6 +11,9 @@ import Rank from './components/rank/Rank';
 import Raffle from './components/raffle/Raffle';
 import { Fragment } from 'react';
 
+import JSConfetti from "js-confetti";
+export const conteffi = new JSConfetti();
+
 function App() {
   return (
     <div className="App">
