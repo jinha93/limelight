@@ -3,6 +3,7 @@ const cors = require('cors');
 const CODE = require("./modules/status-code");
 const createError = require('http-errors');
 const session = require('express-session');
+// const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -12,6 +13,9 @@ dotenv.config();
 
 //cors
 app.use(cors());
+app.use(express.json())
+//body-parser
+// app.use(bodyParser.json);
 
 // express-session 라이브러리를 이용해 쿠키 설정
 app.use(

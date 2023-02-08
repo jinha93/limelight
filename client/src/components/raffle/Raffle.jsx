@@ -7,13 +7,12 @@ function Raffle() {
     window.scrollTo(0,0);
 
     const [inputData, setInputData] = useState([{}]);
-    
-    useEffect(() => {
+
+    const getRaffle = () => {
         axios({
             url: '/api/raffle',
             method: 'GET'
         }).then((result) => {
-            console.log(result);
             const _inputData = result.data.map((rowData) => (
                 {
                     raffleId: rowData.RAFFLE_ID,
@@ -33,7 +32,12 @@ function Raffle() {
         }).catch((error) => {
             console.log(error);
         })
+    }
+    
+    useEffect(() => {
+        getRaffle();
     }, [])
+
     return (
         <div className='bg min-h-screen'>
             <div className="mx-auto w-3/4 pt-32 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 text-center">
@@ -51,6 +55,7 @@ function Raffle() {
                             winMaxCnt={rowData.winMaxCnt}
                             winYn={rowData.winYn}
                             winCnt={rowData.winCnt}
+                            getRaffle={getRaffle}
                         />
                 ))}
             </div>

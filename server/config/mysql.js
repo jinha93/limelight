@@ -1,5 +1,6 @@
-var mysql      = require('mysql2');
-var connection = mysql.createConnection({
+
+const mysql      = require('mysql2/promise');
+const connection = mysql.createPool({
   host     : process.env.MYSQL_HOST,
   user     : process.env.MYSQL_USER,
   password : process.env.MYSQL_PASSWORD,
@@ -7,9 +8,4 @@ var connection = mysql.createConnection({
   dateStrings:  true,
 });
 
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("DB Connected!");
-});
-
-module.exports = connection;
+module.exports = connection

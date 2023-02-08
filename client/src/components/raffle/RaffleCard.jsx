@@ -36,7 +36,7 @@ const TimeLeft = (endDateVal) => {
         const diffSec = Math.floor(diff / 1000 % 60);
 
         if (diffDay > 0) {
-            result = diffDay + '<p> days ago</p>';
+            result = diffDay + ' days ago';
         } else {
             result = leftPad(diffHour) + ':' + leftPad(diffMin) + ':' + leftPad(diffSec) + ' ago';
         }
@@ -97,6 +97,7 @@ function RaffleCard(props) {
                         raffleId={props.raffleId}
                         winYn={props.winYn}
                         ended={isEnded(props)}
+                        getRaffle={props.getRaffle}
                     />
                 </div>
 
