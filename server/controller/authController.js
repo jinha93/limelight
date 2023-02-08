@@ -1,17 +1,17 @@
-const CODE = require("../modules/status-code");
-const MSG = require("../modules/response-message");
-const UTIL = require("../modules/util");
-
+const database = require('../config/firebase');
 const { request } = require('undici');
-const { clientId, clientSecret } = require('../config/discord.json');
 
 const auth = {};
 
-auth.session = async function(req, res, next) {
-	return res.send(req.session);
+auth.session = async function(req, res) {
+    try {
+        return res.status(200).json(req.session);
+    } catch (error) {
+        res.status(500).json(error);
+    }
 }
 
-auth.signIn = async function(req, res, next) {
+auth.signIn = async function(req, res) {
     const code = req.query.code;
 
 	let redirectUri = '';
@@ -26,8 +26,8 @@ auth.signIn = async function(req, res, next) {
 			const tokenResponseData = await request('https://discord.com/api/oauth2/token', {
 				method: 'POST',
 				body: new URLSearchParams({
-					client_id: clientId,
-					client_secret: clientSecret,
+					client_id: process.env.CLIENT_ID,
+					client_secret: process.env.CLIENT_SECRET,
 					code,
 					grant_type: 'authorization_code',
 					redirect_uri: redirectUri,
@@ -49,13 +49,24 @@ auth.signIn = async function(req, res, next) {
                 
             const userData = await userResponseData.body.json();
 
+            //포인트 조회
+            const userId = userData.id;
+            const ref = database.ref(`ID/${userId}`);
+            let data = {};
+            ref.on('value', (snapshot) =>{
+                data = snapshot.val();
+            })
+
+            // 세션에 데이터 저장
+            req.session.isLogin = true;
             req.session.userId = userData.id;
             req.session.userName = userData.username;
             req.session.discriminator = userData.discriminator;
-            req.session.userAvatar = userData.avatar;
+            if(userData.avatar) req.session.userAvatar = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}`;
+            req.session.point = data['총 획득 포인트']
 
 		} catch (error) {
-			console.error(error);
+            console.log(error);
 		}
 	}
 	
@@ -67,13 +78,12 @@ auth.signIn = async function(req, res, next) {
     }
 }
 
-auth.signOut = async function(req, res, next) {
-	try {
-		req.session.destroy();
-        return res.status(CODE.OK).send(UTIL.success(MSG.SEARCH_SUCCESS));
+auth.signOut = (req, res) => {
+    try {
+        req.session.destroy();
+        res.status(200).json("SignOut Success");
     } catch (error) {
-        console.log(error);
-        return res.status(CODE.INTERNAL_SERVER_ERROR).send(UTIL.fail(MSG.SEARCH_FAIL));
+        res.status(500).json(error);
     }
 }
 

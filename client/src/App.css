@@ -1,6 +1,10 @@
 @font-face {
     font-family: 'NanumSquareRoundExtraBold';
-    src: url(./assets/fonts/NanumSquareRoundEB.ttf);
+    src: url(./assets/fonts/NanumSquareRoundEB.ttf);   
+}
+@font-face {
+    font-family: 'NanumSquareRoundBold';
+    src: url(./assets/fonts/NanumSquareRoundB.ttf);   
 }
 html{
     scroll-behavior: smooth;
@@ -8,10 +12,13 @@ html{
 .App {
     font-family: 'NanumSquareRoundExtraBold';
 }
+.NanumBold {
+    font-family: 'NanumSquareRoundBold';
+}
 
 .bg{
     background-image: url(./assets/images/bg-1.png);
     /* background-size: 100vh; */
-    object-fit: cover;
-    background-repeat: no-repeat;
+    /* object-fit: cover; */
+    /* background-repeat: no-repeat; */
 }
