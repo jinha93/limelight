@@ -2,7 +2,7 @@ import RankTable from './RankTable';
 
 function Rank(props) {
     return (
-        <div className='bg min-h-screen'>
+        <div className='bg lg:h-screen'>
             <RankTable></RankTable>
         </div>
     )

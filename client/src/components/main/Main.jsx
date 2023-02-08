@@ -1,4 +1,6 @@
+import main from "../../assets/images/main.png";
 import lala_long from "../../assets/images/lala-long2.jpg";
+import lala from "../../assets/images/lala.jpg";
 
 function Main() {
     return (
@@ -10,7 +12,6 @@ function Main() {
             <img
                 className="w-full align-middle object-cover"
                 src={lala_long}
-                alt="main"
             />
             
         </div>

@@ -2,7 +2,7 @@ const CODE = require("../modules/status-code");
 const MSG = require("../modules/response-message");
 const UTIL = require("../modules/util");
 
-const database = require('../config/firebase');
+const database = require('../config/firebase-admin');
 
 const point = {};
 
@@ -17,7 +17,7 @@ function arrOrderDesc(key) {
     }
 }
 
-point.getAll = async function (req, res) {
+point.getAll = async function (req, res, next) {
     try {
         const ref = database.ref(`ID`);
         
@@ -47,7 +47,7 @@ point.getAll = async function (req, res) {
     }
 }
 
-point.get = async function (req, res) {
+point.get = async function (req, res, next) {
     try {
         const {userId} = req.params;
 
@@ -65,7 +65,7 @@ point.get = async function (req, res) {
     }
 }
 
-point.update = async function (req, res) {
+point.update = async function (req, res, next) {
     try {
         const {userId, paramPoint} = req.params;
 
