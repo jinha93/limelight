@@ -9,8 +9,10 @@ import About from './components/about/About';
 import Team from './components/team/Team';
 import Rank from './components/rank/Rank';
 import Raffle from './components/raffle/Raffle';
-import MyPage from './components/myPage/MyPage'
 import { Fragment } from 'react';
+
+import JSConfetti from "js-confetti";
+export const conteffi = new JSConfetti();
 
 function App() {
   return (
@@ -27,7 +29,6 @@ function App() {
             </Fragment>
           } />
         <Route path='/rank' element={<Rank />} />
-        <Route path='/myPage' element={<MyPage />} />
         <Route path='/raffle' element={<Raffle />} />
         <Route path='/*' element={<NotFound />} />
       </Routes>

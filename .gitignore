@@ -1,2 +1,7 @@
-# 폴더 무시
-server/config/
+# Dependency directories
+node_modules/
+
+# 환경 설정
+.env
+server/config/serviceAccountKey.json
+server/config/serviceAccountKey-dev.json

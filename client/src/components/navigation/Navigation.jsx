@@ -31,11 +31,6 @@ const menus = [
     //     href: '/raffle',
     //     spaYn: 'N'
     // }
-    {
-        name: 'MyPage',
-        href: '/myPage',
-        spaYn: 'N'
-    }    
 ]
 
 
