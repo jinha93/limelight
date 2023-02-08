@@ -26,19 +26,16 @@ const menus = [
         href: '/rank',
         spaYn: 'N'
     },
-<<<<<<< HEAD
     // {
     //     name: 'RAFFLE',
     //     href: '/raffle',
     //     spaYn: 'N'
     // }
-=======
     {
         name: 'MyPage',
         href: '/myPage',
         spaYn: 'N'
     }    
->>>>>>> f9cd0ba ([신규] MyPage 신규 페이지 추가)
 ]
 
 
