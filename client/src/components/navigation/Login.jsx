@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { signIn, signOut } from '../../reducers/userSlice'
 
 import limemon from '../../assets/images/limemon.jpg';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const user = useSelector(state => state.user.value)
@@ -38,6 +39,12 @@ function Login() {
         })
     }
 
+    const navigate = useNavigate();
+    const myPage = () => {
+        navigate("/myPage");
+    }
+      
+
     let discordUrl = '';
     if (process.env.NODE_ENV === 'development') {
         discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2Flocalhost:3001%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
@@ -56,7 +63,7 @@ function Login() {
                             src={userData.userAvatar ? userData.userAvatar : limemon}
                             alt="userAvatar"
                         />
-                        <div>
+                        <div onClick={() => myPage()}>
                             <p className='text-sm'>
                                 {userData.userName}
                                 #{userData.discriminator}
