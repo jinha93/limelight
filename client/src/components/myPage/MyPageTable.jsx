@@ -1,9 +1,15 @@
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
-
+import { useSelector } from "react-redux";
+import limemon from '../../assets/images/limemon.jpg';
 import Pagination from "../common/Pagination";
 
 function MyPageTable() {
+
+  const user = useSelector(state => state.user.value);
+  const isLogin = user.isLogin;
+  const userData = user.userData;
+
   //2023-01-23 TODO 작성
 
   //1. 포인트 사용내역 DB 설계 (끝)
@@ -29,13 +35,13 @@ function MyPageTable() {
   const [inputData, setInputData] = useState([{}]);
   const [resultData, setResultData] = useState([{}]);
 
+ //검색어
+ const [search, setSearch] = useState("");  
+
   //페이지네이션
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
-
-  //검색어
-  const [search, setSearch] = useState("");
 
   useEffect(() => {
     try {
@@ -77,20 +83,43 @@ function MyPageTable() {
     }
   }, [search]);
 
+  useEffect(() => {
+    axios({
+        url: '/api/auth/session',
+        method: "GET",
+    }).then((result) => {
+      // req.session.isLogin = true;
+      // req.session.userId = userData.id;
+      // req.session.userName = userData.username;
+      // req.session.discriminator = userData.discriminator;
+    }).catch((error) => {
+        console.log(error);
+    })
+},[])  
+
   return (
     <div className="mx-auto w-3/4 flex flex-col items-start mb-1 pt-32">
       <div className="w-full h-96 bg-white">
         <div className="w-1/2 h-96 float-left bg-orange-200">
-          <h2 className="mx-auto text-2xl mb-5">나의 페이지</h2>
+          <h2 className="mx-auto text-2xl mb-5">나의 페이지
+          </h2>
+          <img 
+            className='object-cover h-30 rounded-full'
+            src={userData.userAvatar ? userData.userAvatar : limemon}
+            alt="userAvatar"
+          />          
+          <p>닉네임 : {userData.userName}</p>
+          {/* <p>{userData.discriminator}</p> */}
+              
         </div>
         <div className="w-1/2 h-96 float-right text-center bg-red-200">
-          총 포인트
+          <p>Point : {userData.point}</p>      
         </div>
       </div>
       <div className="w-full h-96 bg-yellow-200">
         포인트 적립내역 / 래플 응모내역
       </div>
-      <h2 className="mx-auto text-5xl mb-5">나의 포인트 적립내역</h2>
+       <h2 className="mx-auto text-5xl mb-5">나의 포인트 적립내역</h2>
       <table className="w-full text-center table-fixed bg-white/80 rounded-xl overflow-hidden shadow">
         <colgroup>
           <col className="w-2/12"></col>
