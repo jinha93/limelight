@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const middleware = require("../middleware/testMiddleware");
+const middleware = require("../middleware/authMiddleware");
 const raffleController = require("../controller/raffleController");
 
-router.route('/').get(middleware.test, raffleController.findAll);
-router.route('/submit').post(middleware.test, raffleController.submit);
+router.route('/').get(middleware.authChecker, raffleController.findAll);
+router.route('/submit').post(middleware.authChecker, raffleController.submit);
 
 module.exports = router;

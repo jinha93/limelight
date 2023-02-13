@@ -30,6 +30,7 @@ function Raffle() {
             //초기 값 세팅
             setInputData(_inputData)
         }).catch((error) => {
+            if(error.response.status == 401) alert('로그인에러')
             console.log(error);
         })
     }
