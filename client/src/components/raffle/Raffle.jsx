@@ -6,8 +6,8 @@ function Raffle() {
     // scroll to top
     window.scrollTo(0,0);
 
+    //래플 데이터 조회
     const [inputData, setInputData] = useState([{}]);
-
     const getRaffle = () => {
         axios({
             url: '/api/raffle',

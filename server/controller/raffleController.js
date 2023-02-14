@@ -34,6 +34,24 @@ raffle.findAll = async (req, res) => {
     }
 }
 
+const _test1 = () => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('3초뒤실행')
+            resolve();
+        }, 3000)
+    })
+}
+const _test = () => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('1초뒤실행')
+            resolve();
+        }, 1000)
+    })
+}
+
+
 // 래플 등록
 raffle.submit = async (req, res) => {
     const connection = await mysql.getConnection(async conn => conn);
@@ -53,7 +71,7 @@ raffle.submit = async (req, res) => {
         // 포인트 잔액 조회
         let ref = firebase.ref(`ID/${userId}`);
         let data = {};
-        ref.on('value', (snapshot) =>{
+        ref.on('value', (snapshot) => {
             data = snapshot.val();
         })
         const userPoint = data['총 획득 포인트']
@@ -63,7 +81,11 @@ raffle.submit = async (req, res) => {
 
         // 포인트 감소
         changePoint = userPoint - rafflePoint;
-        ref.update({'총 획득 포인트': changePoint})
+        await ref.update({'총 획득 포인트': changePoint})
+
+        
+        await _test1();
+        await _test();
 
         // 래플 확률
         const winRate = rows[0].WIN_RATE;
