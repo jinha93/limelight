@@ -39,10 +39,10 @@ function RegistBtn(props) {
             setIsLoading(true);
 
             setTimeout(() => {
-                if (result.data.success < 0) alert(result.data.msg);
                 dispatch(setPoint(result.data.point))
                 props.getRaffle();
-                Congratulation();
+
+                if(result.data.winYn === 'Y') Congratulation();
 
                 setIsLoading(false);
             }, 1000);

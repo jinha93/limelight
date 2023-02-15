@@ -1,5 +1,5 @@
-const database = require('../config/firebase');
 const { request } = require('undici');
+const pointModel = require('../model/pointModel')
 
 const auth = {};
 
@@ -49,12 +49,13 @@ auth.signIn = async function(req, res) {
                 
             const userData = await userResponseData.body.json();
 
-            //포인트 조회
+            // 포인트 조회
             const userId = userData.id;
-            const ref = database.ref(`ID/${userId}`);
             let data = {};
-            ref.on('value', (snapshot) =>{
-                data = snapshot.val();
+            await pointModel.get(userId).then((resultData) => {
+                data = resultData
+            }).catch((error) => {
+                throw error;
             })
 
             // 세션에 데이터 저장
