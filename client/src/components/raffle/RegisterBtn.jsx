@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
-import { setPoint } from '../../reducers/userSlice'
+import userSlice, { setPoint } from '../../reducers/userSlice'
 import { conteffi } from "../../App";
 import Spinner from '../common/Spinner';
 import { useState } from 'react';
+import common from "../common/Common";
+import Alert from '../common/Alert';
 
 function RegistBtn(props) {
 
@@ -28,6 +30,7 @@ function RegistBtn(props) {
     };
 
     const submit = (raffleId) => {
+        setIsLoading(true);
         axios({
             url: '/api/raffle/submit',
             method: "POST",
@@ -36,18 +39,35 @@ function RegistBtn(props) {
             },
             dataType: 'json',
         }).then((result) => {
-            setIsLoading(true);
 
             setTimeout(() => {
+                // reducer 포인트 업데이트
                 dispatch(setPoint(result.data.point))
+
+                // 래플 정보 재랜더링
                 props.getRaffle();
 
+                // 결과가 당첨일 경우 효과
                 if(result.data.winYn === 'Y') Congratulation();
 
+                // 로딩 효과 활성화
                 setIsLoading(false);
             }, 1000);
 
         }).catch((error) => {
+            // 로딩 효과 비활성화
+            setIsLoading(false);
+
+            // 로그인 세션 에러
+            if(error.response.status == 401){
+                // alert 활성화
+                props.setIsAlert(true);
+
+                // 3초 후 로그인페이지 이동
+                setTimeout(() => {
+                    window.location.href = error.response.data.loginUrl
+                }, 2000);
+            } 
             console.log(error);
         })
     }
