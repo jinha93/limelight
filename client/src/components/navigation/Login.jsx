@@ -34,6 +34,7 @@ function Login() {
             method: "GET",
         }).then(() => {
             dispatch(signOut())
+            navigate("/");
         }).catch((error) => {
             console.log(error);
         })
