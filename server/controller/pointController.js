@@ -17,36 +17,6 @@ function arrOrderDesc(key) {
     }
 }
 
-point.getUserUseHisList = async (req, res) => { 
-
-    const connection = await mysql.getConnection(async conn => conn);
-
-    try {
-        const userId = req.session.userId;
-        const sql = `
-                    SELECT 
-                        A.USER_ID 
-                        , A.USE_DATE
-                        , A.USE_POINT
-                        , A.USE_CTS 
-                    FROM use_point_history A
-                    WHERE A.USER_ID = '${userId}'
-                    `;                    
-        const [rows] = await connection.query(sql);
-
-        connection.release();
-        res.status(200).json(rows)
-
-    } catch (error) {
-        connection.release();
-        console.log(error);
-        res.status(500).json(error)
-    } finally {
-        connection.release();
-    }
-
-}
-
 point.getAll = async function (req, res) {
     try {
         const ref = database.ref(`ID`);
