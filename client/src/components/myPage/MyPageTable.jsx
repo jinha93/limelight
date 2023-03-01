@@ -6,9 +6,11 @@ import Pagination from "../common/Pagination";
 
 function MyPageTable() {
   //TODO 작성
-  //- 로그아웃 시 홈페이지로 URL 연결 미구현
   //- 탭 이벤트로 리스트 조회 미구현
-  //- 디자인 터짐
+  //- 디자인 미완성
+
+  //템플릿 URL
+  //- https://codepen.io/cruip/pen/MWEWxLK
 
   /*
   EX)
@@ -54,20 +56,31 @@ function MyPageTable() {
 
   return (
     <div className="mx-auto w-3/4 flex flex-col items-start mb-1 pt-32">
-      <div className="w-full h-96 bg-white">
-        <div className="w-1/2 h-96 float-left bg-orange-200">
-          <h2 className="mx-auto text-2xl mb-5">나의 페이지</h2>
-          <img
-            className="object-cover h-30 rounded-full"
-            src={userData.userAvatar ? userData.userAvatar : limemon}
-            alt="userAvatar"
-          />
-          <p>
-            {userData.userName}#{userData.discriminator}
-          </p>
-        </div>
-        <div className="w-1/2 h-96 float-right text-center bg-red-200">
-          <p>{userData.point} Point</p>
+      <div className="w-1/2 h-96">
+        <div class="max-w-xs mx-0">
+          <div class="flex flex-col h-full bg-white shadow-lg rounded-lg overflow-hidden">
+            <figure class="relative h-0 pb-[56.25%] overflow-hidden">
+              <h2 className="mx-auto text-2xl mb-5">나의 페이지</h2>
+              <img
+                className="object-cover h-30 rounded-full"
+                src={userData.userAvatar ? userData.userAvatar : limemon}
+                alt="userAvatar"
+              />
+            </figure>
+            <div class="flex-grow flex flex-col p-5">
+              <div class="flex-grow">
+                <header class="mb-3">
+                  <h3 class="text-[22px] text-gray-900 font-extrabold leading-snug">
+                    {userData.userName}#{userData.discriminator}
+                  </h3>
+                </header>
+                <div class="mb-8">
+                  <p>현재 포인트 : {userData.point} Point</p>
+                </div>
+              </div>
+              <div class="flex justify-end space-x-2"></div>
+            </div>
+          </div>
         </div>
       </div>
       <table className="w-full text-center table-fixed bg-white/80 rounded-xl overflow-hidden shadow">
