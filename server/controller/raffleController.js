@@ -1,6 +1,5 @@
 const mysql = require("../config/mysql");
-const firebase = require('../config/firebase');
-const connection = require("../config/mysql");
+const pointModel = require('../model/pointModel');
 const raffle = {};
 
 // 래플 목록 조회
@@ -16,11 +15,11 @@ raffle.findAll = async (req, res) => {
                  LEFT OUTER JOIN RAFFLE_APC_LIST B 
                  ON A.RAFFLE_ID = B.RAFFLE_ID
                  AND B.WIN_YN = 'Y'
-                 AND B.USER_ID = '${userId}'
+                 AND B.USER_ID = ?
             ORDER BY RAFFLE_STD_DATE ASC
         `;
 
-        const [rows] = await connection.query(sql);
+        const [rows] = await connection.query(sql, [userId]);
 
         connection.release();
         res.status(200).json(rows)
@@ -34,48 +33,40 @@ raffle.findAll = async (req, res) => {
     }
 }
 
+
 // 래플 등록
 raffle.submit = async (req, res) => {
     const connection = await mysql.getConnection(async conn => conn);
     
     try {
-        // await connection.beginTransaction();
+        await connection.beginTransaction();
 
         // 파라미터
         const { raffleId } = req.body;
         const { userId } = req.session;
 
         // 래플 정보 조회
-        let sql = `SELECT * FROM RAFFLE WHERE RAFFLE_ID = ${raffleId}`;
-        let [rows] = await connection.query(sql);
+        let sql = `SELECT * FROM RAFFLE WHERE RAFFLE_ID = ?`;
+        let [rows] = await connection.query(sql, [raffleId]);
         const rafflePoint = rows[0].RAFFLE_POINT;
 
         // 포인트 잔액 조회
-        let ref = firebase.ref(`ID/${userId}`);
-        let data = {};
-        ref.on('value', (snapshot) =>{
-            data = snapshot.val();
+        let userPoint;
+        await pointModel.get(userId).then((resultData) => {
+            userPoint = resultData['총 획득 포인트'];
         })
-        const userPoint = data['총 획득 포인트']
-        if(userPoint - rafflePoint < 0 ) return res.status(200).json({'success': -1, 'msg': 'lack of points'});
+        const changePoint = userPoint - rafflePoint;
+        if(changePoint < 0) return res.status(500).json('잔여 포인트 부족');
 
         // 포인트 사용 내역 INSERT
 
-        // 포인트 감소
-        changePoint = userPoint - rafflePoint;
-        ref.update({'총 획득 포인트': changePoint})
-
-        // 래플 확률
+        
+        // 래플 신청 내역 INSERT
         const winRate = rows[0].WIN_RATE;
-        // 랜덤값 생성 (1~100)
         const ranNum = Math.floor((Math.random() * 99) +1)
         let winYn = 'N';
-        if(ranNum <= winRate) winYn = 'Y';
+        if(ranNum <= winRate) winYn = 'Y';       
 
-
-        
-
-        // 래플 신청 내역 INSERT
         sql = `
             INSERT INTO RAFFLE_APC_LIST
             (
@@ -84,25 +75,26 @@ raffle.submit = async (req, res) => {
                 , RAFFLE_APC_DATE
                 , WIN_YN
             )VALUES(
-                ${raffleId}
-                , ${userId}
+                ?
+                , ?
                 , NOW()
-                , '${winYn}'
+                , ?
             )
         `;
-        [rows] = await connection.query(sql);
-        // await connection.commit();
+        [rows] = await connection.query(sql, [raffleId, userId, winYn]);
         
-        connection.release();
-        res.status(200).json({'success': 1, 'point': changePoint});
+        // 포인트 감소
+        await pointModel.update(userId, changePoint);
         
+        await connection.commit(); // 커밋
+
+        return res.status(200).json({'point': changePoint, 'winYn': winYn});
     } catch (error) {
-        await connection.rollback();
-        connection.release();
         console.log(error);
-        res.status(500).json(error)
+        await connection.rollback(); // 롤백
+        return res.status(500).json(error)
     } finally {
-        connection.release();
+        connection.release(); // connection 회수
     }
 }
 

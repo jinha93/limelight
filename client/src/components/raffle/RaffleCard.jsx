@@ -98,6 +98,7 @@ function RaffleCard(props) {
                         winYn={props.winYn}
                         ended={isEnded(props)}
                         getRaffle={props.getRaffle}
+                        setIsAlert={props.setIsAlert}
                     />
                 </div>
 
