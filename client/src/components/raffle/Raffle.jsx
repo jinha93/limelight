@@ -6,8 +6,7 @@ import Alert from '../common/Alert';
 
 
 function Raffle() {
-    // scroll to top
-    window.scrollTo(0,0);
+    
 
     // alert
     const [isAlert, setIsAlert] = useState(false);
@@ -30,7 +29,8 @@ function Raffle() {
                     winMaxCnt: rowData.WIN_MAX_CNT,
                     winRate: rowData.WIN_RATE,
                     winYn: rowData.WIN_YN,
-                    winCnt: rowData.WIN_CNT
+                    winCnt: rowData.WIN_CNT,
+                    wallet: rowData.WALLET
                 })
             )
             //초기 값 세팅
@@ -40,23 +40,28 @@ function Raffle() {
             if(error.response.status == 401){
                 // alert 활성화
                 setIsAlert(true);
-
-                // 3초 후 로그인페이지 이동
-                setTimeout(() => {
-                    window.location.href = error.response.data.loginUrl
-                }, 3000);
             }
             console.log(error);
         })
     }
     
     useEffect(() => {
+        // scroll to top
+        window.scrollTo(0,0);
+        
         getRaffle();
     }, [])
 
+    let discordUrl = '';
+    if (process.env.NODE_ENV === 'development') {
+        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2Flocalhost:3001%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
+    } else {
+        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=https%3A%2F%2Flimelight.town%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
+    }
+    
     return (
         <>
-            {isAlert ? <Alert type={'danger'} text={'You can use it after logging in.\nGo to the login page.'}/> : null}
+            {isAlert ? <Alert type={'danger'} text={<span>You can use it after logging in. <a href={discordUrl} className="underline">Go to the login page.</a></span>}/> : null}
             <div className='bg min-h-screen'>
                 <div className="mx-auto w-3/4 pt-32 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 text-center">
                     {inputData.map((rowData) => (
@@ -75,6 +80,7 @@ function Raffle() {
                                 winCnt={rowData.winCnt}
                                 getRaffle={getRaffle}
                                 setIsAlert={setIsAlert}
+                                wallet={rowData.wallet}
                             />
                     ))}
                 </div>

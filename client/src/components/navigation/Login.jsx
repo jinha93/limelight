@@ -62,7 +62,7 @@ function Login() {
                                 #{userData.discriminator}
                             </p>
                             {
-                                userData.point && 
+                                userData.point != undefined && 
                                 <p className='text-xs'>{userData.point}P</p>
                             }
                         </div>

@@ -1,17 +1,39 @@
+const mysql = require("../config/mysql");
 const middleware = {};
 
 middleware.authChecker = async function(req, res, next){
     if(req.session.isLogin){
         next();
     }else{
-        let discordUrl = '';
-        if (process.env.NODE_ENV === 'development') {
-            discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2Flocalhost:3001%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
-        } else {
-            discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=https%3A%2F%2Flimelight.town%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
-        }
-        res.status(401).json({msg: 'auth error', loginUrl: discordUrl})
+        res.status(401).json('auth error');
     }
 }
 
+middleware.userWalletChecker = async function(req, res, next){
+
+    const connection = await mysql.getConnection(async conn => conn);
+    let wallet = '';
+    try {
+        const userId = req.session.userId;
+        const sql = `
+            SELECT A.USER_ID
+                 , A.WALLET
+              FROM USER_INF A
+             WHERE USER_ID = ?
+        `;
+        [rows] = await connection.query(sql, [userId]);
+        wallet=rows[0].wallet;
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    } finally {
+        connection.release();
+    }
+
+    if(wallet == '' || wallet == 'undefined'){
+        res.status(400).json(error)
+    }else{
+        next();
+    }
+}
 module.exports = middleware;
