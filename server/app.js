@@ -33,12 +33,14 @@ const testRouter = require("./router/testRouter");
 const pointRouter = require("./router/pointRouter");
 const authRouter = require("./router/authRouter");
 const raffleRouter = require("./router/raffleRouter");
+const myPageRouter = require("./router/myPageRouter");
 
 // Router 주소 지정
 app.use('/api/test', testRouter);
 app.use('/api/point', pointRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/raffle', raffleRouter);
+app.use('/api/myPage', myPageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
