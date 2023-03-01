@@ -9,7 +9,9 @@ raffle.findAll = async (req, res) => {
     try {
         const userId = req.session.userId;
         const sql = `
-            SELECT A.*, COALESCE(B.WIN_YN, 'N') AS WIN_YN
+            SELECT A.*
+                 , COALESCE(B.WIN_YN, 'N') AS WIN_YN
+                 , B.WALLET
                  , (SELECT COUNT(*) FROM RAFFLE_APC_LIST WHERE WIN_YN = 'Y' AND RAFFLE_ID = A.RAFFLE_ID) AS WIN_CNT
             FROM RAFFLE A
                  LEFT OUTER JOIN RAFFLE_APC_LIST B 
@@ -49,6 +51,7 @@ raffle.submit = async (req, res) => {
         let sql = `SELECT * FROM RAFFLE WHERE RAFFLE_ID = ?`;
         let [rows] = await connection.query(sql, [raffleId]);
         const rafflePoint = rows[0].RAFFLE_POINT;
+        const raffleName = rows[0].RAFFLE_NAME;
 
         // 포인트 잔액 조회
         let userPoint;
@@ -59,7 +62,23 @@ raffle.submit = async (req, res) => {
         if(changePoint < 0) return res.status(500).json('잔여 포인트 부족');
 
         // 포인트 사용 내역 INSERT
-
+        const usePoint = rafflePoint*-1;
+        const useCts =`'${raffleName}' RAFFLE SUBMIT`
+        sql = `
+            INSERT INTO USE_POINT_HISTORY
+            (
+                USER_ID
+                , USE_DATE
+                , USE_POINT
+                , USE_CTS
+            )VALUES(
+                ?
+                , NOW()
+                , ?
+                , ?
+            )
+        `;
+        await connection.query(sql, [userId, usePoint, useCts]);
         
         // 래플 신청 내역 INSERT
         const winRate = rows[0].WIN_RATE;
@@ -74,14 +93,16 @@ raffle.submit = async (req, res) => {
                 , USER_ID
                 , RAFFLE_APC_DATE
                 , WIN_YN
+                , WALLET
             )VALUES(
                 ?
                 , ?
                 , NOW()
                 , ?
+                , (SELECT WALLET FROM USER_INF WHERE USER_ID = ?)
             )
         `;
-        [rows] = await connection.query(sql, [raffleId, userId, winYn]);
+        await connection.query(sql, [raffleId, userId, winYn, userId]);
         
         // 포인트 감소
         await pointModel.update(userId, changePoint);

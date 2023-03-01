@@ -64,7 +64,7 @@ auth.signIn = async function(req, res) {
             req.session.userName = userData.username;
             req.session.discriminator = userData.discriminator;
             if(userData.avatar) req.session.userAvatar = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}`;
-            req.session.point = data['총 획득 포인트']
+            req.session.point = data['총 획득 포인트'];
 
 		} catch (error) {
             console.log(error);

@@ -25,12 +25,21 @@ const menus = [
         name: 'RANK',
         href: '/rank',
         spaYn: 'N'
+<<<<<<< HEAD
     },   
     // {
     //     name: 'RAFFLE',
     //     href: '/raffle',
     //     spaYn: 'N'
     // }
+=======
+    },
+    {
+        name: 'RAFFLE',
+        href: '/raffle',
+        spaYn: 'N'
+    }
+>>>>>>> 293eef475eeab5e2b1e3d5f4a511fc844e887dd4
 ]
 
 

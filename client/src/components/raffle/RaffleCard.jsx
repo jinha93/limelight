@@ -76,29 +76,31 @@ function RaffleCard(props) {
             <div className="p-6">
                 <div className="bg-[#f3eee9] rounded-lg mb-3 pt-2 pb-1">
                     <h5 className="text-xl font-medium">{props.raffleName}</h5>
-                    <p className="NanumBold text-lg text-gray-600">{props.winMaxCnt} winners ({props.winMaxCnt - props.winCnt} left)</p>
+                    <p className="NanumBold text-lg text-[#736357]">{props.winMaxCnt} winners ({props.winMaxCnt - props.winCnt} left)</p>
                 </div>
 
                 <div className="px-4">
                     <div className="flex items-center">
                         <img src={point} className="h-6 mr-1" alt="" />
-                        <p className="text-gray-500"><span className="text-lg text-[#534741]">{props.rafflePoint} points</span> required</p>
+                        <p className="text-[#736357]"><span className="text-lg text-[#534741]">{props.rafflePoint} points</span> required</p>
                     </div>
                     <div className="flex items-center">
                         <img src={question} className="h-6 mr-1" alt="" />
-                        <p className="text-gray-500">a <span className="text-lg text-[#534741]">{props.winRate} chance</span> of winning</p>
+                        <p className="text-[#736357]">a <span className="text-lg text-[#534741]">{props.winRate} chance</span> of winning</p>
                     </div>
                     <div className="flex items-center">
                         <img src={clock} className="h-6 mr-1" alt="" />
-                        <p className="text-gray-500">Ends in <span className="text-lg text-[#534741]">{TimeLeft(props.raffleEndDate)}</span></p>
+                        <p className="text-[#736357]">Ends in <span className="text-lg text-[#534741]">{TimeLeft(props.raffleEndDate)}</span></p>
                     </div>
 
                     <RegisterBtn
                         raffleId={props.raffleId}
+                        rafflePoint={props.rafflePoint}
                         winYn={props.winYn}
                         ended={isEnded(props)}
                         getRaffle={props.getRaffle}
                         setIsAlert={props.setIsAlert}
+                        wallet={props.wallet}
                     />
                 </div>
 

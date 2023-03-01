@@ -1,16 +1,12 @@
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
-import userSlice, { setPoint } from '../../reducers/userSlice'
+import { setPoint } from '../../reducers/userSlice'
 import { conteffi } from "../../App";
-import Spinner from '../common/Spinner';
 import { useState } from 'react';
-import common from "../common/Common";
-import Alert from '../common/Alert';
+import Scratch from './Scratch';
+import Toast from '../common/Toast'
 
 function RegistBtn(props) {
-
-    // 로딩
-    const [isLoading, setIsLoading] = useState(false);
 
     // 로그인정보
     const user = useSelector(state => state.user.value);
@@ -29,8 +25,22 @@ function RegistBtn(props) {
         });
     };
 
-    const submit = (raffleId) => {
-        setIsLoading(true);
+    // 복권
+    const [isScratch, setIsScratch] = useState(false);
+    const [winYn, isWinYn] = useState('');
+    // Toast
+    const [isToast, setIsToast] = useState(false);
+    const fnClose = () => {
+        setIsToast(false)
+    }
+
+    const submitRaffle = (raffleId) => {
+        if(user.userData.point == undefined || user.userData.point - props.rafflePoint < 0){
+            setIsToast(true);
+            return false;
+        } 
+
+        setIsScratch(true);
         axios({
             url: '/api/raffle/submit',
             method: "POST",
@@ -39,42 +49,58 @@ function RegistBtn(props) {
             },
             dataType: 'json',
         }).then((result) => {
+            // reducer 포인트 업데이트
+            dispatch(setPoint(result.data.point))
 
-            setTimeout(() => {
-                // reducer 포인트 업데이트
-                dispatch(setPoint(result.data.point))
+            // 래플 정보 재랜더링
+            // props.getRaffle();
 
-                // 래플 정보 재랜더링
-                props.getRaffle();
-
-                // 결과가 당첨일 경우 효과
-                if(result.data.winYn === 'Y') Congratulation();
-
-                // 로딩 효과 활성화
-                setIsLoading(false);
-            }, 1000);
+            // 결과 저장
+            isWinYn(result.data.winYn);
 
         }).catch((error) => {
             // 로딩 효과 비활성화
-            setIsLoading(false);
+            setIsScratch(false);
 
             // 로그인 세션 에러
-            if(error.response.status == 401){
+            if (error.response.status == 401) {
                 // alert 활성화
                 props.setIsAlert(true);
+            }
 
-                // 3초 후 로그인페이지 이동
-                setTimeout(() => {
-                    window.location.href = error.response.data.loginUrl
-                }, 2000);
-            } 
+            // 등록된 지갑 없음
+            if (error.response.status == 400) {
+                alert('Wallet registration is required.\nPlease register your wallet on My Page.')
+                window.location.href = '';
+            }
+
             console.log(error);
         })
     }
-
+    
     return (
         <>
-            {isLoading ? <Spinner /> : null}
+            {/* 포인트 부족 Toast */}
+            {
+                isToast 
+                    ? 
+                        <Toast type={'danger'} text={'Not enough points.'} fnClose={fnClose}></Toast>
+                    : 
+                        null
+            }
+            
+            {/* 로딩 */}
+            {
+                isScratch 
+                    ? 
+                        <Scratch 
+                            winYn={winYn}
+                            setIsScratch={() => setIsScratch(false)}
+                            getRaffle={props.getRaffle}
+                        /> 
+                    : 
+                        null
+            }
             {
                 //로그인여부
                 user.isLogin
@@ -84,18 +110,25 @@ function RegistBtn(props) {
                         ?
                         <button
                             type="button"
-                            className="w-full inline-block mt-3 px-6 py-2 bg-gray-500 text-white leading-tight rounded-full shadow-md hover:bg-gray-700 hover:shadow-lg"
-                            onClick={() => Congratulation()}
+                            className="w-full inline-block mt-3 px-6 py-2 bg-[#be86ea] text-white leading-tight rounded-full shadow-md hover:bg-purple-500 hover:shadow-lg"
+                            onClick={() => {Congratulation();}}
                         >
-                            Congratulation!
+                            Congratulation
                         </button>
+                        // <button
+                        //     type="button"
+                        //     className="w-full inline-block mt-3 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l text-white leading-tight rounded-full shadow-md "
+                        //     onClick={() => {Congratulation();}}
+                        // >
+                        //     Congratulation
+                        // </button>
                         :
                         //종료여부
                         props.ended
                             ?
                             <button
                                 type="button"
-                                className="w-full inline-block mt-3 px-6 py-2 bg-gray-600 opacity-60 text-white leading-tight rounded-full shadow-md cursor-not-allowed"
+                                className="w-full inline-block mt-3 px-6 py-2 bg-[#bcaeaa] opacity-60 text-white leading-tight rounded-full shadow-md cursor-not-allowed"
                                 disabled={true}
                             >
                                 Ended
@@ -104,7 +137,7 @@ function RegistBtn(props) {
                             <button
                                 type="button"
                                 className="w-full inline-block mt-3 px-6 py-2 bg-[#1B7EEA] text-white leading-tight rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg"
-                                onClick={() => submit(`${props.raffleId}`)}
+                                onClick={() => submitRaffle(`${props.raffleId}`)}
                             >
                                 Register
                             </button>
@@ -113,7 +146,7 @@ function RegistBtn(props) {
                         ?
                         <button
                             type="button"
-                            className="w-full inline-block mt-3 px-6 py-2 bg-gray-600 opacity-60 text-white leading-tight rounded-full shadow-md cursor-not-allowed"
+                            className="w-full inline-block mt-3 px-6 py-2 bg-[#bcaeaa] opacity-60 text-white leading-tight rounded-full shadow-md cursor-not-allowed"
                             disabled={true}
                         >
                             Ended
