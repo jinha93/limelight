@@ -58,13 +58,14 @@ function Login() {
             {
                 isLogin
                     ?
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 cursor-pointer'>
                         <img 
                             className='object-cover h-10 rounded-full'
                             src={userData.userAvatar ? userData.userAvatar : limemon}
                             alt="userAvatar"
+                            onClick={() => myPage()}
                         />
-                        <div onClick={() => myPage()}>
+                        <div className='cursor-pointer' onClick={() => myPage()}>
                             <p className='text-sm'>
                                 {userData.userName}
                                 #{userData.discriminator}
