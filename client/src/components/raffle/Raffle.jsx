@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import RaffleCard from "./RaffleCard";
-import common from "../common/Common";
 import Alert from '../common/Alert';
 
 
@@ -37,7 +36,7 @@ function Raffle() {
             setInputData(_inputData)
         }).catch((error) => {
             // 로그인 세션 에러
-            if(error.response.status == 401){
+            if(error.response.status === 401){
                 // alert 활성화
                 setIsAlert(true);
             }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import limemon from "../../assets/images/limemon.jpg";
 import Pagination from "../common/Pagination";

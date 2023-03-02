@@ -35,7 +35,7 @@ function RegistBtn(props) {
     }
 
     const submitRaffle = (raffleId) => {
-        if(user.userData.point == undefined || user.userData.point - props.rafflePoint < 0){
+        if(user.userData.point === undefined || user.userData.point - props.rafflePoint < 0){
             setIsToast(true);
             return false;
         } 
@@ -63,13 +63,13 @@ function RegistBtn(props) {
             setIsScratch(false);
 
             // 로그인 세션 에러
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 // alert 활성화
                 props.setIsAlert(true);
             }
 
             // 등록된 지갑 없음
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 alert('Wallet registration is required.\nPlease register your wallet on My Page.')
                 window.location.href = '';
             }

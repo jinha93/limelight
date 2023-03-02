@@ -1,6 +1,6 @@
 import './App.css';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import NotFound from './components/common/NotFound';
 import Navigation from './components/navigation/Navigation';
