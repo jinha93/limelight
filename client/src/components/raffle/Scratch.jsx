@@ -104,7 +104,7 @@ export default function Scratch(props) {
             filledInPixels = filledInPixels || 0;
             if (filledInPixels > 98) {
                 if(canvas != null) canvas.parentNode.removeChild(canvas);
-                if(props.winYn == 'Y') Congratulation();
+                if(props.winYn === 'Y') Congratulation();
                 isScratch(true);
                 props.getRaffle();
             }
@@ -164,7 +164,7 @@ export default function Scratch(props) {
         filledInPixels = filledInPixels || 0;
         if (filledInPixels > 98) {
             if(canvas != null) canvas.parentNode.removeChild(canvas);
-            if(props.winYn == 'Y') Congratulation();
+            if(props.winYn === 'Y') Congratulation();
             isScratch(true);
             props.getRaffle();
         }
@@ -191,7 +191,7 @@ export default function Scratch(props) {
                 <div className="relative">
                     {/*content*/}
                     <canvas className="canvas absolute top-0" id="js-canvas"></canvas>
-                    <img className="form visibility w-[375px] h-[291px] sm:w-[600px] sm:h-[466px] md:w-[800px] md:h-[621px]" id="js-img" src={imgSrc}/>
+                    <img className="form visibility w-[375px] h-[291px] sm:w-[600px] sm:h-[466px] md:w-[800px] md:h-[621px]" id="js-img" src={imgSrc} alt="scratch"/>
                     <div className="relative mt-[-8%]">
                         
                         <button 
@@ -199,7 +199,7 @@ export default function Scratch(props) {
                             className="mx-3"
                             onClick={() => handlePercentage(100)}
                         >
-                            <img src={Auto} className="h-14 hover:scale-110"/>
+                            <img src={Auto} className="h-14 hover:scale-110" alt="Auto"/>
                         </button>
                         
                         {
@@ -210,7 +210,7 @@ export default function Scratch(props) {
                                     className="mx-3"
                                     onClick={props.setIsScratch}
                                 >
-                                    <img src={Close} className="h-14 hover:scale-110"/>
+                                    <img src={Close} className="h-14 hover:scale-110" alt="Close"/>
                                 </button>
                             : 
                                 <button 
@@ -218,7 +218,7 @@ export default function Scratch(props) {
                                     className="mx-3"
                                     onClick={() => setIsToast(true)}
                                 >
-                                    <img src={Close} className="h-14 hover:scale-110"/>
+                                    <img src={Close} className="h-14 hover:scale-110" alt="Close"/>
                                 </button>
                         }
                     </div>

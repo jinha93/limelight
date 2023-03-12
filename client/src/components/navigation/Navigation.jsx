@@ -55,7 +55,7 @@ function Navigation() {
     return (
         <nav className="fixed w-full items-center py-5 z-20">
             <div className="mx-auto rounded-2xl w-3/4 p-5 h-20 bg-white shadow flex items-center justify-between">
-                {isSpa == true
+                {isSpa === true
                 ?
                 <a href='/#'>
                     <span className="text-xl cursor-pointer">
@@ -74,9 +74,9 @@ function Navigation() {
 
                 <ul className="hidden lg:flex items-center">
                     {menus.map((menu, idx) => (
-                        isSpa == true
+                        isSpa === true
                         ?
-                            menu.spaYn == 'Y'
+                            menu.spaYn === 'Y'
                             ?
                             <a 
                                 key={idx}
@@ -95,7 +95,7 @@ function Navigation() {
                                 {menu.name}
                             </NavLink>
                         :
-                            menu.spaYn == 'Y'
+                            menu.spaYn === 'Y'
                             ?
                             <NavLink
                                 key={idx}
@@ -122,9 +122,9 @@ function Navigation() {
                         <div className="absolute right-0 w-56 mt-4 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg p-2" onClick={()=>toggleMenu()}>
                             <div>
                             {menus.map((menu, idx) => (
-                                isSpa == true
+                                isSpa === true
                                 ?
-                                    menu.spaYn == 'Y'
+                                    menu.spaYn === 'Y'
                                     ?
                                     <a 
                                         key={idx}
@@ -143,7 +143,7 @@ function Navigation() {
                                         {menu.name}
                                     </NavLink>
                                 :
-                                    menu.spaYn == 'Y'
+                                    menu.spaYn === 'Y'
                                     ?
                                     <NavLink
                                         key={idx}
