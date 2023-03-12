@@ -14,12 +14,15 @@ const leftPad = (value) => {
 }
 
 const TimeLeft = (endDateVal) => {
-    endDateVal = endDateVal.replaceAll('-','').substr(0,8);
+    endDateVal = endDateVal.replaceAll('-','').replaceAll(' ','').replaceAll(':','')
     const yyyy = endDateVal.substr(0, 4);
     const mm = endDateVal.substr(4, 2);
     const dd = endDateVal.substr(6, 2);
+    const hour = endDateVal.substr(8, 2);
+    const min = endDateVal.substr(10, 2);
+    const sec = endDateVal.substr(12, 2);
 
-    const endDate = new Date(Date.UTC(yyyy,mm-1,dd));
+    const endDate = new Date(Date.UTC(yyyy,mm-1,dd,hour,min,sec));
     const [diff, setDiff] = useState(endDate - new Date());
 
     useEffect(() => {
@@ -47,12 +50,15 @@ const TimeLeft = (endDateVal) => {
 
 const isEnded = (props) =>{
     //현재일자와 종료일자 비교
-    const endDateVal = props.raffleEndDate.replaceAll('-','').substr(0,8);
+    const endDateVal = props.raffleEndDate.replaceAll('-','').replaceAll(' ','').replaceAll(':','');
     const yyyy = endDateVal.substr(0, 4);
     const mm = endDateVal.substr(4, 2);
     const dd = endDateVal.substr(6, 2);
+    const hour = endDateVal.substr(8, 2);
+    const min = endDateVal.substr(10, 2);
+    const sec = endDateVal.substr(12, 2);
 
-    const endDate = new Date(Date.UTC(yyyy,mm-1,dd));
+    const endDate = new Date(Date.UTC(yyyy,mm-1,dd,hour,min,sec));
     
     const diff = endDate - new Date();
 
@@ -86,7 +92,7 @@ function RaffleCard(props) {
                     </div>
                     <div className="flex items-center">
                         <img src={question} className="h-6 mr-1" alt="" />
-                        <p className="text-[#736357]">a <span className="text-lg text-[#534741]">{props.winRate} chance</span> of winning</p>
+                        <p className="text-[#736357]">a <span className="text-lg text-[#534741]">{props.winRate}% chance</span> of winning</p>
                     </div>
                     <div className="flex items-center">
                         <img src={clock} className="h-6 mr-1" alt="" />
@@ -95,12 +101,12 @@ function RaffleCard(props) {
 
                     <RegisterBtn
                         raffleId={props.raffleId}
+                        raffleName={props.raffleName}
                         rafflePoint={props.rafflePoint}
                         winYn={props.winYn}
                         ended={isEnded(props)}
                         getRaffle={props.getRaffle}
                         setIsAlert={props.setIsAlert}
-                        wallet={props.wallet}
                     />
                 </div>
 

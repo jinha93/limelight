@@ -9,6 +9,7 @@ import About from './components/about/About';
 import Team from './components/team/Team';
 import Rank from './components/rank/Rank';
 import Raffle from './components/raffle/Raffle';
+import AddRaffle from './components/raffle/AddRaffle';
 import MyPage from './components/myPage/MyPage'
 import { Fragment } from 'react';
 
@@ -30,7 +31,8 @@ function App() {
             </Fragment>
           } />
         <Route path='/rank' element={<Rank />} />
-        <Route path='/raffle' element={<Raffle />} />
+        <Route path='/raffleTestRex' element={<Raffle />} />
+        <Route path='/addRaffle' element={<AddRaffle />} />
         <Route path='/myPage' element={<MyPage />} />
         <Route path='/*' element={<NotFound />} />
       </Routes>

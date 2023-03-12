@@ -5,3 +5,6 @@ node_modules/
 .env
 server/config/serviceAccountKey.json
 server/config/serviceAccountKey-dev.json
+
+# 래플 이미지
+client/src/assets/images/raffle

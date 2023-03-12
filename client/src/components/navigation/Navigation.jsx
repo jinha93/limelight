@@ -26,11 +26,11 @@ const menus = [
         href: '/rank',
         spaYn: 'N'
     },
-    {
-        name: 'RAFFLE',
-        href: '/raffle',
-        spaYn: 'N'
-    }
+    // {
+    //     name: 'RAFFLE',
+    //     href: '/raffle',
+    //     spaYn: 'N'
+    // }
 ]
 
 

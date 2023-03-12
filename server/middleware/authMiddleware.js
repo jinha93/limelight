@@ -9,10 +9,20 @@ middleware.authChecker = async function(req, res, next){
     }
 }
 
+middleware.adminCheck = async function(req, res, next){
+    const adminDiscordId = process.env.ADMIN_DISCORD_ID.split(',');
+    const userId = req.session.userId;
+    if(adminDiscordId.includes(userId)){
+        next();
+    }else{
+        res.status(403).json('admin check error');
+    }
+}
+
 middleware.userWalletChecker = async function(req, res, next){
 
     const connection = await mysql.getConnection(async conn => conn);
-    let wallet = '';
+    let rows = [];
     try {
         const userId = req.session.userId;
         const sql = `
@@ -21,19 +31,19 @@ middleware.userWalletChecker = async function(req, res, next){
               FROM USER_INF A
              WHERE USER_ID = ?
         `;
-        [rows] = await connection.query(sql, [userId]);
-        wallet=rows[0].wallet;
+        rows = await connection.query(sql, [userId]);
     } catch (error) {
         console.log(error);
         res.status(500).json(error)
     } finally {
         connection.release();
     }
-
-    if(wallet == '' || wallet == 'undefined'){
-        res.status(400).json(error)
-    }else{
+    
+    if(rows[0].length > 0){
         next();
+        
+    }else{
+        res.status(400).json('tt')
     }
 }
 module.exports = middleware;

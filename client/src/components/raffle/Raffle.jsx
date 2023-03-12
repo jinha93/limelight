@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import RaffleCard from "./RaffleCard";
-import common from "../common/Common";
 import Alert from '../common/Alert';
+import { useSelector } from 'react-redux'
 
 
 function Raffle() {
-    
-
     // alert
     const [isAlert, setIsAlert] = useState(false);
 
@@ -29,8 +27,7 @@ function Raffle() {
                     winMaxCnt: rowData.WIN_MAX_CNT,
                     winRate: rowData.WIN_RATE,
                     winYn: rowData.WIN_YN,
-                    winCnt: rowData.WIN_CNT,
-                    wallet: rowData.WALLET
+                    winCnt: rowData.WIN_CNT
                 })
             )
             //초기 값 세팅
@@ -48,9 +45,14 @@ function Raffle() {
     useEffect(() => {
         // scroll to top
         window.scrollTo(0,0);
+
+        
         
         getRaffle();
     }, [])
+
+    // 로그인정보
+    const user = useSelector(state => state.user.value);
 
     let discordUrl = '';
     if (process.env.NODE_ENV === 'development') {
@@ -58,12 +60,24 @@ function Raffle() {
     } else {
         discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=https%3A%2F%2Flimelight.town%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
     }
-    
+
     return (
         <>
             {isAlert ? <Alert type={'danger'} text={<span>You can use it after logging in. <a href={discordUrl} className="underline">Go to the login page.</a></span>}/> : null}
-            <div className='bg min-h-screen'>
-                <div className="mx-auto w-3/4 pt-32 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 text-center">
+            <div className='bg min-h-screen pt-32'>
+                {user.userData.admin === true
+                    ? 
+                    <div className="mx-auto w-3/4">
+                        <a 
+                            href="/addRaffle"
+                            className="inline-block px-6 py-3 bg-[#be86ea] text-white leading-tight rounded-full shadow-md hover:bg-purple-500 hover:shadow-lg cursor-pointer"
+                        >
+                            🛠️ NEW RAFFLE
+                        </a>
+                    </div>
+                    : null
+                }
+                <div className="mx-auto w-3/4 pt-5 32 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 text-center">
                     {inputData.map((rowData) => (
                         rowData.raffleId !== undefined &&
                             <RaffleCard
@@ -80,7 +94,6 @@ function Raffle() {
                                 winCnt={rowData.winCnt}
                                 getRaffle={getRaffle}
                                 setIsAlert={setIsAlert}
-                                wallet={rowData.wallet}
                             />
                     ))}
                 </div>

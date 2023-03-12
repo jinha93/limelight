@@ -32,4 +32,64 @@ myPage.getUserUseHisList = async (req, res) => {
   }
 };
 
+// 유저 정보 조회
+myPage.getUserInfo = async (req, res) => {
+  const connection = await mysql.getConnection(async conn => conn);
+
+  try {
+    const userId = req.session.userId;
+    const sql = `
+                  SELECT 
+                      A.USER_ID 
+                      , A.WALLET
+                      , A.DISCORD_HANDLE
+                  FROM USER_INF A
+                  WHERE A.USER_ID = ?
+                  `;
+    const [rows] = await connection.query(sql, [userId]);
+
+    connection.release();
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    connection.release();
+    console.log(error);
+    res.status(500).json(error);
+  } finally {
+    connection.release();
+  }
+};
+
+// 유저 정보 등록
+myPage.userInfoRegister = async (req, res) => {
+  const connection = await mysql.getConnection(async conn => conn);
+
+  try {
+    const userId = req.session.userId;
+    const { wallet, discordHandle } = req.body;
+    const sql = `
+      INSERT INTO USER_INF
+      (
+          USER_ID
+          , WALLET
+          , DISCORD_HANDLE
+      )VALUES(
+          ?
+          , ?
+          , ?
+      )
+  `;
+    await connection.query(sql, [userId, wallet, discordHandle]);
+
+    await connection.commit(); // 커밋
+
+    return res.status(200).json('USER INFO REGISTER SUCCESS');
+  } catch (error) {
+    console.log(error);
+    await connection.rollback(); // 롤백
+    return res.status(500).json(error)
+  } finally {
+    connection.release(); // connection 회수
+  }
+};
+
 module.exports = myPage;

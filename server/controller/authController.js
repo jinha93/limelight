@@ -66,6 +66,10 @@ auth.signIn = async function(req, res) {
             if(userData.avatar) req.session.userAvatar = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}`;
             req.session.point = data['총 획득 포인트'];
 
+            // 어드민 여부
+            const adminDiscordId = process.env.ADMIN_DISCORD_ID.split(',');
+            req.session.admin = adminDiscordId.includes(userData.id);
+
 		} catch (error) {
             console.log(error);
 		}
