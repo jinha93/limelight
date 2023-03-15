@@ -11,7 +11,7 @@ const raffleController = require("../controller/raffleController");
 // 해당 폴더가 없을 경우 에러 발생.
 const storage = multer.diskStorage({
     destination: function (req, res, callback) {
-        callback(null, "../client/src/assets/images/raffle");
+        callback(null, "./upload/");
     },
     filename: function (req, file, cb) {
         const ext = path.extname(file.originalname);
