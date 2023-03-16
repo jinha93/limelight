@@ -1,13 +1,17 @@
 import axios from 'axios';
+import { useEffect, useState, useRef } from "react";
 import ImageUploadBox from "./ImageUploadBox";
 
 function AddRaffle() {
+
+    // 이미지파일
+    const [imgFile, setImgFile] = useState({files: []});
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        const file = e.target.raffleImg.files[0];
+        const file = imgFile[0];
         formData.append('image',file)
         formData.append('raffleName',e.target.raffleName.value)
         formData.append('raffleEndDate', e.target.raffleEndDate.value)
@@ -18,10 +22,6 @@ function AddRaffle() {
         if(file.size > 1024 * 1024 * 10){
             alert('이미지 크기는 10MB 이하만 가능합니다.')
             return false;
-        }
-
-        for(let key of formData.entries()){
-            console.log(`${key}`);
         }
 
         axios({
@@ -70,7 +70,7 @@ function AddRaffle() {
                             <form encType='multipart/form-data' onSubmit={handleSubmit}>
                                 <div className="shadow overflow-hidden rounded-xl">
                                     <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                                        <ImageUploadBox></ImageUploadBox>
+                                        <ImageUploadBox setImgFile={setImgFile}/>
 
                                         <div className="grid grid-cols-3 gap-6">
                                             <div className="col-span-3 sm:col-span-2">

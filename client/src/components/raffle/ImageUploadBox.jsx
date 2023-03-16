@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import ImagePreview from "./ImagePreview";
 
-function ImageUploadBox({ max = 1 }) {
+function ImageUploadBox({ max = 1, setImgFile }) {
     const [uploadedImages, setUploadedImages] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
     const uploadBoxRef = useRef();
@@ -26,9 +26,9 @@ function ImageUploadBox({ max = 1 }) {
         };
 
         const changeHandler = (event) => {
-            console.log('changeHandler')
             const files = event.target.files;
             handleFiles(files);
+            setImgFile(files);
         };
 
         const dropHandler = (event) => {
@@ -36,6 +36,7 @@ function ImageUploadBox({ max = 1 }) {
             event.stopPropagation();
             const files = event.dataTransfer.files;
             handleFiles(files);
+            setImgFile(files);
         };
 
         const dragOverHandler = (event) => {
