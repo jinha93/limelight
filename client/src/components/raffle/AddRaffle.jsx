@@ -19,6 +19,11 @@ function AddRaffle() {
         formData.append('winner',e.target.winner.value)
         formData.append('rate',e.target.rate.value)
 
+        if(file == undefined){
+            alert('이미지는 필수입니다.')
+            return false;
+        }
+
         if(file.size > 1024 * 1024 * 10){
             alert('이미지 크기는 10MB 이하만 가능합니다.')
             return false;

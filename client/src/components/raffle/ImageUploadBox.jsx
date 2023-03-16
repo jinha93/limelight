@@ -96,7 +96,7 @@ function ImageUploadBox({ max = 1, setImgFile }) {
                                 className="relative cursor-pointer rounded-md bg-white font-medium text-[#be86ea] focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                             >
                                 <span>Upload a file</span>
-                                <input id="raffleImg" name="raffleImg" type="file" accept="image/*" ref={inputRef} className="sr-only" required/>
+                                <input id="raffleImg" name="raffleImg" type="file" accept="image/*" ref={inputRef} className="sr-only"/>
                             </label>
                             <p className="pl-1">or drag and drop</p>
                         </div>
