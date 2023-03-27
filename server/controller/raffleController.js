@@ -72,8 +72,8 @@ raffle.submit = async (req, res) => {
             userPoint = resultData['총 획득 포인트'];
             usedPoint = resultData['사용 포인트'];
         })
-        const changePoint = userPoint - rafflePoint;
-        const changeUsedPoint = usedPoint + rafflePoint;
+        const changePoint = parseInt(userPoint) - parseInt(rafflePoint);
+        const changeUsedPoint = parseInt(usedPoint) + parseInt(rafflePoint);
         if (changePoint < 0) return res.status(500).json('Lack of remaining points');
 
         // 포인트 사용 내역 INSERT
