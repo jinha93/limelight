@@ -18,7 +18,7 @@ raffle.findAll = async (req, res) => {
                  ON A.RAFFLE_ID = B.RAFFLE_ID
                  AND B.WIN_YN = 'Y'
                  AND B.USER_ID = ?
-            ORDER BY RAFFLE_STD_DATE ASC
+            ORDER BY RAFFLE_END_DATE DESC
         `;
 
         const [rows] = await connection.query(sql, [userId]);
@@ -48,18 +48,33 @@ raffle.submit = async (req, res) => {
         const { userId } = req.session;
 
         // 래플 정보 조회
-        let sql = `SELECT * FROM RAFFLE WHERE RAFFLE_ID = ?`;
+        let sql = `SELECT A.RAFFLE_ID
+                        , A.RAFFLE_NAME
+                        , A.RAFFLE_STD_DATE
+                        , A.RAFFLE_END_DATE
+                        , A.RAFFLE_POINT
+                        , A.RAFFLE_IMG_SRC
+                        , A.WIN_MAX_CNT
+                        , A.WIN_RATE
+                        , A.WIN_MAX_CNT - (SELECT COUNT(*) FROM RAFFLE_APC_LIST B WHERE A.RAFFLE_ID = B.RAFFLE_ID AND B.WIN_YN = 'Y') AS LEFT_CNT
+                     FROM RAFFLE A
+                    WHERE A.RAFFLE_ID = ?`;
         let [rows] = await connection.query(sql, [raffleId]);
         const rafflePoint = rows[0].RAFFLE_POINT;
         const raffleName = rows[0].RAFFLE_NAME;
+        const leftCnt = rows[0].LEFT_CNT;
+        if (leftCnt < 1) return res.status(500).json('No seats left to win');
 
         // 포인트 잔액 조회
         let userPoint;
+        let usedPoint;
         await pointModel.get(userId).then((resultData) => {
             userPoint = resultData['총 획득 포인트'];
+            usedPoint = resultData['사용 포인트'];
         })
         const changePoint = userPoint - rafflePoint;
-        if (changePoint < 0) return res.status(500).json('잔여 포인트 부족');
+        const changeUsedPoint = usedPoint + rafflePoint;
+        if (changePoint < 0) return res.status(500).json('Lack of remaining points');
 
         // 포인트 사용 내역 INSERT
         const usePoint = rafflePoint * -1;
@@ -103,7 +118,7 @@ raffle.submit = async (req, res) => {
         await connection.query(sql, [raffleId, userId, winYn, userId]);
 
         // 포인트 감소
-        await pointModel.update(userId, changePoint);
+        await pointModel.update(userId, changePoint, changeUsedPoint);
 
         await connection.commit(); // 커밋
 

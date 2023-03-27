@@ -79,6 +79,8 @@ function RegistBtn(props) {
                 window.location.href = '/myPage';
             }
 
+            // alert('error! Contact your administrator.')
+            window.location.reload();
             console.log(error);
         })
     }

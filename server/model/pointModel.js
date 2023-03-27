@@ -61,11 +61,11 @@ point.get = async (userId) => {
     })
 }
 
-point.update = (userId, point) => {
+point.update = (userId, point, changeUsedPoint) => {
     return new Promise((resolve, reject) => {
         const ref = database.ref(`ID/${userId}`);
 
-        ref.update({'총 획득 포인트': point}, (error) => {
+        ref.update({'총 획득 포인트': point, '사용 포인트': changeUsedPoint}, (error) => {
             if(error){
                 reject(error)
             }else{
