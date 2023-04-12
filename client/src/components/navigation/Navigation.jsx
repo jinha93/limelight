@@ -27,7 +27,7 @@ const menus = [
         spaYn: 'N'
     },
     {
-        name: 'RAFFLE',
+        name: 'RAFFLE(Beta)',
         href: '/raffle',
         spaYn: 'N'
     }
