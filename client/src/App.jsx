@@ -31,7 +31,7 @@ function App() {
             </Fragment>
           } />
         <Route path='/rank' element={<Rank />} />
-        <Route path='/raffleTestRex' element={<Raffle />} />
+        <Route path='/raffle' element={<Raffle />} />
         <Route path='/addRaffle' element={<AddRaffle />} />
         <Route path='/myPage' element={<MyPage />} />
         <Route path='/*' element={<NotFound />} />
