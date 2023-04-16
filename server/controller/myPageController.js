@@ -27,8 +27,6 @@ myPage.getUserUseHisList = async (req, res) => {
     connection.release();
     console.log(error);
     res.status(500).json(error);
-  } finally {
-    connection.release();
   }
 };
 
@@ -54,8 +52,6 @@ myPage.getUserInfo = async (req, res) => {
     connection.release();
     console.log(error);
     res.status(500).json(error);
-  } finally {
-    connection.release();
   }
 };
 
@@ -87,8 +83,6 @@ myPage.userInfoRegister = async (req, res) => {
     console.log(error);
     await connection.rollback(); // 롤백
     return res.status(500).json(error)
-  } finally {
-    connection.release(); // connection 회수
   }
 };
 
