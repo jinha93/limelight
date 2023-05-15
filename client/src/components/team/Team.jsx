@@ -37,12 +37,12 @@ const teams = [
         twitter: 'https://twitter.com/parkjinha93',
         imageSrc: require('../../assets/images/team-rex.png'),
     },
-    {
-        name: 'neogulmon',
-        role: 'Moderator',
-        twitter: 'https://twitter.com/raccoon_mon',
-        imageSrc: require('../../assets/images/team-neogulmon.png'),
-    },
+    // {
+    //     name: 'neogulmon',
+    //     role: 'Moderator',
+    //     twitter: 'https://twitter.com/raccoon_mon',
+    //     imageSrc: require('../../assets/images/team-neogulmon.png'),
+    // },
     {
         name: 'Dolphin rice',
         role: 'Story Teller',
@@ -55,7 +55,7 @@ function Team(props) {
     return (
         <div className="mx-auto w-3/4 h-full text-center lg:grid lg:gap-5 lg:content-center pt-28 lg:pt-0">
             <h2 className="mx-auto text-5xl mb-5">Meet the Team</h2>
-            <div className="mx-auto grid grid-cols-2 md:grid-cols-4 content-center gap-5">
+            <div className="mx-auto grid grid-cols-2 md:grid-cols-3 content-center gap-5">
                 {teams.map((team) => (
                     <div key={team.name} className='mx-auto w-full lg:w-52 shadow-2xl border rounded-xl bg-white hover:scale-110'>
                         <img
