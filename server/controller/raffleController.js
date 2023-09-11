@@ -125,6 +125,8 @@ raffle.submit = async (req, res) => {
         console.log(error);
         await connection.rollback(); // 롤백
         return res.status(500).json(error)
+    } finally {
+        connection.release();
     }
 }
 
@@ -171,6 +173,8 @@ raffle.addRaffle = async (req, res) => {
         console.log(error);
         await connection.rollback(); // 롤백
         return res.status(500).json(error)
+    } finally {
+        connection.release();
     }
 }
 

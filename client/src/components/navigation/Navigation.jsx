@@ -27,8 +27,13 @@ const menus = [
         spaYn: 'N'
     },
     {
-        name: 'RAFFLE(Beta)',
+        name: 'RAFFLE',
         href: '/raffle',
+        spaYn: 'N'
+    },
+    {
+        name: 'LIMEMON',
+        href: '/limemon',
         spaYn: 'N'
     }
 ]

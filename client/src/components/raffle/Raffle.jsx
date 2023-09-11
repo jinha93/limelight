@@ -56,9 +56,9 @@ function Raffle() {
 
     let discordUrl = '';
     if (process.env.NODE_ENV === 'development') {
-        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=http%3A%2F%2Flocalhost:3001%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
+        discordUrl = process.env.REACT_APP_DEV_DISCORD_LOGIN_URL;
     } else {
-        discordUrl = 'https://discord.com/api/oauth2/authorize?client_id=1045203263592603692&redirect_uri=https%3A%2F%2Flimelight.town%2Fapi%2Fauth%2FsignIn&response_type=code&scope=identify';
+        discordUrl = process.env.REACT_APP_DISCORD_LOGIN_URL;
     }
 
     return (

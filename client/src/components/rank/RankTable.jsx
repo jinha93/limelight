@@ -20,7 +20,7 @@ function RankTable() {
         try {
             async function fetchData() {
                 const res = await axios.get('/api/point');
-                const _inputData = res.data.map((rowData) => (
+                const _inputData = res.data.result.map((rowData) => (
                     {
                         nickname: rowData['원래 닉네임'],
                         usePoint: rowData['사용 포인트'],

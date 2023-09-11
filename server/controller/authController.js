@@ -1,5 +1,6 @@
 const { request } = require('undici');
 const pointModel = require('../model/pointModel')
+const mysql = require("../config/mysql");
 
 const auth = {};
 
@@ -12,6 +13,8 @@ auth.session = async function(req, res) {
 }
 
 auth.signIn = async function(req, res) {
+    const connection = await mysql.getConnection(async conn => conn);
+    
     const code = req.query.code;
 
 	let redirectUri = '';
@@ -70,9 +73,29 @@ auth.signIn = async function(req, res) {
             const adminDiscordId = process.env.ADMIN_DISCORD_ID.split(',');
             req.session.admin = adminDiscordId.includes(userData.id);
 
+
+
+
+
+
+            // AccessToken DB저장
+            
+            await connection.beginTransaction();
+            const sql = `
+                update user_inf
+                set token_type = ?
+                    , access_token = ?
+                where user_id = ?
+            `;
+            await connection.query(sql, [tokenType,accessToken,userId]);
+            await connection.commit(); // 커밋
+
 		} catch (error) {
             console.log(error);
-		}
+            await connection.rollback(); // 롤백
+		} finally {
+            connection.release();
+        }
 	}
 	
 

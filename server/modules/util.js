@@ -1,10 +1,8 @@
 const utils = {
-    success: (message, data, data2) => {
+    success: (result) => {
         return {
             success: true,
-            message: message,
-            data: data,
-            data2: data2
+            result: result
         }
     }, 
 

@@ -19,12 +19,12 @@ const teams = [
         twitter: 'https://twitter.com/shsl1513',
         imageSrc: require('../../assets/images/team-blackcow.png'),
     },
-    {
-        name: 'PDDprof',
-        role: 'Designer',
-        twitter: 'https://twitter.com/pddprof',
-        imageSrc: require('../../assets/images/team-pddprof.png'),
-    },
+    // {
+    //     name: 'PDDprof',
+    //     role: 'Designer',
+    //     twitter: 'https://twitter.com/pddprof',
+    //     imageSrc: require('../../assets/images/team-pddprof.png'),
+    // },
     // {
     //     name: 'POGO',
     //     role: 'Designer',
@@ -35,7 +35,7 @@ const teams = [
         name: 'REX',
         role: 'Developer',
         twitter: 'https://twitter.com/parkjinha93',
-        imageSrc: require('../../assets/images/team-rex.png'),
+        imageSrc: require('../../assets/images/team-rex2.png'),
     },
     // {
     //     name: 'neogulmon',
@@ -47,7 +47,7 @@ const teams = [
         name: 'Dolphin rice',
         role: 'Story Teller',
         twitter: 'https://twitter.com/goraegabab',
-        imageSrc: require('../../assets/images/team-dolphinrice.png'),
+        imageSrc: require('../../assets/images/team-dolphinrice2.png'),
     },
 ]
 

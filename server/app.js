@@ -5,6 +5,15 @@ const createError = require('http-errors');
 const session = require('express-session');
 // const bodyParser = require('body-parser');
 
+// index.js에 있는 db.sequelize 객체 모듈을 구조분해로 불러온다.
+const { sequelize } = require('./models');
+sequelize.sync({ force: false })
+   .then(() => {
+      console.log('데이터베이스 연결됨.');
+   }).catch((err) => {
+      console.error(err);
+   });
+
 const app = express();
 
 //env
@@ -35,6 +44,7 @@ const authRouter = require("./router/authRouter");
 const raffleRouter = require("./router/raffleRouter");
 const myPageRouter = require("./router/myPageRouter");
 const imgRouter = require("./router/imgRouter");
+const questRouter = require("./router/questRouter");
 
 // Router 주소 지정
 app.use('/api/test', testRouter);
@@ -43,6 +53,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/raffle', raffleRouter);
 app.use('/api/myPage', myPageRouter);
 app.use('/api/img', imgRouter);
+app.use('/api/quest', questRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
