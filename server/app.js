@@ -45,6 +45,7 @@ const raffleRouter = require("./router/raffleRouter");
 const myPageRouter = require("./router/myPageRouter");
 const imgRouter = require("./router/imgRouter");
 const questRouter = require("./router/questRouter");
+const limemonRouter = require("./router/limemonRouter");
 
 // Router 주소 지정
 app.use('/api/test', testRouter);
@@ -54,6 +55,7 @@ app.use('/api/raffle', raffleRouter);
 app.use('/api/myPage', myPageRouter);
 app.use('/api/img', imgRouter);
 app.use('/api/quest', questRouter);
+app.use('/api/limemon', limemonRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -25,6 +25,12 @@ quest.findAll = async (req, res) => {
         const quest = await Quest.findAll({
             order: [['updated_at','DESC']],
             include: [{
+                model: Submission,
+                attributes: ['type'],
+                //where: {userId: userId},
+                required: true // inner join
+            },
+            {
                 model: QuestStatus,
                 where: {userId: userId},
                 required: false // left outer join
@@ -53,11 +59,12 @@ quest.claim = async (req, res) => {
             where: {
                 quest_id: questId,
             },
+            raw:true,
             transaction: t,
         })
 
         // DISCORD ROLE CHECK
-        if(submissionType === 'DISCORD_ROLE_CHECK'){
+        if(submissionType === 'DISCORD_ROLE'){
             const {tokenType, accessToken} = await User.findOne({
                 attributes: ['tokenType', 'accessToken'],
                 where: {
@@ -79,6 +86,11 @@ quest.claim = async (req, res) => {
             const result = userGuildData.roles.includes(submissionValue);
             if(!result){
                 return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Discord role'));
+            }
+        }else if(submissionType === 'TEXT'){
+            const { inputText } = req.body;
+            if(inputText !== submissionValue){
+                return res.status(CODE.BAD_REQUEST).send(UTIL.fail('Input Text Not Matched'));
             }
         }
 

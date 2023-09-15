@@ -1,10 +1,26 @@
 import { useEffect, useState } from "react"
 import axios from 'axios';
 
+import { useSelector } from 'react-redux'
 import { FaCheckCircle } from "react-icons/fa"
 import Alert from '../common/Alert';
+import InputText from "./InputText";
 
 export default function QuestList() {
+
+    // 로그인정보
+    const user = useSelector(state => state.user.value);
+
+    // Input Text
+    const [isInputText, setIsInputText] = useState(false);
+    const [questId, setQuestId] = useState('');
+    const fnInputTextSetting = (questId) => {
+        setQuestId(questId);
+        setIsInputText(true);
+    }
+    const fnClose = () => {
+        setIsInputText(false);
+    }
 
     // alert
     const [isAlert, setIsAlert] = useState(false);
@@ -26,6 +42,10 @@ export default function QuestList() {
             url: '/api/quest',
             method: 'GET'
         }).then((response) => {
+            // Input Text 팝업 닫기
+            setIsInputText(false);
+
+            // 퀘스트 목록
             const questList = [...response.data.result];
             setQuestList(questList);
         }).catch((error) => {
@@ -38,12 +58,13 @@ export default function QuestList() {
         })
     }
 
-    const cliam = (questId) => {
+    const cliam = (questId, inputText) => {
         axios({
             url: '/api/quest/claim',
             method: 'POST',
             data: {
-                questId: questId
+                questId: questId,
+                inputText: inputText
             }
         }).then((response) => {
             if(response.data.success){
@@ -63,12 +84,18 @@ export default function QuestList() {
     return (
         <>
         {isAlert ? <Alert type={'danger'} text={<span>You can use it after logging in. <a href={discordUrl} className="underline">Go to the login page.</a></span>}/> : null}
+        {isInputText ? <InputText cliam={cliam} fnClose={fnClose} questId={questId}/> : null}
         <div className="h-[90%]">
             <div className="overflow-y-auto h-full">
+                {user.userData.admin === true &&
+                    <div className="border-2 border-gray-900 rounded-lg px-5 py-5 flex items-center gap-5 bg-white shadow-md mr-2.5 h-24 mb-3">
+                        ➕ Quest Add
+                    </div>
+                }
                 {
                     questList.map((quest, index) => {
                         return (
-                            <div className="border-2 border-gray-900 rounded-lg px-5 py-5 flex items-center gap-5 bg-white shadow-md mr-2.5 max-h-24 mb-3" key={index}>
+                            <div className="border-2 border-gray-900 rounded-lg px-5 py-5 flex items-center gap-5 bg-white shadow-md mr-2.5 h-24 mb-3" key={index}>
                                 <div className="w-1/6">🔁{quest.recurrence}</div>
                                 <div className="w-3/6 flex flex-col">
                                     <span className="text-lg">{quest.name}</span>
@@ -81,7 +108,7 @@ export default function QuestList() {
                                         quest.QuestStatus.status &&
                                         <FaCheckCircle size={30} className="inline-block"/>
                                     :
-                                        <button onClick={() => cliam(`${quest.questId}`)}>
+                                        <button onClick={() => quest.Submission.type === 'TEXT' ? fnInputTextSetting(`${quest.questId}`) : cliam(`${quest.questId}`)}>
                                             <div className="group relative block h-full bg-white before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-gray-900">
                                                 <div className="rounded-lg border-2 border-gray-900 bg-white transition -translate-y-1 -translate-x-1 px-2 py-1 hover:bg-lime-200 group-hover:translate-y-0 group-hover:translate-x-0">
                                                 Claim

@@ -22,7 +22,12 @@ class Limemon extends Sequelize.Model {
             exp: {
                type: Sequelize.INTEGER,
                allowNull: false,
-            }
+            },
+            mainYn: {
+               type: Sequelize.STRING(1),
+               allowNull: false,
+               defaultValue: 'N'
+            },
          },
          {  // 두번째 객체 인수는 테이블 자체에 대한 설정
             sequelize, /* static init 메서드의 매개변수와 연결되는 옵션으로, db.sequelize 객체를 넣어야 한다. */

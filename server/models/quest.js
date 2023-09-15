@@ -56,7 +56,7 @@ class Quest extends Sequelize.Model {
       //   sourceKey: 'questId',
     })
 
-    db.Quest.hasMany(db.Submission, {
+    db.Quest.hasOne(db.Submission, {
       foreignKey: 'questId',
     })
     db.Quest.hasMany(db.Reward, {
