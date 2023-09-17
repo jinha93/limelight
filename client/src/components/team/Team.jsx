@@ -61,11 +61,12 @@ function Team(props) {
                         <img
                             className='mx-auto rounded-t-xl mb-1'
                             src={team.imageSrc}
+                            alt=""
                         />
                         <h5 className='text-lg font-bold'>{team.name}</h5>
                         <p className='text-sm text-gray-600'>{team.role}</p>
                         <ul className='list-inside flex mx-auto justify-center my-3'>
-                            <a href={team.twitter} className='px-2 text-lime-400 hover:text-lime-500' target={"_blank"}>
+                            <a href={team.twitter} className='px-2 text-lime-400 hover:text-lime-500' target={"_blank"} rel="noreferrer">
                                 <FaTwitter />
                             </a>
                         </ul>

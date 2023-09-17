@@ -25,6 +25,7 @@ const Limemon = require('./limemon')
 const Items = require('./items')
 const LimemonEquipItem = require('./limemonEquipItem')
 const UserItem = require('./userItem')
+const LimemonLevelInfo = require('./limemonLevelInfo')
 
 // 모델 클래스를 넣음.
 db.User = User;
@@ -36,6 +37,7 @@ db.Limemon = Limemon;
 db.Items = Items;
 db.LimemonEquipItem = LimemonEquipItem;
 db.UserItem = UserItem;
+db.LimemonLevelInfo = LimemonLevelInfo;
 
 // 모델과 테이블 종합적인 연결이 설정된다.
 User.init(sequelize); 
@@ -47,6 +49,7 @@ Limemon.init(sequelize);
 Items.init(sequelize);
 LimemonEquipItem.init(sequelize);
 UserItem.init(sequelize);
+LimemonLevelInfo.init(sequelize);
 
 // db객체 안에 있는 모델들 간의 관계가 설정된다.
 User.associate(db);
@@ -58,6 +61,7 @@ Limemon.associate(db);
 Items.associate(db);
 LimemonEquipItem.associate(db);
 UserItem.associate(db);
+LimemonLevelInfo.associate(db);
 
 // 모듈로 꺼낸다.
 module.exports = db;

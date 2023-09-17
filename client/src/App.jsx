@@ -11,7 +11,7 @@ import Rank from './components/rank/Rank';
 import Raffle from './components/raffle/Raffle';
 import AddRaffle from './components/raffle/AddRaffle';
 import MyPage from './components/myPage/MyPage'
-import Limemon from './components/limemon/Limemon';
+import Limemon from './components/limemon/LimemonIO';
 import { Fragment } from 'react';
 
 import JSConfetti from "js-confetti";

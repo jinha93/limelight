@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Pagination from "../common/Pagination";
 
@@ -56,7 +56,7 @@ function RankTable() {
         } catch (error) {
             console.error(error.message);
         }
-    }, [search])
+    }, [search, resultData])
 
     return (
         <div className="mx-auto w-3/4 flex flex-col items-start mb-1 pt-32">

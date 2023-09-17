@@ -7,9 +7,11 @@ export default function QuestTabs(){
     };
 
     const tabs = [
-        {name:'일일퀘스트'}
-        , {name:'주간퀘스트'}
-        , {name:'특별퀘스트'}
+        {name:'ALL'},
+        {name:'ONCE'},
+        {name:'DAILY'},
+        {name:'WEEKLY'},
+        {name:'MONTHLY'},
     ];
 
     return (

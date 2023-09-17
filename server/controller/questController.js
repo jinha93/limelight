@@ -31,7 +31,29 @@ quest.findAll = async (req, res) => {
                 required: true // inner join
             },
             {
+                model: Reward,
+                attributes: ['type','value'],
+                //where: {userId: userId},
+                required: true // inner join
+            },
+            {
                 model: QuestStatus,
+                attributes: [
+                    [sequelize.literal(`
+                        CASE
+                            WHEN Quest.recurrence ='ONCE'
+                                THEN QuestStatus.status
+                            WHEN Quest.recurrence ='DAILY' AND TIMESTAMPDIFF(DAY, QuestStatus.updated_at, now()) = 0 
+                                THEN 1
+                            WHEN Quest.recurrence ='WEEKLY' AND TIMESTAMPDIFF(WEEK, QuestStatus.updated_at, now()) = 0
+                                THEN 1
+                            WHEN Quest.recurrence ='MONTHLY' AND TIMESTAMPDIFF(WEEK, QuestStatus.updated_at, now()) = 0
+                                THEN 1
+                            ELSE 0 
+                        END`), 
+                        'status'
+                    ],
+                ],
                 where: {userId: userId},
                 required: false // left outer join
             }]
@@ -95,12 +117,12 @@ quest.claim = async (req, res) => {
         }
 
         // 퀘스트 상태 INSERT
-        // await QuestStatus.create({
-        //     userId: userId,
-        //     questId: questId,
-        //     status: true,
-        //     transaction: t,
-        // });
+        await QuestStatus.create({
+            userId: userId,
+            questId: questId,
+            status: true,
+            transaction: t,
+        });
 
 
         // 퀘스트 보상 조회

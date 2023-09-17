@@ -5,7 +5,6 @@ export default function InputText({cliam, fnClose, questId}) {
     const [inputText, setInputText] = useState('');
     const inputTextChange = e => {
         setInputText(e.target.value);
-        console.log(inputText);
     } 
 
     return (
