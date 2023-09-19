@@ -20,6 +20,26 @@ export default function LimemonIO() {
     } else {
         discordUrl = process.env.REACT_APP_DISCORD_LOGIN_URL;
     }
+
+
+    const [limemonList, setLimemonList] = useState([]);
+    const getLimemonList = () => {
+        axios({
+            url: '/api/limemon',
+            method: 'GET'
+        }).then((response) => {
+            // 퀘스트 목록
+            const limemonList = [...response.data.result];
+            setLimemonList(limemonList);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    useEffect(() => {
+        // 라임몬 정보 불러오기
+        getLimemonList();
+    }, [])
     
 
     return (
@@ -29,7 +49,11 @@ export default function LimemonIO() {
             <div className="w-3/4 mx-auto md:flex gap-5 max-h-full">
                 <div className="grid grid-rows-6 gap-5 md:w-1/3">
                     <div className="bg-white rounded-lg shadow-sm px-10 row-span-4">
-                        <Limemon setIsAlert={setIsAlert}/>
+                        <Limemon 
+                            setIsAlert={setIsAlert}
+                            limemonList={limemonList}
+                            getLimemonList={getLimemonList}
+                        />
                     </div>
                     <div className="bg-white rounded-lg shadow-sm p-5 row-span-2">
                         <div className="border-2 border-gray-900 rounded-lg h-full grid grid-cols-6 gap-3 p-3 overflow-y-auto">
@@ -62,7 +86,10 @@ export default function LimemonIO() {
                 </div>
                 <div className="bg-white rounded-lg shadow-sm py-5 px-10 col-span-2 gap-5 overflow-y-hidden md:w-2/3">
                     <QuestTabs />
-                    <QuestList setIsAlert={setIsAlert}/>
+                    <QuestList 
+                        setIsAlert={setIsAlert}
+                        getLimemonList={getLimemonList}
+                    />
                 </div>
             </div>
         </div>

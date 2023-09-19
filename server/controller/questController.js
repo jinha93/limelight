@@ -161,7 +161,6 @@ quest.claim = async (req, res) => {
                     })
                 }
             }
-
             // 아이템
             else if(rewardType === 'ITEM'){
                 const [userItem, created] = await UserItem.findOrCreate({
@@ -182,6 +181,17 @@ quest.claim = async (req, res) => {
                         userId: userId,
                         itemId: itemId,
                     },
+                    transaction: t,
+                })
+            }
+            // 라임몬
+            else if(rewardType === 'LIMEMON'){
+                await Limemon.create({
+                    level: 1,
+                    exp: 0,
+                    mainYn: 'Y',
+                    imgSrc: 'defaultLimemon.png',
+                    userId: userId,
                     transaction: t,
                 })
             }

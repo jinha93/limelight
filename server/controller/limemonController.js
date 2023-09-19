@@ -39,10 +39,12 @@ quest.findAll = async (req, res) => {
     }
 }
 
+// 라임몬 레벨업
 quest.levelUp = async (req, res) => {
     try {
         const {limemonId} = req.params;
         const userId = req.session.userId ? req.session.userId : null;
+        
         const {level, exp} = await Limemon.findOne({
             attributes:[
                 'level',

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export default function Limemon(props) {
+    // 라임몬 레벨업
     const levelUp = (limemonId) => {
         const exp = limemon.exp;
         const requireExp = limemon.LimemonLevelInfo.requiredExp;
@@ -16,7 +17,7 @@ export default function Limemon(props) {
             method: 'PUT'
         }).then((response) => {
             if(response.data.success){
-                getLimemonList();
+                props.getLimemonList();
             }
         }).catch((error) => {
             // 로그인 세션 에러
@@ -29,29 +30,10 @@ export default function Limemon(props) {
         })
     }
 
-    const [limemonList, setLimemonList] = useState([]);
-    const getLimemonList = () => {
-        axios({
-            url: '/api/limemon',
-            method: 'GET'
-        }).then((response) => {
-            // 퀘스트 목록
-            const limemonList = [...response.data.result];
-            setLimemonList(limemonList);
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
-
-    useEffect(() => {
-        // 라임몬 정보 불러오기
-        getLimemonList();
-    }, [])
-
     const [limemon, setLimemon] = useState();
     useEffect(() => {
-        setLimemon(limemonList[0])
-    }, [limemonList])
+        setLimemon(props.limemonList[0])
+    }, [props.limemonList])
 
     return (
         <div className="flex flex-col justify-center items-center h-full">

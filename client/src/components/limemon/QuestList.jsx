@@ -4,11 +4,18 @@ import axios from 'axios';
 import { useSelector } from 'react-redux'
 import { FaCheckCircle } from "react-icons/fa"
 import InputText from "./InputText";
+import AddQuest from "./AddQuest";
 
 export default function QuestList(props) {
 
     // 로그인정보
     const user = useSelector(state => state.user.value);
+
+    // ADD QUEST
+    const [isAddQuest, setIsAddQuest] = useState(false);
+    const isAddQuestClick = () => {
+        setIsAddQuest(!isAddQuest);
+    }
 
     // Input Text
     const [isInputText, setIsInputText] = useState(false);
@@ -21,12 +28,12 @@ export default function QuestList(props) {
         setIsInputText(false);
     }
 
-    const [questList, setQuestList] = useState([]);
-
     useEffect(() => {
         getQuestList();
     }, [])
 
+    // 퀘스트 목록 조회
+    const [questList, setQuestList] = useState([]);
     const getQuestList = () => {
         axios({
             url: '/api/quest',
@@ -48,6 +55,7 @@ export default function QuestList(props) {
         })
     }
 
+    // 퀘스트 클레임
     const cliam = (questId, inputText) => {
         axios({
             url: '/api/quest/claim',
@@ -59,6 +67,7 @@ export default function QuestList(props) {
         }).then((response) => {
             if(response.data.success){
                 getQuestList();
+                props.getLimemonList();
             }
         }).catch((error) => {
             // 로그인 세션 에러
@@ -73,11 +82,18 @@ export default function QuestList(props) {
 
     return (
         <>
+        {/* 텍스트 입력 */}
         {isInputText ? <InputText cliam={cliam} fnClose={fnClose} questId={questId}/> : null}
+
+        {/* 퀘스트 생성 */}
+        {isAddQuest ? <AddQuest isAddQuestClick={isAddQuestClick} getQuestList={getQuestList}/> : null}
+
         <div className="h-[90%]">
             <div className="overflow-y-auto h-full">
                 {user.userData.admin === true &&
-                    <div className="border-2 border-gray-900 rounded-lg px-5 py-5 flex items-center gap-5 bg-white shadow-md mr-2.5 h-24 mb-3">
+                    <div className="border-2 border-gray-900 rounded-lg px-5 py-5 flex items-center gap-5 bg-white shadow-md mr-2.5 h-24 mb-3"
+                        onClick={isAddQuestClick}
+                    >
                         ➕ Quest Add
                     </div>
                 }
@@ -85,7 +101,7 @@ export default function QuestList(props) {
                     questList.map((quest, index) => {
                         return (
                             <div className="border-2 border-gray-900 rounded-lg px-5 py-5 flex items-center gap-5 bg-white shadow-md mr-2.5 h-24 mb-3" key={index}>
-                                <div className="w-1/6">🔁{quest.recurrence}</div>
+                                <div className="w-1/6">{quest.recurrence}</div>
                                 <div className="w-3/6 flex flex-col">
                                     <span className="text-lg">{quest.name}</span>
                                     <span className="text-xs mt-1">{quest.content}</span>
