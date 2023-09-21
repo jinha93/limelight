@@ -209,4 +209,52 @@ quest.claim = async (req, res) => {
     }
 }
 
+
+quest.create = async (req, res) => {
+    // 트랜잭션 설정
+    const t = await sequelize.transaction();
+
+    try {
+
+        // param
+        const userId = req.session.userId;
+        const { title, content, repeat, mission, rewards } = req.body;
+
+        const quest = await Quest.create({
+            name: title,
+            content: content,
+            recurrence: repeat,
+            conditionOperator: 'AND',
+            transaction: t,
+        })
+
+        await Submission.create({
+            type: mission.type,
+            value: mission.value,
+            questId: quest.questId,
+            transaction: t,
+        })
+
+        for(let reward of rewards){
+            await Reward.create({
+                type: reward.type,
+                value: reward.value,
+                questId: quest.questId,
+                itemId: reward.itemId,
+                transaction: t,
+            })
+        }
+
+        // 커밋
+        await t.commit();
+
+        return res.status(CODE.OK).send(UTIL.success(1));
+    } catch (error) {
+        // 롤백
+        await t.rollback();
+        console.log(error)
+        return res.status(CODE.INTERNAL_SERVER_ERROR).send(UTIL.fail(MSG.DATA_ADD_FAIL));
+    }
+}
+
 module.exports = quest;
