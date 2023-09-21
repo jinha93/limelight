@@ -107,11 +107,13 @@ quest.claim = async (req, res) => {
             // 보유 role 중 quest 요구사항 role id가 존재하지 않는 경우
             const result = userGuildData.roles.includes(submissionValue);
             if(!result){
+                await t.rollback();
                 return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Discord role'));
             }
         }else if(submissionType === 'TEXT'){
             const { inputText } = req.body;
             if(inputText !== submissionValue){
+                await t.rollback();
                 return res.status(CODE.BAD_REQUEST).send(UTIL.fail('Input Text Not Matched'));
             }
         }
@@ -121,6 +123,7 @@ quest.claim = async (req, res) => {
             userId: userId,
             questId: questId,
             status: true,
+        },{
             transaction: t,
         });
 
@@ -149,6 +152,7 @@ quest.claim = async (req, res) => {
                 });
 
                 if(limemon === null){
+                    await t.rollback();
                     return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Limemon'));
                 }else{
                     await Limemon.update({
@@ -192,6 +196,7 @@ quest.claim = async (req, res) => {
                     mainYn: 'Y',
                     imgSrc: 'defaultLimemon.png',
                     userId: userId,
+                },{
                     transaction: t,
                 })
             }
@@ -225,6 +230,7 @@ quest.create = async (req, res) => {
             content: content,
             recurrence: repeat,
             conditionOperator: 'AND',
+        },{
             transaction: t,
         })
 
@@ -232,6 +238,7 @@ quest.create = async (req, res) => {
             type: mission.type,
             value: mission.value,
             questId: quest.questId,
+        },{
             transaction: t,
         })
 
@@ -241,6 +248,7 @@ quest.create = async (req, res) => {
                 value: reward.value,
                 questId: quest.questId,
                 itemId: reward.itemId,
+            },{
                 transaction: t,
             })
         }
