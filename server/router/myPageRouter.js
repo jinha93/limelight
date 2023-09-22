@@ -6,6 +6,6 @@ const myPageController = require("../controller/myPageController");
 
 router.route("/getUserUseHisList").get(middleware.authChecker, myPageController.getUserUseHisList);
 router.route("/getUserInfo").get(middleware.authChecker, myPageController.getUserInfo);
-router.route("/userInfoRegister").post(middleware.authChecker, myPageController.userInfoRegister)
+router.route("/wallet").put(middleware.authChecker, myPageController.walletUpdate)
 
 module.exports = router;

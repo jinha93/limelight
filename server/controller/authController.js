@@ -4,6 +4,8 @@ const mysql = require("../config/mysql");
 
 const auth = {};
 
+const User = require("../models/user");
+
 auth.session = async function(req, res) {
     try {
         return res.status(200).json(req.session);
@@ -13,8 +15,6 @@ auth.session = async function(req, res) {
 }
 
 auth.signIn = async function(req, res) {
-    const connection = await mysql.getConnection(async conn => conn);
-    
     const code = req.query.code;
 
 	let redirectUri = '';
@@ -74,28 +74,35 @@ auth.signIn = async function(req, res) {
             req.session.admin = adminDiscordId.includes(userData.id);
 
 
-
-
-
-
-            // AccessToken DB저장
             
-            await connection.beginTransaction();
-            const sql = `
-                update user_inf
-                set token_type = ?
-                    , access_token = ?
-                where user_id = ?
-            `;
-            await connection.query(sql, [tokenType,accessToken,userId]);
-            await connection.commit(); // 커밋
+            
+            // 로그인 정보 저장
+            const [user, created] = await User.findOrCreate({
+                where: {
+                    userId: userId,
+                },
+                defaults: {
+                    discordHandle: `${userData.username}#${userData.discriminator}`,
+                    wallet: '',
+                    tokenType: tokenType,
+                    accessToken: accessToken,
+                }
+            })
 
+            if(!created){
+                await User.update({
+                    tokenType: tokenType,
+                    accessToken: accessToken,
+                },{
+                    where: {
+                        userId: userId
+                    }
+                })
+            }
+            // AccessToken DB저장
 		} catch (error) {
             console.log(error);
-            await connection.rollback(); // 롤백
-		} finally {
-            connection.release();
-        }
+		}
 	}
 	
 

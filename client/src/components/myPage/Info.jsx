@@ -47,11 +47,10 @@ function Info({setIsAlert}) {
             const wallet = accounts[0];
 
             axios({
-                url: '/api/myPage/userInfoRegister',
-                method: "POST",
+                url: '/api/myPage/wallet',
+                method: "PUT",
                 data: {
-                    wallet: wallet,
-                    discordHandle: `${userData.userName}#${userData.discriminator}`
+                    wallet: wallet
                 },
                 dataType: 'json',
             }).then((result) => {

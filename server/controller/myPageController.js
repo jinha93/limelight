@@ -41,7 +41,7 @@ myPage.getUserInfo = async (req, res) => {
                       A.USER_ID 
                       , A.WALLET
                       , A.DISCORD_HANDLE
-                  FROM USER_INF A
+                  FROM USER A
                   WHERE A.USER_ID = ?
                   `;
     const [rows] = await connection.query(sql, [userId]);
@@ -56,29 +56,22 @@ myPage.getUserInfo = async (req, res) => {
 };
 
 // 유저 정보 등록
-myPage.userInfoRegister = async (req, res) => {
+myPage.walletUpdate = async (req, res) => {
   const connection = await mysql.getConnection(async conn => conn);
 
   try {
     const userId = req.session.userId;
-    const { wallet, discordHandle } = req.body;
+    const { wallet } = req.body;
     const sql = `
-      INSERT INTO USER_INF
-      (
-          USER_ID
-          , WALLET
-          , DISCORD_HANDLE
-      )VALUES(
-          ?
-          , ?
-          , ?
-      )
+      UPDATE USER
+      SET WALLET = ?
+      WHERE USER_ID = ?
   `;
-    await connection.query(sql, [userId, wallet, discordHandle]);
+    await connection.query(sql, [wallet, userId]);
 
     await connection.commit(); // 커밋
 
-    return res.status(200).json('USER INFO REGISTER SUCCESS');
+    return res.status(200).json('WALLET UPDATE SUCCESS');
   } catch (error) {
     console.log(error);
     await connection.rollback(); // 롤백
