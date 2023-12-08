@@ -9,6 +9,11 @@ export default function Limemon(props) {
 
         if(exp < requireExp){
             alert('Not enough exp');
+            props.setResultAlertData({ type: 'danger', title: 'Claim Failed', text: 'Not enough exp'})
+            props.setIsResultAlert(true);
+            setTimeout(() => {
+                props.setIsResultAlert(false);
+            }, 3000)
             return;
         }
 
@@ -36,10 +41,10 @@ export default function Limemon(props) {
     }, [props.limemonList])
 
     return (
-        <div className="flex flex-col justify-center items-center h-full">
+        <div className="flex flex-col items-center h-full">
             <img
-                src={limemon ? `/api/img/${limemon.imgSrc}` : '/api/img/NotLimemon.png'}
-                className="border-2 border-gray-900 rounded-lg w-80 mx-auto"
+                src={limemon ? `/api/img/${limemon.imgSrc}` : '/api/img/lm_green.png'}
+                className="border-2 border-gray-900 rounded-lg max-w-100 mx-auto"
                 alt="myLimemon"
             />
             <div className="w-full mt-5 flex justify-between items-center">

@@ -1,6 +1,8 @@
 import { useState } from "react"
 
-export default function InputText({cliam, fnClose, questId}) {
+import Button from "../common/Button";
+
+export default function InputText({ cliam, fnClose, questId, showLoader }) {
 
     const [inputText, setInputText] = useState('');
     const inputTextChange = e => {
@@ -28,13 +30,12 @@ export default function InputText({cliam, fnClose, questId}) {
                     className="border-2 border-gray-900 rounded-lg p-2"
                     onChange={inputTextChange}
                 />
-                <button onClick={() => cliam(`${questId}`, `${inputText}`)} className="w-full">
-                    <div className="group relative block h-full bg-white before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-dashed before:border-gray-900">
-                        <div className="rounded-lg border-2 border-gray-900 bg-white transition -translate-y-1 -translate-x-1 px-2 py-1 hover:bg-lime-200 group-hover:translate-y-0 group-hover:translate-x-0">
-                        Claim Reward
-                        </div>
-                    </div>
-                </button>
+                <Button
+                    onSubmit={() => cliam(`${questId}`, `${inputText}`)}
+                    text={'Claim Reward'}
+                    loading={showLoader}
+                    disabled={showLoader}
+                />
             </div>
         </div>
     )

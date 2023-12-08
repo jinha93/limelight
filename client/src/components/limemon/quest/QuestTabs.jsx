@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-export default function QuestTabs(){
+export default function QuestTabs( {setRecurrence} ){
     const [currentTab, setTab] = useState(0);
     const selectMenuHandler = (index) => {
         setTab(index);
+        setRecurrence(tabs[index].name);
     };
 
     const tabs = [
@@ -15,7 +16,7 @@ export default function QuestTabs(){
     ];
 
     return (
-        <div className="py-5 flex gap-3">
+        <div className="flex gap-3">
             {tabs.map((tap, index) => {
                 return(
                     <button key={index}>

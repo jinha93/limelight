@@ -8,6 +8,7 @@ const UTIL = require("../modules/util");
 const { sequelize } = require('../models/index');
 const Quest = require("../models/quest");
 const QuestStatus = require("../models/questStatus");
+const QuestClaimHistory = require("../models/questClaimHistory");
 const Submission = require("../models/submission");
 const User = require("../models/user");
 const Reward = require("../models/reward");
@@ -22,8 +23,16 @@ quest.findAll = async (req, res) => {
     try {
         const userId = req.session.userId ? req.session.userId : null;
 
+        const dynamicConditions = {};
+        // console.log(req.params);
+        const { recurrence } = req.params;
+        if(recurrence !== 'ALL'){
+            dynamicConditions.recurrence = recurrence;
+        }
+
         const quest = await Quest.findAll({
             order: [['updated_at','DESC']],
+            where: dynamicConditions,
             include: [{
                 model: Submission,
                 attributes: ['type'],
@@ -119,13 +128,21 @@ quest.claim = async (req, res) => {
         }
 
         // 퀘스트 상태 INSERT
-        await QuestStatus.create({
+        await QuestStatus.upsert({
             userId: userId,
             questId: questId,
             status: true,
         },{
             transaction: t,
         });
+
+        // 퀘스트 Claim 이력 INSERT
+        await QuestClaimHistory.create({
+            userId: userId,
+            questId: questId,
+        },{
+            transaction: t,
+        })
 
 
         // 퀘스트 보상 조회

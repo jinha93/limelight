@@ -11,7 +11,7 @@ import Rank from './components/rank/Rank';
 import Raffle from './components/raffle/Raffle';
 import AddRaffle from './components/raffle/AddRaffle';
 import MyPage from './components/myPage/MyPage'
-import Limemon from './components/limemon/LimemonIO';
+import MyLimemon from './components/limemon/MyLimemon';
 import { Fragment } from 'react';
 
 import JSConfetti from "js-confetti";
@@ -35,7 +35,7 @@ function App() {
         <Route path='/raffle' element={<Raffle />} />
         <Route path='/addRaffle' element={<AddRaffle />} />
         <Route path='/myPage' element={<MyPage />} />
-        <Route path='/limemon' element={<Limemon />} />
+        <Route path='/limemon' element={<MyLimemon />} />
         <Route path='/*' element={<NotFound />} />
       </Routes>
     </div>
