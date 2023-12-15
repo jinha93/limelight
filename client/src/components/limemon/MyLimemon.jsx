@@ -106,6 +106,7 @@ export default function MyLimemon() {
                                             <div 
                                                 className={'p-3 border-2 border-gray-900 rounded-r-lg cursor-pointer -mb-[2px] ' + (selectMenu === `${menu.value}` ? 'border-l-white' : '')} 
                                                 onClick={() => setSelectMenu(`${menu.value}`)}
+                                                key={index}
                                             >
                                                 {menu.icon}
                                             </div>

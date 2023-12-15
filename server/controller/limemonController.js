@@ -1,23 +1,17 @@
-const mysql = require("../config/mysql");
-const { request } = require('undici');
-
 const CODE = require("../modules/status-code");
 const MSG = require("../modules/response-message");
 const UTIL = require("../modules/util");
 
 const { sequelize } = require('../models/index');
-const Quest = require("../models/quest");
-const QuestStatus = require("../models/questStatus");
-const Submission = require("../models/submission");
-const User = require("../models/user");
-const Reward = require("../models/reward");
 const Limemon = require("../models/limemon");
 const LimemonLevelInfo = require("../models/limemonLevelInfo");
+const LimemonEquipItem = require("../models/limemonEquipItem");
+const Items = require("../models/items");
 
-const quest = {};
+const limemon = {};
 
 // 라임몬 조회
-quest.findAll = async (req, res) => {
+limemon.findAll = async (req, res) => {
     try {
         const userId = req.session.userId ? req.session.userId : null;
 
@@ -39,8 +33,30 @@ quest.findAll = async (req, res) => {
     }
 }
 
+limemon.findAllEquipItems = async (req, res) => {
+    try {
+        const { limemonId } = req.query;
+
+        const equipItems = await LimemonEquipItem.findAll({
+            include:[
+                {
+                    model: Items,
+                    required: true
+                },
+            ],
+            where: {
+                limemonId: limemonId,
+            },
+        });
+        return res.status(CODE.OK).send(UTIL.success(equipItems));
+    } catch (error) {
+        console.log(error)
+        return res.status(CODE.INTERNAL_SERVER_ERROR).send(UTIL.fail(MSG.SEARCH_FAIL));
+    }
+}
+
 // 라임몬 레벨업
-quest.levelUp = async (req, res) => {
+limemon.levelUp = async (req, res) => {
     try {
         const {limemonId} = req.params;
         const userId = req.session.userId ? req.session.userId : null;
@@ -84,4 +100,4 @@ quest.levelUp = async (req, res) => {
     }
 }
 
-module.exports = quest;
+module.exports = limemon;

@@ -39,14 +39,63 @@ export default function Limemon(props) {
     useEffect(() => {
         setLimemon(props.limemonList[0])
     }, [props.limemonList])
+    
+    useEffect(() => {
+        console.log(limemon);
+        if(limemon){
+            getEquipItems(limemon.limemonId);
+        }
+    }, [limemon])
+
+
+    const [equipItems, setEquipItems] = useState([]);
+    const getEquipItems = (limemonId) => {
+        axios({
+            url: `/api/limemon/equipItems?limemonId=${limemonId}`,
+            method: 'GET'
+        }).then((response) => {
+            setEquipItems(response.data.result);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
 
     return (
         <div className="flex flex-col items-center h-full">
-            <img
-                src={limemon ? `/api/img/${limemon.imgSrc}` : '/api/img/lm_green.png'}
-                className="border-2 border-gray-900 rounded-lg max-w-100 mx-auto"
-                alt="myLimemon"
-            />
+            <div className='border-2 border-gray-900 rounded-lg mx-auto relative w-96 h-96'>
+                {
+                    limemon
+                    ?
+                        <div className='w-full absolute'>
+                            <img
+                                src={`/api/img?imgSrc=${limemon.imgSrc}`}
+                                className="rounded-lg absolute z-10"
+                                alt="myLimemon"
+                            />
+                            {
+                                equipItems.map((items) => {
+                                    return(
+                                        <img
+                                            src={`/api/img?imgSrc=${items.Item.imgSrc}`}
+                                            className="rounded-lg absolute z-20"
+                                            alt={items.part}
+                                            key={items.part}
+                                        />
+                                    )
+                                })
+                            }
+                        </div>
+                    :
+                    <div className='w-full'>
+                        <img
+                            src={'/api/img?imgSrc=limemon/default.png'}
+                            className="rounded-lg absolute z-10"
+                            alt="myLimemon"
+                        />
+                    </div>
+                }
+            </div>
             <div className="w-full mt-5 flex justify-between items-center">
                 <span>Lv {limemon ? limemon.level : 0}</span>
                 {

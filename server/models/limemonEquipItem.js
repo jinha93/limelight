@@ -18,8 +18,8 @@ class LimemonEquipItem extends Sequelize.Model {
                allowNull: false,
                primaryKey: true,
             },
-            status: {
-                type: Sequelize.STRING,
+            itemId: {
+                type: Sequelize.INTEGER,
                 allowNull: false,
             },
          },

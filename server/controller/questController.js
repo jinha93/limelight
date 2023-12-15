@@ -176,6 +176,7 @@ quest.claim = async (req, res) => {
                         exp: parseInt(limemon.exp) + parseInt(rewardValue)
                     },{
                         where: {
+                            limemonId: limemon.limemonId,
                             userId: userId,
                         },
                         transaction: t,
