@@ -46,7 +46,7 @@ class Items extends Sequelize.Model {
       db.Items.hasOne(db.UserItem, {
          foreignKey: 'itemId',
       })
-      db.Items.hasMany(db.LimemonEquipItem, {
+      db.Items.hasMany(db.LimemonItem, {
          foreignKey: 'itemId',
       })
       db.Items.hasMany(db.Reward, {

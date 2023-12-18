@@ -23,7 +23,7 @@ const Submission = require('./submission')
 const Reward = require('./reward')
 const Limemon = require('./limemon')
 const Items = require('./items')
-const LimemonEquipItem = require('./limemonEquipItem')
+const LimemonItem = require('./limemonItem')
 const UserItem = require('./userItem')
 const LimemonLevelInfo = require('./limemonLevelInfo')
 const QuestClaimHistory = require('./questClaimHistory')
@@ -36,7 +36,7 @@ db.Submission = Submission;
 db.Reward = Reward;
 db.Limemon = Limemon;
 db.Items = Items;
-db.LimemonEquipItem = LimemonEquipItem;
+db.LimemonItem = LimemonItem;
 db.UserItem = UserItem;
 db.LimemonLevelInfo = LimemonLevelInfo;
 db.QuestClaimHistory = QuestClaimHistory;
@@ -49,7 +49,7 @@ Submission.init(sequelize);
 Reward.init(sequelize);
 Limemon.init(sequelize);
 Items.init(sequelize);
-LimemonEquipItem.init(sequelize);
+LimemonItem.init(sequelize);
 UserItem.init(sequelize);
 LimemonLevelInfo.init(sequelize);
 QuestClaimHistory.init(sequelize);
@@ -62,7 +62,7 @@ Submission.associate(db);
 Reward.associate(db);
 Limemon.associate(db);
 Items.associate(db);
-LimemonEquipItem.associate(db);
+LimemonItem.associate(db);
 UserItem.associate(db);
 LimemonLevelInfo.associate(db);
 QuestClaimHistory.associate(db);

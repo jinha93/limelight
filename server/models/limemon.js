@@ -52,7 +52,7 @@ class Limemon extends Sequelize.Model {
          foreignKey: 'userId',
       });
 
-      db.Limemon.hasOne(db.LimemonEquipItem, {
+      db.Limemon.hasOne(db.LimemonItem, {
          foreignKey: 'limemonId',
       })
 

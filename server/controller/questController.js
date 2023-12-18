@@ -58,6 +58,8 @@ quest.findAll = async (req, res) => {
                                 THEN 1
                             WHEN Quest.recurrence ='MONTHLY' AND TIMESTAMPDIFF(WEEK, QuestStatus.updated_at, now()) = 0
                                 THEN 1
+                            WHEN Quest.recurrence ='TEST' AND TIMESTAMPDIFF(SECOND, QuestStatus.updated_at, now()) < 10
+                                THEN 1
                             ELSE 0 
                         END`), 
                         'status'
@@ -212,7 +214,7 @@ quest.claim = async (req, res) => {
                     level: 1,
                     exp: 0,
                     mainYn: 'Y',
-                    imgSrc: 'defaultLimemon.png',
+                    imgSrc: 'limemon/baby/babyLimemon.png',
                     userId: userId,
                 },{
                     transaction: t,

@@ -35,13 +35,31 @@ export default function Limemon(props) {
         })
     }
 
+    const reset = (limemonId) => {
+        axios({
+            url: `/api/limemon/${limemonId}/reset`,
+            method: 'PUT'
+        }).then((response) => {
+            if(response.data.success){
+                props.getLimemonList();
+            }
+        }).catch((error) => {
+            // 로그인 세션 에러
+            if(error.response.status === 401){
+                // alert 활성화
+                props.setIsAlert(true);
+            }else{
+                alert(error.response.data.message);
+            }
+        })
+    }
+
     const [limemon, setLimemon] = useState();
     useEffect(() => {
         setLimemon(props.limemonList[0])
     }, [props.limemonList])
     
     useEffect(() => {
-        console.log(limemon);
         if(limemon){
             getEquipItems(limemon.limemonId);
         }
@@ -78,9 +96,8 @@ export default function Limemon(props) {
                                     return(
                                         <img
                                             src={`/api/img?imgSrc=${items.Item.imgSrc}`}
-                                            className="rounded-lg absolute z-20"
-                                            alt={items.part}
-                                            key={items.part}
+                                            className={items.Item.part === 'BACKGROUND' ? "rounded-lg absolute z-0" : "rounded-lg absolute z-20"}
+                                            key={items.itemId}
                                         />
                                     )
                                 })
@@ -100,12 +117,20 @@ export default function Limemon(props) {
                 <span>Lv {limemon ? limemon.level : 0}</span>
                 {
                 limemon ? 
+                    <div>
+                    <button 
+                        className="rounded-lg shadow bg-red-400 text-white px-2 py-1 text-sm uppercase"
+                        onClick={() => reset(limemon.limemonId)}
+                    >
+                        RESET
+                    </button>
                     <button 
                         className="rounded-lg shadow bg-yellow-400 text-white px-2 py-1 text-sm uppercase"
                         onClick={() => levelUp(limemon.limemonId)}
                     >
                         Level Up
                     </button>
+                    </div>
                 : 
                 <button 
                     className="rounded-lg shadow bg-gray-400 text-white px-2 py-1 text-sm uppercase"
