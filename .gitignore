@@ -1,9 +1,11 @@
 # Dependency directories
 node_modules/
+client/node_modules/
+server/node_modules/
 
 # 환경 설정
 .env
-server/config/serviceAccountKey.json
+serverserver/config/serviceAccountKey.json
 server/config/serviceAccountKey-dev.json
 
 # 업로드 이미지
