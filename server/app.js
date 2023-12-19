@@ -46,6 +46,7 @@ const myPageRouter = require("./router/myPageRouter");
 const imgRouter = require("./router/imgRouter");
 const questRouter = require("./router/questRouter");
 const limemonRouter = require("./router/limemonRouter");
+const discordRouter = require("./router/discordRouter");
 
 // Router 주소 지정
 app.use('/api/test', testRouter);
@@ -56,6 +57,7 @@ app.use('/api/myPage', myPageRouter);
 app.use('/api/img', imgRouter);
 app.use('/api/quest', questRouter);
 app.use('/api/limemon', limemonRouter);
+app.use('/api/discord', discordRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

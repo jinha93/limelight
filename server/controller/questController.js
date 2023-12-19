@@ -1,4 +1,3 @@
-const mysql = require("../config/mysql");
 const { request } = require('undici');
 
 const CODE = require("../modules/status-code");
@@ -6,6 +5,8 @@ const MSG = require("../modules/response-message");
 const UTIL = require("../modules/util");
 
 const { sequelize } = require('../models/index');
+const { addRole } = require('../bot');
+
 const Quest = require("../models/quest");
 const QuestStatus = require("../models/questStatus");
 const QuestClaimHistory = require("../models/questClaimHistory");
@@ -219,6 +220,10 @@ quest.claim = async (req, res) => {
                 },{
                     transaction: t,
                 })
+            }
+            // DISCORD ROLE
+            else if(rewardType === 'ROLE'){
+                addRole(rewardValue, userId);
             }
         }
 

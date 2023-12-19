@@ -149,7 +149,6 @@ export default function AddQuest(props) {
                                         <AddReward 
                                             key={i}
                                             index={i}
-                                            rewards={rewards}
                                             setRewards={setRewards}
                                         />
                                     )
