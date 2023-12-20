@@ -7,6 +7,7 @@ export default function AddReward(props) {
 
     const [type, setType] = useState('EXP');
     const [value, setValue] = useState(1);
+    const [roleId, setRoleId] = useState('');
 
     useEffect(() => {
         if (type === 'LIMEMON') {
@@ -20,6 +21,7 @@ export default function AddReward(props) {
         const reward = {
             type: type,
             value: value,
+            roleId: roleId,
         }
 
         setRewards(prevRewards => {
@@ -28,7 +30,7 @@ export default function AddReward(props) {
             return updatedRewards;
         });
 
-    }, [type, value, index, setRewards])
+    }, [type, value, roleId, index, setRewards])
 
 
     const [discordRoles, setDiscordRoles] = useState([]);
@@ -58,6 +60,18 @@ export default function AddReward(props) {
         })
     }
 
+
+
+    // roles select onchange
+    const rolseOnChange = () => {
+        const target = document.getElementById('roles');
+        const value = target.options[target.selectedIndex].value;
+        const text = target.options[target.selectedIndex].innerText;
+
+        setRoleId(value);
+        setValue(text);
+    }
+
     return (
         <dl className="divide-y divide-gray-100 text-sm border rounded-lg px-3 mt-1">
             <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
@@ -77,16 +91,19 @@ export default function AddReward(props) {
                     {
                         type === 'ROLE'
                             ?
-                            <select onChange={(e) => { setValue(e.target.value) }}>
-                                {discordRoles.map((role) => (
-                                    <option
-                                        key={role.id}
-                                        value={role.name}
-                                    >
-                                        {role.name}
-                                    </option>
-                                ))}
-                            </select>
+                            <>
+                                <select id="roles" onChange={rolseOnChange}>
+                                    {discordRoles.map((role) => (
+                                        <option
+                                            key={role.id}
+                                            value={role.id}
+                                        >
+                                            {role.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <input type="hidden"/>
+                            </>
                             :
                             <input
                                 type="number"

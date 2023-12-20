@@ -6,7 +6,8 @@ import ResultAlert from "./common/ResultAlert";
 
 import Limemon from "./Limemon"
 import QuestList from "./quest/QuestList"
-import { FaBook, FaRegQuestionCircle, FaBox  } from "react-icons/fa";
+
+import { FcAbout, FcHome, FcShop } from "react-icons/fc"
 
 
 export default function MyLimemon() {
@@ -47,12 +48,17 @@ export default function MyLimemon() {
         {
             name: 'Quest',
             value: 'Q',
-            icon: <FaBook size={30} />,
+            icon: <FcAbout size={30} />,
         },
         {
             name: 'Inventory',
             value: 'I',
-            icon: <FaBox size={30} />,
+            icon: <FcHome size={30} />,
+        },
+        {
+            name: 'Shop',
+            value: 'S',
+            icon: <FcShop size={30} />,
         },
     ]
     const [selectMenu, setSelectMenu] = useState('Q');
@@ -104,11 +110,12 @@ export default function MyLimemon() {
                                     menus.map((menu, index) => {
                                         return (
                                             <div 
-                                                className={'p-3 border-2 border-gray-900 rounded-r-lg cursor-pointer -mb-[2px] ' + (selectMenu === `${menu.value}` ? 'border-l-white' : '')} 
+                                                className={'flex gap-1 p-3 border-2 border-gray-900 rounded-r-lg cursor-pointer -mb-[2px] ' + (selectMenu === `${menu.value}` ? 'border-l-white bg-lime-300/20' : '')} 
                                                 onClick={() => setSelectMenu(`${menu.value}`)}
                                                 key={index}
                                             >
                                                 {menu.icon}
+                                                <span className='my-auto'>{menu.name}</span>
                                             </div>
                                         )
                                     })
