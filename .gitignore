@@ -1,7 +1,5 @@
 # Dependency directories
 node_modules/
-client/node_modules/
-server/node_modules/
 
 # 환경 설정
 .env
