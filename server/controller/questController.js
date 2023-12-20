@@ -150,7 +150,7 @@ quest.claim = async (req, res) => {
 
         // 퀘스트 보상 조회
         const rewards = await Reward.findAll({
-            attributes: [['type', 'rewardType'], ['value', 'rewardValue'], 'itemId'],
+            attributes: [['type', 'rewardType'], ['value', 'rewardValue'], 'itemId', 'roleId'],
             where: {
                 quest_id: questId,
             },
@@ -160,7 +160,7 @@ quest.claim = async (req, res) => {
 
         // 보상 지급
         for(let reward of rewards){
-            const {rewardType, rewardValue, itemId} = reward;
+            const {rewardType, rewardValue, itemId, roleId} = reward;
 
             // 경험치
             if(rewardType === 'EXP'){
@@ -223,7 +223,7 @@ quest.claim = async (req, res) => {
             }
             // DISCORD ROLE
             else if(rewardType === 'ROLE'){
-                addRole(rewardValue, userId);
+                addRole(roleId, userId);
             }
         }
 
@@ -273,6 +273,7 @@ quest.create = async (req, res) => {
                 value: reward.value,
                 questId: quest.questId,
                 itemId: reward.itemId,
+                roleId: reward.roleId,
             },{
                 transaction: t,
             })
