@@ -110,12 +110,11 @@ export default function MyLimemon() {
                                     menus.map((menu, index) => {
                                         return (
                                             <div 
-                                                className={'flex gap-1 p-3 border-2 border-gray-900 rounded-r-lg cursor-pointer -mb-[2px] ' + (selectMenu === `${menu.value}` ? 'border-l-white bg-lime-300/20' : '')} 
+                                                className={'flex gap-1 p-3 border-2 border-gray-900 rounded-r-lg cursor-pointer -mb-[2px] ' + (selectMenu === `${menu.value}` ? 'border-l-white' : '')} 
                                                 onClick={() => setSelectMenu(`${menu.value}`)}
                                                 key={index}
                                             >
                                                 {menu.icon}
-                                                <span className='my-auto'>{menu.name}</span>
                                             </div>
                                         )
                                     })

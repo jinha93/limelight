@@ -91,19 +91,16 @@ export default function AddReward(props) {
                     {
                         type === 'ROLE'
                             ?
-                            <>
-                                <select id="roles" onChange={rolseOnChange}>
-                                    {discordRoles.map((role) => (
-                                        <option
-                                            key={role.id}
-                                            value={role.id}
-                                        >
-                                            {role.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <input type="hidden"/>
-                            </>
+                            <select id="roles" onChange={rolseOnChange}>
+                                {discordRoles.map((role) => (
+                                    <option
+                                        key={role.id}
+                                        value={role.id}
+                                    >
+                                        {role.name}
+                                    </option>
+                                ))}
+                            </select>
                             :
                             <input
                                 type="number"
