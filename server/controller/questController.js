@@ -128,6 +128,19 @@ quest.claim = async (req, res) => {
                 await t.rollback();
                 return res.status(CODE.BAD_REQUEST).send(UTIL.fail('Input Text Not Matched'));
             }
+        }else if(submissionType === 'LIMEMON_LEVEL'){
+            const limemon = await Limemon.findOne({
+                where: {
+                    userId: userId,
+                    mainYn: 'Y',
+                },
+                transaction: t,
+            });
+
+            if(limemon.level < submissionValue){
+                await t.rollback();
+                return res.status(CODE.BAD_REQUEST).send(UTIL.fail('LIMEMON level is lower than target level.'));
+            }
         }
 
         // 퀘스트 상태 INSERT

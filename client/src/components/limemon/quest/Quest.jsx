@@ -4,7 +4,7 @@ import axios from 'axios';
 import lime from "../../../assets/images/lime.png"
 
 import { FaDiscord } from "react-icons/fa"
-import { FcApproval, FcLike, FcRating } from "react-icons/fc"
+import { FcApproval, FcRating } from "react-icons/fc"
 import InputText from "./InputText";
 import Button from "../common/Button";
 
@@ -79,11 +79,10 @@ export default function Quest({ quest, getQuestList, getLimemonList, setIsAlert,
                             case 'EXP':
                                 return(
                                     <div className="flex gap-1">
-                                        <FcLike size={25} />
                                         <FcRating size={25} />
                                         <span>x</span>
                                         <span>{reward.value}</span>
-                                        <span>(EXP)</span>
+                                        <span>EXP</span>
                                     </div>
                                 )
                             case 'ROLE':

@@ -10,6 +10,9 @@ const LimemonLevelInfo = require("../models/limemonLevelInfo");
 const LimemonItem = require("../models/limemonItem");
 const Items = require("../models/items");
 
+const QuestStatus = require("../models/questStatus");
+const QuestClaimHistory = require("../models/questClaimHistory");
+
 const limemon = {};
 
 // 라임몬 조회
@@ -199,6 +202,20 @@ limemon.reset = async (req, res) => {
         await LimemonItem.destroy({
             where: {
                 limemonId: limemonId,
+            },
+            transaction: t,
+        })
+
+        await QuestStatus.destroy({
+            where: {
+                userId: userId,
+            },
+            transaction: t,
+        })
+
+        await QuestClaimHistory.destroy({
+            where: {
+                userId: userId,
             },
             transaction: t,
         })

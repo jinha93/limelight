@@ -98,6 +98,7 @@ export default function Limemon(props) {
                                             src={`/api/img?imgSrc=${items.Item.imgSrc}`}
                                             className={items.Item.part === 'BACKGROUND' ? "rounded-lg absolute z-0" : "rounded-lg absolute z-20"}
                                             key={items.itemId}
+                                            alt={items.itemName}
                                         />
                                     )
                                 })
