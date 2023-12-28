@@ -7,7 +7,7 @@ import ResultAlert from "./common/ResultAlert";
 import Limemon from "./Limemon"
 import QuestList from "./quest/QuestList"
 
-import { FcAbout, FcHome, FcShop } from "react-icons/fc"
+import { FcAbout, FcHome, FcShop, FcLike } from "react-icons/fc"
 
 
 export default function MyLimemon() {
@@ -67,6 +67,8 @@ export default function MyLimemon() {
     const [isResultAlert, setIsResultAlert] = useState(false);
     const [resultAlertData, setResultAlertData] = useState({ type: '', title: '', text: ''});
 
+    // 베타ver 팝업
+    const [isBetaPopup, setIsBetaPopup] = useState(false);
 
     return (
         <>
@@ -75,6 +77,35 @@ export default function MyLimemon() {
 
             {/* 로그인 alert */}
             {isAlert ? <Alert type={'danger'} text={<span>You can use it after logging in. <a href={discordUrl} className="underline">Go to the login page.</a></span>} /> : null}
+
+            {
+                isBetaPopup
+                    ?
+                    <>
+                    <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                        <section class="rounded-3xl shadow-2xl bg-white">
+                            <div class="p-8 text-center sm:p-12">
+                                <p class="font-semibold uppercase tracking-widest">
+                                    <FcLike className='inline-block' size={50}/>
+                                </p>
+
+                                <h2 class="mt-6 text-3xl font-bold">Thank You</h2>
+                                <p class="mt-6 w-[23rem]">Thank you for participating in Alpha Season 1. Please perform Pioneer Quests, earn Rolls and participate in events.</p>
+
+                                <button
+                                    type="button"
+                                    class="mt-8 inline-block rounded-full border-2 border-gray-900 py-3 px-6 font-bold shadow-xl"
+                                    onClick={() => setIsBetaPopup(false)}
+                                >
+                                    Done
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                    </>
+                    : null
+            }
 
             <div className='bg min-h-screen pt-32 pb-10 lg:h-screen'>
                 <div className="w-3/4 mx-auto lg:flex gap-5 min-h-full max-h-full">
@@ -85,6 +116,8 @@ export default function MyLimemon() {
                             getLimemonList={getLimemonList}
                             setIsResultAlert={setIsResultAlert}
                             setResultAlertData={setResultAlertData}
+
+                            setIsBetaPopup={setIsBetaPopup}
                         />
                     </div>
                     <div className="bg-white rounded-lg shadow-sm p-10 col-span-2 overflow-y-hidden lg:w-2/3 flex">

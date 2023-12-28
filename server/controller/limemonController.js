@@ -85,6 +85,11 @@ limemon.levelUp = async (req, res) => {
             transaction: t,
         });
 
+        if(level+1 > 8){
+            await t.rollback();
+            return res.status(CODE.BAD_REQUEST).send(UTIL.fail('Leveling up is not possible in the current version.'));
+        }
+
         const {requiredExp} = await LimemonLevelInfo.findOne({
             attributes: [
                 ['required_exp', 'requiredExp']

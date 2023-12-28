@@ -76,7 +76,7 @@ function RaffleCard(props) {
         <div className="rounded-lg shadow-lg bg-white text-[#534741]">
             <img 
                 className="rounded-t-lg h-48 w-full object-cover object-center group-hover:opacity-75" 
-                src={`/api/img/${props.raffleImgSrc}`}
+                src={`/api/img?imgSrc=${props.raffleImgSrc}`}
                 alt={props.raffleName}
             />
             <div className="p-6">
