@@ -14,6 +14,7 @@ const Submission = require("../models/submission");
 const User = require("../models/user");
 const Reward = require("../models/reward");
 const Limemon = require("../models/limemon");
+const LimemonLevelInfo = require("../models/limemonLevelInfo");
 const UserItem = require("../models/userItem");
 
 const quest = {};
@@ -188,8 +189,21 @@ quest.claim = async (req, res) => {
                     await t.rollback();
                     return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Limemon'));
                 }else{
+                    const {requiredExp} = await LimemonLevelInfo.findOne({
+                        attributes: [
+                            ['required_exp', 'requiredExp']
+                        ],
+                        where: {
+                            level: limemon.level
+                        },
+                        raw: true,
+                        transaction: t,
+                    });
+
+                    // 현재경험치 + 보상경험치 가 최대 경험치보다 높을 경우 최대경험치로 업데이트
+                    const exp = parseInt(limemon.exp) + parseInt(rewardValue) > requiredExp ? requiredExp : parseInt(limemon.exp) + parseInt(rewardValue);
                     await Limemon.update({
-                        exp: parseInt(limemon.exp) + parseInt(rewardValue)
+                        exp: exp
                     },{
                         where: {
                             limemonId: limemon.limemonId,
