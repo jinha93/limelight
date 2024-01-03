@@ -90,7 +90,7 @@ export default function MyLimemon() {
                                 </p>
 
                                 <h2 class="mt-6 text-3xl font-bold">Thank You</h2>
-                                <p class="mt-6 w-[23rem]">Thank you for participating in Alpha Season 1. Please perform Pioneer Quests, earn Rolls and participate in events.</p>
+                                <p class="mt-6 w-[23rem]">Thank you for participating in Alpha Season 1. Please clear Pioneer quest, get role and participate in event.</p>
 
                                 <button
                                     type="button"

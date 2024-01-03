@@ -104,6 +104,7 @@ function RaffleCard(props) {
                         raffleName={props.raffleName}
                         rafflePoint={props.rafflePoint}
                         winYn={props.winYn}
+                        winCnt={props.winCnt}
                         ended={isEnded(props)}
                         getRaffle={props.getRaffle}
                         setIsAlert={props.setIsAlert}

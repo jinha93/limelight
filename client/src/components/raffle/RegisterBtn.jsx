@@ -6,7 +6,6 @@ import { useState } from 'react';
 import Scratch from './Scratch';
 import Toast from '../common/Toast'
 import WinnerList from './WinnerList';
-import { FaRegFileExcel } from "react-icons/fa"
 
 function RegistBtn(props) {
 
@@ -37,7 +36,7 @@ function RegistBtn(props) {
     }
 
     const submitRaffle = (raffleId) => {
-        if (user.userData.point == undefined || user.userData.point - props.rafflePoint < 0) {
+        if (user.userData.point === undefined || user.userData.point - props.rafflePoint < 0) {
             setIsToast(true);
             return false;
         }
@@ -67,13 +66,13 @@ function RegistBtn(props) {
             setIsScratch(false);
 
             // 로그인 세션 에러
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 // alert 활성화
                 props.setIsAlert(true);
             }
 
             // 등록된 지갑 없음
-            if (error.response.status == 400) {
+            if (error.response.status === 400) {
                 console.log(isScratch);
                 alert('Wallet registration is required.\nPlease register your wallet on My Page.')
                 window.location.href = '/myPage';
@@ -87,6 +86,25 @@ function RegistBtn(props) {
 
     // WinnerList
     const [isWinnerList, setIsWinnerList] = useState(false);
+
+
+    // raffle delete
+    const deleteRaffle = (raffleId) => {
+        axios({
+            url: `/api/raffle/${raffleId}`,
+            method: "DELETE",
+            dataType: 'json',
+        }).then((result) => {
+            // 래플 정보 재랜더링
+            props.getRaffle();
+        }).catch((error) => {
+            // 어드민 에러
+            if (error.response.status === 403) {
+                alert('관리자만 사용 가능합니다.')
+            }
+            console.log(error);
+        })
+    }
 
     return (
         <>
@@ -177,19 +195,36 @@ function RegistBtn(props) {
                                 Register
                             </button>
                 }
-                {
-                props.ended && user.userData.admin === true
+            </div>
+            {
+                user.userData.admin === true
                 ?
+                <div className='flex gap-3'>
                     <button
                         type="button"
-                        className=" mt-3 px-2 py-2 bg-green-700 text-white leading-tight rounded-full shadow-md hover:bg-green-600 hover:shadow-lg"
-                        onClick={() => { setIsWinnerList(true); }}
+                        className={
+                            props.ended || props.winCnt > 0
+                            ? 'w-full mt-3 px-2 py-2 bg-gray-400 text-white leading-tight rounded-full shadow-md cursor-not-allowed'
+                            : 'w-full mt-3 px-2 py-2 bg-red-600 text-white leading-tight rounded-full shadow-md hover:bg-red-500 hover:shadow-lg' 
+                        }
+                        onClick={() => deleteRaffle(`${props.raffleId}`)}
+                        disabled={props.ended || props.winCnt > 0}
                     >
-                        <FaRegFileExcel size='20px'/>
+                        삭제
                     </button>
-                : null
-                }
-            </div>
+                    <button
+                        type="button"
+                        className={props.ended ? 'w-full mt-3 px-2 py-2 bg-green-600 text-white leading-tight rounded-full shadow-md hover:bg-green-500 hover:shadow-lg' : 'w-full mt-3 px-2 py-2 bg-gray-400 text-white leading-tight rounded-full shadow-md cursor-not-allowed'}
+                        onClick={() => { setIsWinnerList(true); }}
+                        disabled={!props.ended}
+                    >
+                        결과
+                    </button>
+                </div>
+                :
+                null
+            }
+            
         </>
     )
 }
