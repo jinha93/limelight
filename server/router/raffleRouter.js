@@ -29,5 +29,7 @@ router.route('/submit').post(middleware.authChecker, middleware.userWalletChecke
 router.route('/addRaffle').post(middleware.adminCheck, upload.single('image'), raffleController.addRaffle);
 router.route('/getWinnerList/:raffleId').get(middleware.adminCheck, raffleController.getWinnerList);
 
+router.route('/:raffleId').delete(middleware.adminCheck, raffleController.delete);
+
 
 module.exports = router;

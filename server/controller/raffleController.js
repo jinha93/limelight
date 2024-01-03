@@ -1,5 +1,12 @@
+const CODE = require("../modules/status-code");
+const MSG = require("../modules/response-message");
+const UTIL = require("../modules/util");
+
 const mysql = require("../config/mysql");
 const pointModel = require('../model/pointModel');
+
+const { sequelize } = require('../models/index');
+const Raffle = require("../models/raffle");
 
 const raffle = {};
 
@@ -11,13 +18,14 @@ raffle.findAll = async (req, res) => {
         const userId = req.session.userId;
         const sql = `
             SELECT A.*
-                 , COALESCE(B.WIN_YN, 'N') AS WIN_YN
-                 , (SELECT COUNT(*) FROM RAFFLE_APC_LIST WHERE WIN_YN = 'Y' AND RAFFLE_ID = A.RAFFLE_ID) AS WIN_CNT
+                 , COALESCE(B.WIN_YN, 'N') AS win_yn
+                 , (SELECT COUNT(*) FROM RAFFLE_APC_LIST WHERE WIN_YN = 'Y' AND RAFFLE_ID = A.RAFFLE_ID) AS win_cnt
             FROM RAFFLE A
                  LEFT OUTER JOIN RAFFLE_APC_LIST B 
                  ON A.RAFFLE_ID = B.RAFFLE_ID
                  AND B.WIN_YN = 'Y'
                  AND B.USER_ID = ?
+            WHERE A.DEL_YN = 'N'
             ORDER BY RAFFLE_END_DATE DESC
         `;
 
@@ -104,13 +112,15 @@ raffle.submit = async (req, res) => {
             (
                 RAFFLE_ID
                 , USER_ID
-                , RAFFLE_APC_DATE
                 , WIN_YN
+                , created_at
+                , updated_at
             )VALUES(
                 ?
                 , ?
-                , NOW()
                 , ?
+                , NOW()
+                , NOW()
             )
         `;
         await connection.query(sql, [raffleId, userId, winYn, userId]);
@@ -154,6 +164,8 @@ raffle.addRaffle = async (req, res) => {
                 , RAFFLE_IMG_SRC
                 , WIN_MAX_CNT
                 , WIN_RATE
+                , created_at
+                , updated_at
             )VALUES(
                 ?
                 , NOW()
@@ -162,6 +174,8 @@ raffle.addRaffle = async (req, res) => {
                 , ?
                 , ?
                 , ?
+                , NOW()
+                , NOW()
             )
         `;
         await connection.query(sql, [raffleName, raffleEndDate, rafflePoint, filename, winner, rate]);
@@ -205,6 +219,36 @@ raffle.getWinnerList = async (req, res) => {
         console.log(error);
         res.status(500).json(error)
     }
+}
+
+raffle.delete = async (req, res) => {
+
+    // 트랜잭션 설정
+    const t = await sequelize.transaction();
+
+    try {
+        const { raffleId } = req.params;
+
+        await Raffle.update({
+            delYn: 'Y',
+        },{
+            where: {
+                raffleId: raffleId,
+            },
+            transaction: t,
+        });
+
+        // 커밋
+        await t.commit();
+
+        return res.status(CODE.OK).send(UTIL.success(1));
+    } catch (error) {
+        // 롤백
+        await t.rollback();
+        console.log(error)
+        return res.status(CODE.INTERNAL_SERVER_ERROR).send(UTIL.fail('raffle delete Fail'));
+    }
+
 }
 
 module.exports = raffle;

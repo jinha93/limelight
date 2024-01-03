@@ -18,16 +18,16 @@ function Raffle() {
         }).then((result) => {
             const _inputData = result.data.map((rowData) => (
                 {
-                    raffleId: rowData.RAFFLE_ID,
-                    raffleName: rowData.RAFFLE_NAME,
-                    raffleStdDate: rowData.RAFFLE_STD_DATE,
-                    raffleEndDate: rowData.RAFFLE_END_DATE,
-                    rafflePoint: rowData.RAFFLE_POINT,
-                    raffleImgSrc: rowData.RAFFLE_IMG_SRC,
-                    winMaxCnt: rowData.WIN_MAX_CNT,
-                    winRate: rowData.WIN_RATE,
-                    winYn: rowData.WIN_YN,
-                    winCnt: rowData.WIN_CNT
+                    raffleId: rowData.raffle_id,
+                    raffleName: rowData.raffle_name,
+                    raffleStdDate: rowData.raffle_std_date,
+                    raffleEndDate: rowData.raffle_end_date,
+                    rafflePoint: rowData.raffle_point,
+                    raffleImgSrc: rowData.raffle_img_src,
+                    winMaxCnt: rowData.win_max_cnt,
+                    winRate: rowData.win_rate,
+                    winYn: rowData.win_yn,
+                    winCnt: rowData.win_cnt
                 })
             )
             //초기 값 세팅

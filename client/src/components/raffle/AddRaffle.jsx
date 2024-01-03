@@ -102,7 +102,7 @@ function AddRaffle() {
                                                 </label>
                                                 <div className="mt-2 flex rounded-md shadow-sm">
                                                     <input
-                                                        type="date"
+                                                        type="datetime-local"
                                                         id="raffleEndDate"
                                                         name="raffleEndDate"
                                                         className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#be86ea] sm:text-sm sm:leading-6 outline outline-0"
