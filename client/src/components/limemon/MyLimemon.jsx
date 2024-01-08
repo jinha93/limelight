@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Alert from '../common/Alert';
-import ResultAlert from "./common/ResultAlert";
 
 import Limemon from "./Limemon"
 import QuestList from "./quest/QuestList"
@@ -63,17 +62,11 @@ export default function MyLimemon() {
     ]
     const [selectMenu, setSelectMenu] = useState('Q');
 
-    // ResultAlert
-    const [isResultAlert, setIsResultAlert] = useState(false);
-    const [resultAlertData, setResultAlertData] = useState({ type: '', title: '', text: ''});
-
     // 베타ver 팝업
     const [isBetaPopup, setIsBetaPopup] = useState(false);
 
     return (
         <>
-            {/* 퀘스트 결과 표시 */}
-            {isResultAlert ? <ResultAlert type={resultAlertData.type} title={resultAlertData.title} text={resultAlertData.text}/> : null}
 
             {/* 로그인 alert */}
             {isAlert ? <Alert type={'danger'} text={<span>You can use it after logging in. <a href={discordUrl} className="underline">Go to the login page.</a></span>} /> : null}
@@ -114,8 +107,6 @@ export default function MyLimemon() {
                             setIsAlert={setIsAlert}
                             limemonList={limemonList}
                             getLimemonList={getLimemonList}
-                            setIsResultAlert={setIsResultAlert}
-                            setResultAlertData={setResultAlertData}
 
                             setIsBetaPopup={setIsBetaPopup}
                         />
@@ -127,8 +118,6 @@ export default function MyLimemon() {
                                 ?
                                 <QuestList
                                     setIsAlert={setIsAlert}
-                                    setIsResultAlert={setIsResultAlert}
-                                    setResultAlertData={setResultAlertData}
                                     getLimemonList={getLimemonList}
                                 />
                                 :

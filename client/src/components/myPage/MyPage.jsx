@@ -1,7 +1,7 @@
 import UsePointTable from "./UsePointTable";
 import Alert from '../common/Alert';
 import Info from "./Info";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function MyPage(props) {
   //TODO 작성

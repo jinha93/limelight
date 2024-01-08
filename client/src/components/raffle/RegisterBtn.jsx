@@ -153,7 +153,7 @@ function RegistBtn(props) {
                             <button
                                 type="button"
                                 className="w-full inline-block mt-3 px-6 py-2 bg-[#be86ea] text-white leading-tight rounded-full shadow-md hover:bg-purple-500 hover:shadow-lg"
-                                onClick={() => { Congratulation(); }}
+                                onClick={Congratulation}
                             >
                                 Congratulation
                             </button>

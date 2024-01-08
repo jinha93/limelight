@@ -76,8 +76,6 @@ export default function QuestList(props) {
                                 getLimemonList={props.getLimemonList}
 
                                 setIsAlert={props.setIsAlert}
-                                setIsResultAlert={props.setIsResultAlert}
-                                setResultAlertData={props.setResultAlertData}
                             />
                         )
                     })

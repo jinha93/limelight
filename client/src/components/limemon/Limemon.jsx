@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function Limemon(props) {
     // 라임몬 레벨업
@@ -13,12 +14,7 @@ export default function Limemon(props) {
         const requireExp = limemon.LimemonLevelInfo.requiredExp;
 
         if (exp < requireExp) {
-            // alert('Not enough exp');
-            props.setResultAlertData({ type: 'danger', title: 'Claim Failed', text: 'Not enough exp' })
-            props.setIsResultAlert(true);
-            setTimeout(() => {
-                props.setIsResultAlert(false);
-            }, 3000)
+            toast.error('Not enough exp')
             return;
         }
 
@@ -87,7 +83,7 @@ export default function Limemon(props) {
         <>
             
             <div className="flex flex-col items-center h-full">
-                <div className='border-2 border-gray-900 rounded-lg mx-auto relative w-96 h-96'>
+                <div className='border-2 border-gray-900 rounded-lg mx-auto relative w-full pb-[100%]'>
                     {
                         limemon
                             ?
