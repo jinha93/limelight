@@ -61,7 +61,7 @@ function Team(props) {
                         <img
                             className='mx-auto rounded-t-xl mb-1'
                             src={team.imageSrc}
-                            alt=""
+                            alt={team.name}
                         />
                         <h5 className='text-lg font-bold'>{team.name}</h5>
                         <p className='text-sm text-gray-600'>{team.role}</p>

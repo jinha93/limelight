@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import ImageUploadBox from "./ImageUploadBox";
 
 function AddRaffle() {
@@ -19,7 +19,7 @@ function AddRaffle() {
         formData.append('winner',e.target.winner.value)
         formData.append('rate',e.target.rate.value)
 
-        if(file == undefined){
+        if(file === undefined){
             alert('이미지는 필수입니다.')
             return false;
         }
@@ -42,7 +42,7 @@ function AddRaffle() {
             window.location.href = '/raffle';
         }).catch((error) => {
             // 어드민 에러
-            if (error.response.status == 403) {
+            if (error.response.status === 403) {
                 alert('관리자만 사용 가능합니다.')
             }
             console.log(error);

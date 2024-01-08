@@ -12,7 +12,13 @@ import Raffle from './components/raffle/Raffle';
 import AddRaffle from './components/raffle/AddRaffle';
 import MyPage from './components/myPage/MyPage'
 import MyLimemon from './components/limemon/MyLimemon';
+import Idle from './components/idle/Idle';
+
+
 import { Fragment } from 'react';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 import JSConfetti from "js-confetti";
 export const conteffi = new JSConfetti();
@@ -20,7 +26,12 @@ export const conteffi = new JSConfetti();
 function App() {
   return (
     <div className="App">
-      <Navigation></Navigation>
+      {/* toast */}
+      <ToastContainer/>
+
+      {/* nav */}
+      <Navigation/>
+
       <Routes>
         <Route
           path='/'
@@ -36,6 +47,7 @@ function App() {
         <Route path='/addRaffle' element={<AddRaffle />} />
         <Route path='/myPage' element={<MyPage />} />
         <Route path='/limemon' element={<MyLimemon />} />
+        <Route path='/idle' element={<Idle />} />
         <Route path='/*' element={<NotFound />} />
       </Routes>
     </div>

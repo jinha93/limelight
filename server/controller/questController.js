@@ -89,7 +89,7 @@ quest.claim = async (req, res) => {
         const { questId } = req.body;
 
         // 퀘스트 서브미션 정보 조회
-        const {submissionType, submissionValue} = await Submission.findOne({
+        const submissions = await Submission.findAll({
             attributes: [['type', 'submissionType'], ['value', 'submissionValue']],
             where: {
                 quest_id: questId,
@@ -98,51 +98,56 @@ quest.claim = async (req, res) => {
             transaction: t,
         })
 
-        // DISCORD ROLE CHECK
-        if(submissionType === 'DISCORD_ROLE'){
-            const {tokenType, accessToken} = await User.findOne({
-                attributes: ['tokenType', 'accessToken'],
-                where: {
-                    user_id: userId,
-                },
-                transaction: t,
-            })
+        for(let submission of submissions){
+            const {submissionType, submissionValue} = submission;
 
-            const guildId = process.env.LIMELIGHT_DISCORD_GUILD_ID;
-            const userGuildResponseData = await request(`https://discord.com/api/users/@me/guilds/${guildId}/member`, {
-                headers: {
-                    authorization: `${tokenType} ${accessToken}`,
-                },
-            });
+            // DISCORD ROLE CHECK
+            if(submissionType === 'DISCORD_ROLE'){
+                const {tokenType, accessToken} = await User.findOne({
+                    attributes: ['tokenType', 'accessToken'],
+                    where: {
+                        user_id: userId,
+                    },
+                    transaction: t,
+                })
 
-            const userGuildData = await userGuildResponseData.body.json();
+                const guildId = process.env.LIMELIGHT_DISCORD_GUILD_ID;
+                const userGuildResponseData = await request(`https://discord.com/api/users/@me/guilds/${guildId}/member`, {
+                    headers: {
+                        authorization: `${tokenType} ${accessToken}`,
+                    },
+                });
 
-            // 보유 role 중 quest 요구사항 role id가 존재하지 않는 경우
-            const result = userGuildData.roles.includes(submissionValue);
-            if(!result){
-                await t.rollback();
-                return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Discord role'));
-            }
-        }else if(submissionType === 'TEXT'){
-            const { inputText } = req.body;
-            if(inputText !== submissionValue){
-                await t.rollback();
-                return res.status(CODE.BAD_REQUEST).send(UTIL.fail('Input Text Not Matched'));
-            }
-        }else if(submissionType === 'LIMEMON_LEVEL'){
-            const limemon = await Limemon.findOne({
-                where: {
-                    userId: userId,
-                    mainYn: 'Y',
-                },
-                transaction: t,
-            });
+                const userGuildData = await userGuildResponseData.body.json();
 
-            if(limemon.level < submissionValue){
-                await t.rollback();
-                return res.status(CODE.BAD_REQUEST).send(UTIL.fail('LIMEMON level is lower than target level.'));
+                // 보유 role 중 quest 요구사항 role id가 존재하지 않는 경우
+                const result = userGuildData.roles.includes(submissionValue);
+                if(!result){
+                    await t.rollback();
+                    return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Discord role'));
+                }
+            }else if(submissionType === 'TEXT'){
+                const { inputText } = req.body;
+                if(inputText !== submissionValue){
+                    await t.rollback();
+                    return res.status(CODE.BAD_REQUEST).send(UTIL.fail('Input Text Not Matched'));
+                }
+            }else if(submissionType === 'LIMEMON_LEVEL'){
+                const limemon = await Limemon.findOne({
+                    where: {
+                        userId: userId,
+                        mainYn: 'Y',
+                    },
+                    transaction: t,
+                });
+
+                if(limemon.level < submissionValue){
+                    await t.rollback();
+                    return res.status(CODE.BAD_REQUEST).send(UTIL.fail('level is lower than target level.'));
+                }
             }
         }
+      
 
         // 퀘스트 상태 INSERT
         await QuestStatus.upsert({

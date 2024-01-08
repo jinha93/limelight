@@ -1,4 +1,4 @@
-import { FaTimes, FaTimesCircle } from "react-icons/fa"
+import { FaTimesCircle } from "react-icons/fa"
 
 function ImagePreview({ image, deleteFunc }) {
     return (

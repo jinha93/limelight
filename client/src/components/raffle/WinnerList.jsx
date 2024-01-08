@@ -22,7 +22,7 @@ export default function WinnerList(props) {
             setWinnerList(_inputData)
         }).catch((error) => {
             // 어드민 에러
-            if (error.response.status == 403) {
+            if (error.response.status === 403) {
                 alert('관리자만 사용 가능합니다.')
             }
             console.log(error);

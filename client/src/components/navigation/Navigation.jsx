@@ -40,6 +40,7 @@ const menus = [
 
 
 function Navigation() {
+
     //모바일 메뉴 토글 버튼 동작 함수
     const [isOpen, setMenu] = useState(false);
     const toggleMenu = () => {
@@ -50,11 +51,12 @@ function Navigation() {
     const [isSpa, setIsSpa] = useState(false);
     useEffect(() => {
         const pathname = window.location.pathname;
-        console.log(pathname);
         if(pathname === '/'){
             setIsSpa(true)
         }
     },[])
+
+    if (window.location.pathname === "/idle") return null;
 
 
     return (

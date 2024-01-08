@@ -8,7 +8,7 @@ function About(props) {
     function importAll(r) {
         let files = {};
         r.keys().map((item, index) => {
-            files[item.replace("./", "")] = r(item);
+            return files[item.replace("./", "")] = r(item);
         });
 
         const arr = [];
@@ -63,6 +63,7 @@ function About(props) {
                         key={imgSrc}
                         className='w-full object-cover rounded-xl'
                         src={imgSrc}
+                        alt='about-img'
                     />
                 ))}
             </div>

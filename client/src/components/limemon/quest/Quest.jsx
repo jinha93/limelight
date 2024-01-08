@@ -8,6 +8,8 @@ import { FcApproval, FcRating } from "react-icons/fc"
 import InputText from "./InputText";
 import Button from "../common/Button";
 
+import { toast } from 'react-toastify';
+
 export default function Quest({ quest, getQuestList, getLimemonList, setIsAlert, setIsResultAlert, setResultAlertData }) {
 
     // Loader
@@ -25,7 +27,9 @@ export default function Quest({ quest, getQuestList, getLimemonList, setIsAlert,
     }
 
     // 퀘스트 클레임
-    const cliam = (questId, inputText) => {
+    const cliam = async (questId, inputText) => {
+        const id = toast.loading("Please wait...")
+
         setShowLoader(true)
 
         axios({
@@ -43,6 +47,18 @@ export default function Quest({ quest, getQuestList, getLimemonList, setIsAlert,
                     getLimemonList();
                     fnClose();
                 }
+                toast.update(
+                    id, 
+                    { 
+                        render: 'Claim is Success',
+                        type: "success", 
+                        isLoading: false,
+                        autoClose: 5000,
+                        closeButton:true,
+                        closeOnClick: true,
+                        draggable: true,
+                    }
+                );
             }, 1000)
         }).catch((error) => {
             setTimeout(() => {
@@ -52,15 +68,23 @@ export default function Quest({ quest, getQuestList, getLimemonList, setIsAlert,
                     // alert 활성화
                     setIsAlert(true);
                 } else {
-                    setResultAlertData({ type: 'danger', title: 'Claim Failed', text: error.response.data.message })
-                    setIsResultAlert(true);
-                    setTimeout(() => {
-                        setIsResultAlert(false);
-                    }, 3000)
+                    toast.update(
+                        id, 
+                        { 
+                            render: error.response.data.message, 
+                            type: "error", 
+                            isLoading: false,
+                            autoClose: 5000,
+                            closeButton:true,
+                            closeOnClick: true,
+                            draggable: true,
+                        }
+                    );
                 }
             }, 1000)
         })
     }
+
 
     return (
         <>
