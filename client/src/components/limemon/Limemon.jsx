@@ -36,25 +36,6 @@ export default function Limemon(props) {
         })
     }
 
-    const reset = (limemonId) => {
-        axios({
-            url: `/api/limemon/${limemonId}/reset`,
-            method: 'PUT'
-        }).then((response) => {
-            if (response.data.success) {
-                props.getLimemonList();
-            }
-        }).catch((error) => {
-            // 로그인 세션 에러
-            if (error.response.status === 401) {
-                // alert 활성화
-                props.setIsAlert(true);
-            } else {
-                alert(error.response.data.message);
-            }
-        })
-    }
-
     const [limemon, setLimemon] = useState();
     useEffect(() => {
         setLimemon(props.limemonList[0])
@@ -121,12 +102,6 @@ export default function Limemon(props) {
                     {
                         limemon ?
                             <div>
-                                <button
-                                    className="rounded-lg shadow bg-red-400 text-white px-2 py-1 text-sm uppercase"
-                                    onClick={() => reset(limemon.limemonId)}
-                                >
-                                    RESET
-                                </button>
                                 <button
                                     className="rounded-lg shadow bg-yellow-400 text-white px-2 py-1 text-sm uppercase"
                                     onClick={() => levelUp(limemon.limemonId)}

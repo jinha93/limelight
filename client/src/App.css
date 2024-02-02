@@ -22,3 +22,41 @@ html{
     /* object-fit: cover; */
     /* background-repeat: no-repeat; */
 }
+
+
+@font-face {
+    font-family: 'SUITE-Light';
+    src: url(./assets/fonts/SUITE-ttf/SUITE-Light.ttf);   
+}
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url(./assets/fonts/SUITE-ttf/SUITE-Regular.ttf);   
+}
+@font-face {
+    font-family: 'SUITE-Medium';
+    src: url(./assets/fonts/SUITE-ttf/SUITE-Medium.ttf);   
+}
+@font-face {
+    font-family: 'SUITE-SemiBold';
+    src: url(./assets/fonts/SUITE-ttf/SUITE-SemiBold.ttf);   
+}
+@font-face {
+    font-family: 'SUITE-Bold';
+    src: url(./assets/fonts/SUITE-ttf/SUITE-Bold.ttf);   
+}
+@font-face {
+    font-family: 'SUITE-ExtraBold';
+    src: url(./assets/fonts/SUITE-ttf/SUITE-ExtraBold.ttf);   
+}
+@font-face {
+    font-family: 'SUITE-Heavy';
+    src: url(./assets/fonts/SUITE-ttf/SUITE-Heavy.ttf);   
+}
+
+.SUITE-Light {font-family: 'SUITE-Light' !important;}
+.SUITE-Regular {font-family: 'SUITE-Regular' !important;}
+.SUITE-Medium {font-family: 'SUITE-Medium' !important;}
+.SUITE-SemiBold {font-family: 'SUITE-SemiBold' !important;}
+.SUITE-Bold {font-family: 'SUITE-Bold' !important;}
+.SUITE-ExtraBold {font-family: 'SUITE-ExtraBold' !important;}
+.SUITE-Heavy {font-family: 'SUITE-Heavy' !important;}
