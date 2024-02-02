@@ -141,6 +141,13 @@ quest.claim = async (req, res) => {
                     transaction: t,
                 });
 
+                console.log(limemon);
+
+                if(limemon === null){
+                    await t.rollback();
+                    return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Limemon'));
+                }
+
                 if(limemon.level < submissionValue){
                     await t.rollback();
                     return res.status(CODE.BAD_REQUEST).send(UTIL.fail('level is lower than target level.'));
@@ -267,7 +274,7 @@ quest.claim = async (req, res) => {
         // 롤백
         await t.rollback();
         console.log(error)
-        return res.status(CODE.INTERNAL_SERVER_ERROR).send(UTIL.fail(MSG.QUEST_CLAIM_FAIL));
+        return res.status(CODE.INTERNAL_SERVER_ERROR).send(UTIL.fail('Claim is Fail'));
     }
 }
 

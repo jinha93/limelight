@@ -31,11 +31,11 @@ const menus = [
         href: '/raffle',
         spaYn: 'N'
     },
-    // {
-    //     name: 'LIMEMON',
-    //     href: '/limemon',
-    //     spaYn: 'N'
-    // }
+    {
+        name: 'LIMEMON',
+        href: '/limemon',
+        spaYn: 'N'
+    }
 ]
 
 
@@ -51,92 +51,49 @@ function Navigation() {
     const [isSpa, setIsSpa] = useState(false);
     useEffect(() => {
         const pathname = window.location.pathname;
-        if(pathname === '/'){
+        if (pathname === '/') {
             setIsSpa(true)
         }
-    },[])
+    }, [])
 
-    if (window.location.pathname === "/idle") return null;
-
-
-    return (
-        <nav className="fixed w-full items-center py-5 z-20">
-            <div className="mx-auto rounded-2xl w-3/4 p-5 h-20 bg-white shadow flex items-center justify-between">
-                {isSpa === true
-                ?
-                <a href='/#'>
-                    <span className="text-xl cursor-pointer">
-                        <img className="h-8 inline mr-3" alt='logo' src={logo}/>
-                        LIMELIGHT
-                    </span>
-                </a>
-                :
-                <NavLink to="/" onClick={()=>setIsSpa(true)}>
-                    <span className="text-xl cursor-pointer">
-                        <img className="h-8 inline mr-3" alt='logo' src={logo}/>
-                        LIMELIGHT
-                    </span>
-                </NavLink>
-                }
-
-                <ul className="hidden lg:flex items-center">
-                    {menus.map((menu, idx) => (
-                        isSpa === true
+    if (
+        window.location.pathname === "/"
+        || window.location.pathname === "/rank" 
+        || window.location.pathname === "/raffle"
+        || window.location.pathname === "/addRaffle"
+        || window.location.pathname === "/myPage"
+        || window.location.pathname === "/limemon"
+    ) {
+        return (
+            <nav className="fixed w-full items-center py-5 z-20">
+                <div className="mx-auto rounded-2xl w-3/4 p-5 h-20 bg-white shadow flex items-center justify-between">
+                    {isSpa === true
                         ?
-                            menu.spaYn === 'Y'
-                            ?
-                            <a 
-                                key={idx}
-                                href={'#'+menu.href}
-                                className="mx-4 cursor-pointer hover:text-[#ABDB25]"
-                            >
-                                {menu.name}
-                            </a>
-                            :
-                            <NavLink
-                                key={idx}
-                                to={menu.href}
-                                className="mx-4 cursor-pointer hover:text-[#ABDB25]"
-                                onClick={()=>setIsSpa(false)}
-                            >
-                                {menu.name}
-                            </NavLink>
+                        <a href='/#'>
+                            <span className="text-xl cursor-pointer">
+                                <img className="h-8 inline mr-3" alt='logo' src={logo} />
+                                LIMELIGHT
+                            </span>
+                        </a>
                         :
-                            menu.spaYn === 'Y'
-                            ?
-                            <NavLink
-                                key={idx}
-                                to={'/'}
-                                className="mx-4 cursor-pointer hover:text-[#ABDB25]"
-                                onClick={()=>setIsSpa(true)}
-                            >
-                                {menu.name}
-                            </NavLink>
-                            :
-                            <NavLink
-                                key={idx}
-                                to={menu.href}
-                                className="mx-4 cursor-pointer hover:text-[#ABDB25]"
-                            >
-                                {menu.name}
-                            </NavLink>
-                    ))}
-                </ul>
+                        <NavLink to="/" onClick={() => setIsSpa(true)}>
+                            <span className="text-xl cursor-pointer">
+                                <img className="h-8 inline mr-3" alt='logo' src={logo} />
+                                LIMELIGHT
+                            </span>
+                        </NavLink>
+                    }
 
-                <div className="lg:hidden -my-2 -mr-1">
-                    <FaListUl size="24" onClick={()=>toggleMenu()}/>
-                    <div className={isOpen ? "relative z-20" : "hidden"}>
-                        <div className="absolute right-0 w-56 mt-4 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg p-2" onClick={()=>toggleMenu()}>
-                            <div>
-                            {menus.map((menu, idx) => (
-                                isSpa === true
+                    <ul className="hidden lg:flex items-center">
+                        {menus.map((menu, idx) => (
+                            isSpa === true
                                 ?
-                                    menu.spaYn === 'Y'
+                                menu.spaYn === 'Y'
                                     ?
-                                    <a 
+                                    <a
                                         key={idx}
-                                        href={'#'+menu.href}
-                                        className="block px-4 py-2 text-sm rounded-lg"
+                                        href={'#' + menu.href}
+                                        className="mx-4 cursor-pointer hover:text-[#ABDB25]"
                                     >
                                         {menu.name}
                                     </a>
@@ -144,19 +101,19 @@ function Navigation() {
                                     <NavLink
                                         key={idx}
                                         to={menu.href}
-                                        className="block px-4 py-2 text-sm rounded-lg"
-                                        onClick={()=>setIsSpa(false)}
+                                        className="mx-4 cursor-pointer hover:text-[#ABDB25]"
+                                        onClick={() => setIsSpa(false)}
                                     >
                                         {menu.name}
                                     </NavLink>
                                 :
-                                    menu.spaYn === 'Y'
+                                menu.spaYn === 'Y'
                                     ?
                                     <NavLink
                                         key={idx}
                                         to={'/'}
-                                        className="block px-4 py-2 text-sm rounded-lg"
-                                        onClick={()=>setIsSpa(true)}
+                                        className="mx-4 cursor-pointer hover:text-[#ABDB25]"
+                                        onClick={() => setIsSpa(true)}
                                     >
                                         {menu.name}
                                     </NavLink>
@@ -164,24 +121,73 @@ function Navigation() {
                                     <NavLink
                                         key={idx}
                                         to={menu.href}
-                                        className="block px-4 py-2 text-sm rounded-lg"
+                                        className="mx-4 cursor-pointer hover:text-[#ABDB25]"
                                     >
                                         {menu.name}
                                     </NavLink>
-                            ))}
+                        ))}
+                    </ul>
+
+                    <div className="lg:hidden -my-2 -mr-1">
+                        <FaListUl size="24" onClick={() => toggleMenu()} />
+                        <div className={isOpen ? "relative z-20" : "hidden"}>
+                            <div className="absolute right-0 w-56 mt-4 origin-top-right bg-white border border-gray-100 rounded-md shadow-lg p-2" onClick={() => toggleMenu()}>
+                                <div>
+                                    {menus.map((menu, idx) => (
+                                        isSpa === true
+                                            ?
+                                            menu.spaYn === 'Y'
+                                                ?
+                                                <a
+                                                    key={idx}
+                                                    href={'#' + menu.href}
+                                                    className="block px-4 py-2 text-sm rounded-lg"
+                                                >
+                                                    {menu.name}
+                                                </a>
+                                                :
+                                                <NavLink
+                                                    key={idx}
+                                                    to={menu.href}
+                                                    className="block px-4 py-2 text-sm rounded-lg"
+                                                    onClick={() => setIsSpa(false)}
+                                                >
+                                                    {menu.name}
+                                                </NavLink>
+                                            :
+                                            menu.spaYn === 'Y'
+                                                ?
+                                                <NavLink
+                                                    key={idx}
+                                                    to={'/'}
+                                                    className="block px-4 py-2 text-sm rounded-lg"
+                                                    onClick={() => setIsSpa(true)}
+                                                >
+                                                    {menu.name}
+                                                </NavLink>
+                                                :
+                                                <NavLink
+                                                    key={idx}
+                                                    to={menu.href}
+                                                    className="block px-4 py-2 text-sm rounded-lg"
+                                                >
+                                                    {menu.name}
+                                                </NavLink>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="hidden lg:flex justify-between items-center gap-3">
-                    <Login/>
-                    <div className="border border-black"></div>
-                    <DropDown/>
+                    <div className="hidden lg:flex justify-between items-center gap-3">
+                        <Login />
+                        <div className="border border-black"></div>
+                        <DropDown />
+                    </div>
                 </div>
-            </div>
-        </nav >
-    )
+            </nav >
+        );
+    }
 }
 
 export default Navigation;
