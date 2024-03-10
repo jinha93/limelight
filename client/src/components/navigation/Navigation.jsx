@@ -2,8 +2,8 @@ import logo from "../../assets/images/lime.png";
 import { NavLink } from "react-router-dom";
 import { FaListUl } from "react-icons/fa"
 import { useState, useEffect } from "react";
-import Login from './Login';
-import DropDown from './DropDown';
+
+import { FaDiscord, FaXTwitter, FaTelegram } from "react-icons/fa6";
 
 const menus = [
     {
@@ -21,22 +21,24 @@ const menus = [
         href: 'team',
         spaYn: 'Y'
     },
-    {
-        name: 'RANK',
-        href: '/rank',
-        spaYn: 'N'
-    },
+    // {
+    //     name: 'RANK',
+    //     href: '/rank',
+    //     spaYn: 'N'
+    // },
     {
         name: 'RAFFLE',
         href: '/raffle',
         spaYn: 'N'
     },
-    {
-        name: 'LIMEMON',
-        href: '/limemon',
-        spaYn: 'N'
-    }
+    // {
+    //     name: 'LIMEMON',
+    //     href: '/limemon',
+    //     spaYn: 'N'
+    // }
 ]
+
+
 
 
 function Navigation() {
@@ -58,7 +60,7 @@ function Navigation() {
 
     if (
         window.location.pathname === "/"
-        || window.location.pathname === "/rank" 
+        || window.location.pathname === "/rank"
         || window.location.pathname === "/raffle"
         || window.location.pathname === "/addRaffle"
         || window.location.pathname === "/myPage"
@@ -179,10 +181,21 @@ function Navigation() {
                         </div>
                     </div>
 
-                    <div className="hidden lg:flex justify-between items-center gap-3">
-                        <Login />
-                        <div className="border border-black"></div>
-                        <DropDown />
+                    {/* <div className="hidden lg:flex justify-between items-center gap-3"> */}
+                    {/* <Login /> */}
+                    {/* <div className="border border-black"></div> */}
+                    {/* <DropDown /> */}
+                    {/* </div> */}
+                    <div className="flex justify-between px-8 py-2 text-[#9B9C98] gap-2">
+                        <a href="https://discord.gg/limelight-kor" className="hover:text-[#7c7a75]" target="_blank" rel="noreferrer">
+                            <FaDiscord size={22} />
+                        </a>
+                        <a href="https://twitter.com/limelight_kor" className="hover:text-[#7c7a75]" target="_blank" rel="noreferrer">
+                            <FaXTwitter size={22} />
+                        </a>
+                        <a href="https://t.me/limelight_kor" className="hover:text-[#7c7a75]" target="_blank" rel="noreferrer">
+                            <FaTelegram size={22} />
+                        </a>
                     </div>
                 </div>
             </nav >

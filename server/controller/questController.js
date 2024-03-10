@@ -25,16 +25,8 @@ quest.findAll = async (req, res) => {
     try {
         const userId = req.session.userId ? req.session.userId : null;
 
-        const dynamicConditions = {};
-        // console.log(req.params);
-        const { recurrence } = req.params;
-        if(recurrence !== 'ALL'){
-            dynamicConditions.recurrence = recurrence;
-        }
-
         const quest = await Quest.findAll({
             order: [['updated_at','DESC']],
-            where: dynamicConditions,
             include: [{
                 model: Submission,
                 attributes: ['type'],

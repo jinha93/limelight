@@ -107,9 +107,9 @@ auth.signIn = async function(req, res) {
 	
 
 	if(process.env.NODE_ENV === 'development'){
-        return res.redirect('http://localhost:3000')
+        return res.redirect('http://localhost:3000/idle')
     }else{
-        return res.redirect('/')
+        return res.redirect('/idle')
     }
 }
 
