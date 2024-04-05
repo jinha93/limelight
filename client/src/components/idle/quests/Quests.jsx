@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from "react"
 
-import lime from "../../assets/images/lime.png"
+import lime from "../../../assets/images/lime.png"
 
 import { FaDiscord } from "react-icons/fa"
 import { FcRating } from "react-icons/fc"
@@ -9,8 +9,8 @@ import { toast } from 'react-toastify';
 
 import InputText from "./InputText";
 
-import { ReactComponent as QuestCheckicon03 } from "../../assets/icons/QuestCheckicon-03.svg"
-import { ReactComponent as QuestCheckicon04 } from "../../assets/icons/QuestCheckicon-04.svg"
+import { ReactComponent as QuestCheckicon03 } from "../../../assets/icons/QuestCheckicon-03.svg"
+import { ReactComponent as QuestCheckicon04 } from "../../../assets/icons/QuestCheckicon-04.svg"
 
 export default function Quests() {
 
@@ -29,9 +29,6 @@ export default function Quests() {
             const questList = [...response.data.result];
             setQuestList(questList);
         }).catch((error) => {
-            // 로그인 세션 에러
-            if (error.response.status === 401) {
-            }
             console.log(error);
         })
     }
@@ -79,21 +76,24 @@ export default function Quests() {
             }, 1000)
         }).catch((error) => {
             setTimeout(() => {
+                toast.update(
+                    id, 
+                    { 
+                        render: error.response.data.message, 
+                        type: "error", 
+                        isLoading: false,
+                        autoClose: 5000,
+                        closeButton:true,
+                        closeOnClick: true,
+                        draggable: true,
+                    }
+                );
+
                 // 로그인 세션 에러
                 if (error.response.status === 401) {
+                    
                 } else {
-                    toast.update(
-                        id, 
-                        { 
-                            render: error.response.data.message, 
-                            type: "error", 
-                            isLoading: false,
-                            autoClose: 5000,
-                            closeButton:true,
-                            closeOnClick: true,
-                            draggable: true,
-                        }
-                    );
+                    
                 }
             }, 1000)
         })

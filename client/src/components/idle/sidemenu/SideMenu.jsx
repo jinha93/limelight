@@ -1,12 +1,12 @@
 import { NavLink, useLocation  } from 'react-router-dom';
 
-import { ReactComponent as MYLIMEMON } from "../../assets/icons/MYLIMEMON.svg"
-import { ReactComponent as ITEMS } from "../../assets/icons/ITEMS.svg"
-import { ReactComponent as QUESTS } from "../../assets/icons/QUESTS.svg"
-import { ReactComponent as SHOP } from "../../assets/icons/SHOP.svg"
-import { ReactComponent as LEADERBOARD } from "../../assets/icons/LEADERBOARD.svg"
-import { ReactComponent as EVENTS } from "../../assets/icons/EVENTS.svg"
-import { ReactComponent as MORE1 } from "../../assets/icons/MORE1.svg"
+import { ReactComponent as MYLIMEMON } from "../../../assets/icons/MYLIMEMON.svg"
+import { ReactComponent as ITEMS } from "../../../assets/icons/ITEMS.svg"
+import { ReactComponent as QUESTS } from "../../../assets/icons/QUESTS.svg"
+import { ReactComponent as SHOP } from "../../../assets/icons/SHOP.svg"
+import { ReactComponent as LEADERBOARD } from "../../../assets/icons/LEADERBOARD.svg"
+import { ReactComponent as EVENTS } from "../../../assets/icons/EVENTS.svg"
+import { ReactComponent as MORE1 } from "../../../assets/icons/MORE1.svg"
 
 import SideMenuItem from './SideMenuItem';
 import SocialLink from './SocialLink';
@@ -87,7 +87,7 @@ export default function SideMenu() {
     ];
 
     return (
-        <div className="col-span-1 border-r border-[#7c7a75] overflow-y-auto relative">
+        <div className="col-span-3 xl:col-span-2 border-r border-[#7c7a75] overflow-y-auto relative">
 
             {/* Connect Wallet */}
             <Connect />

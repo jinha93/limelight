@@ -14,8 +14,8 @@ import Raffle from './components/raffle/Raffle';
 
 // idle
 import Layout from './components/idle/Layout';
-import MyLimemon from './components/idle/MyLimemon';
-import Quests from './components/idle/Quests';
+import MyLimemon from './components/idle/myLimemon/MyLimemon';
+import Quests from './components/idle/quests/Quests';
 
 // 색종이 날림 효과
 import JSConfetti from "js-confetti";

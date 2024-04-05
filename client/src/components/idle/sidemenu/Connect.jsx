@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { FaRegTimesCircle } from "react-icons/fa"
 
 import { useSelector, useDispatch } from 'react-redux'
-import { signIn, signOut } from '../../reducers/userSlice'
+import { signIn, signOut } from '../../../reducers/userSlice'
 
-import limemon from '../../assets/images/limemon.jpg';
+import limemon from '../../../assets/images/limemon.jpg';
 import { useNavigate } from 'react-router-dom';
 
 
