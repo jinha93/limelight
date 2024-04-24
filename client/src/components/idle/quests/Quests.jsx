@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import TopInfo from "../TopInfo";
 import InputText from "./InputText";
 import AddQuest from './AddQuest';
+import Loading from '../Loading';
 
 import { ReactComponent as QuestCheckicon03 } from "../../../assets/icons/QuestCheckicon-03.svg"
 import { ReactComponent as QuestCheckicon04 } from "../../../assets/icons/QuestCheckicon-04.svg"
@@ -69,7 +70,9 @@ export default function Quests() {
                     fnClose();
                     
                     // reducer 포인트 업데이트
-                    dispatch(setPoint(Number(response.data.result.point)))
+                    if(response.data.result.point > 0){
+                        dispatch(setPoint(Number(response.data.result.point)))
+                    }
                 }
                 toast.update(
                     id,
@@ -117,6 +120,8 @@ export default function Quests() {
 
     return (
         <>
+            <Loading/>
+            
             {/* 퀘스트 생성 */}
             {isAddQuest ? <AddQuest isAddQuestClick={isAddQuestClick} getQuestList={getQuestList} /> : null}
 

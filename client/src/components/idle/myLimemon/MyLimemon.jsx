@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import TopInfo from "../TopInfo";
 import Item from "./Item";
+import Loading from '../Loading';
 
 export default function MyLimemon() {
 
@@ -87,6 +88,8 @@ export default function MyLimemon() {
     }, [limemonList])
 
     return (
+        <>
+        <Loading/>
         <div className='h-full'>
             <TopInfo
                 title={'MY LIMEMON'}
@@ -279,6 +282,7 @@ export default function MyLimemon() {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 

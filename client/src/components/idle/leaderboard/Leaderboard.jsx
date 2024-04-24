@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from "react"
 import TopInfo from "../TopInfo"
 import Pagination from './Pagination';
+import Loading from '../Loading';
 
 import { FaMedal } from "react-icons/fa";
 
@@ -47,6 +48,8 @@ export default function Leaderboard() {
 
 
     return (
+        <>
+        <Loading/>
         <div className='h-full'>
             <TopInfo
                 title={'Leaderboard'}
@@ -148,5 +151,6 @@ export default function Leaderboard() {
                 </div>
             </div>
         </div>
+        </>
     )
 }
