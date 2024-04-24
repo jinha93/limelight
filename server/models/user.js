@@ -48,15 +48,11 @@ class User extends Sequelize.Model {
    static associate(db) { // 인자로 index.js에서 만든 여러 테이블이 저장되어있는 db객체를 받을 것이다.
 
       //db.User.belongsToMany(db.Quest, {
-      db.User.hasOne(db.QuestStatus, {
+      db.User.hasMany(db.QuestStatus, {
          foreignKey: 'userId',
       })
 
       db.User.hasMany(db.Limemon, {
-         foreignKey: 'userId',
-      })
-
-      db.User.hasOne(db.UserItem, {
          foreignKey: 'userId',
       })
 

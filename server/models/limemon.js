@@ -15,14 +15,6 @@ class Limemon extends Sequelize.Model {
                autoIncrement: true,
                unique: true,
             },
-            level: {
-               type: Sequelize.INTEGER,
-               allowNull: false,
-            },
-            exp: {
-               type: Sequelize.INTEGER,
-               allowNull: false,
-            },
             mainYn: {
                type: Sequelize.STRING(1),
                allowNull: false,
@@ -30,6 +22,11 @@ class Limemon extends Sequelize.Model {
             },
             imgSrc: {
                type: Sequelize.STRING,
+               allowNull: false,
+            },
+            power: {
+               type: Sequelize.INTEGER,
+               defaultValue: 0,
                allowNull: false,
             },
          },
@@ -51,13 +48,8 @@ class Limemon extends Sequelize.Model {
       db.Limemon.belongsTo(db.User, {
          foreignKey: 'userId',
       });
-
-      db.Limemon.hasOne(db.LimemonItem, {
+      db.Limemon.hasMany(db.OwnerdItems, {
          foreignKey: 'limemonId',
-      })
-
-      db.Limemon.belongsTo(db.LimemonLevelInfo, {
-         foreignKey: 'level',
       });
    }
 };

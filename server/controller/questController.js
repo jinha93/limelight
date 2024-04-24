@@ -14,8 +14,9 @@ const Submission = require("../models/submission");
 const User = require("../models/user");
 const Reward = require("../models/reward");
 const Limemon = require("../models/limemon");
-const LimemonLevelInfo = require("../models/limemonLevelInfo");
-const UserItem = require("../models/userItem");
+const PointHistory = require("../models/pointHistory");
+
+const pointModel = require('../model/pointModel');
 
 const quest = {};
 
@@ -74,6 +75,7 @@ quest.claim = async (req, res) => {
 
     // 트랜잭션 설정
     const t = await sequelize.transaction();
+    const result = {};
 
     try {
         // param
@@ -124,26 +126,6 @@ quest.claim = async (req, res) => {
                     await t.rollback();
                     return res.status(CODE.BAD_REQUEST).send(UTIL.fail('Input Text Not Matched'));
                 }
-            }else if(submissionType === 'LIMEMON_LEVEL'){
-                const limemon = await Limemon.findOne({
-                    where: {
-                        userId: userId,
-                        mainYn: 'Y',
-                    },
-                    transaction: t,
-                });
-
-                console.log(limemon);
-
-                if(limemon === null){
-                    await t.rollback();
-                    return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Limemon'));
-                }
-
-                if(limemon.level < submissionValue){
-                    await t.rollback();
-                    return res.status(CODE.BAD_REQUEST).send(UTIL.fail('level is lower than target level.'));
-                }
             }
         }
       
@@ -180,42 +162,41 @@ quest.claim = async (req, res) => {
         for(let reward of rewards){
             const {rewardType, rewardValue, itemId, roleId} = reward;
 
-            // 경험치
-            if(rewardType === 'EXP'){
-                const limemon = await Limemon.findOne({
+            // 포인트
+            if(rewardType === 'POINT'){
+                // 퀘스트 서브미션 정보 조회
+                const questInfo = await Quest.findOne({
+                    attributes: ['name'],
                     where: {
-                        userId: userId,
+                        quest_id: questId,
                     },
+                    raw:true,
                     transaction: t,
-                });
+                })
 
-                if(limemon === null){
-                    await t.rollback();
-                    return res.status(CODE.BAD_REQUEST).send(UTIL.fail('User not have Limemon'));
-                }else{
-                    const {requiredExp} = await LimemonLevelInfo.findOne({
-                        attributes: [
-                            ['required_exp', 'requiredExp']
-                        ],
-                        where: {
-                            level: limemon.level
-                        },
-                        raw: true,
-                        transaction: t,
-                    });
+                await PointHistory.create({
+                    userId: userId,
+                    point: rewardValue,
+                    cts: `'${questInfo.name}' Quest Claim`,
+                },{
+                    transaction: t,
+                })
 
-                    // 현재경험치 + 보상경험치 가 최대 경험치보다 높을 경우 최대경험치로 업데이트
-                    const exp = parseInt(limemon.exp) + parseInt(rewardValue) > requiredExp ? requiredExp : parseInt(limemon.exp) + parseInt(rewardValue);
-                    await Limemon.update({
-                        exp: exp
-                    },{
-                        where: {
-                            limemonId: limemon.limemonId,
-                            userId: userId,
-                        },
-                        transaction: t,
-                    })
-                }
+                // 현재 보유 포인트 조회
+                let userPoint;
+                await pointModel.get(userId).then((resultData) => {
+                    userPoint = resultData['총 획득 포인트'];
+                })
+                // 보유 포인트 + 보상포인트 업데이트
+                const resultPoint = Number(userPoint)+Number(rewardValue);
+                await pointModel.updatePoint(userId, resultPoint);
+
+                // 세션 포인트 변경
+                req.session.point = resultPoint;
+
+                // 결과 포인트 변경
+                result.point = resultPoint;
+                
             }
             // 아이템
             else if(rewardType === 'ITEM'){
@@ -261,7 +242,7 @@ quest.claim = async (req, res) => {
         // 커밋
         await t.commit();
 
-        return res.status(CODE.OK).send(UTIL.success(1));
+        return res.status(CODE.OK).send(UTIL.success(result));
     } catch (error) {
         // 롤백
         await t.rollback();

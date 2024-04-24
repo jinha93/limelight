@@ -42,11 +42,11 @@ class QuestClaimHistory extends Sequelize.Model {
    // 다른 모델과의 관계
    static associate(db) { // 인자로 index.js에서 만든 여러 테이블이 저장되어있는 db객체를 받을 것이다.
 
-    db.QuestStatus.belongsTo(db.User, {
+    db.QuestClaimHistory.belongsTo(db.User, {
         foreignKey: 'userId',
       //   targetKey: 'userId',
     });
-    db.QuestStatus.belongsTo(db.Quest, {
+    db.QuestClaimHistory.belongsTo(db.Quest, {
         foreignKey: 'questId',
       //   targetKey: 'questId',
     });

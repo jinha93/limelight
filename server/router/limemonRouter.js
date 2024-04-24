@@ -5,8 +5,8 @@ const middleware = require("../middleware/authMiddleware");
 const limemonController = require("../controller/limemonController");
 
 router.route('/').get(limemonController.findAll);
-router.route('/equipItems').get(limemonController.findAllEquipItems);
-router.route('/:limemonId/levelUp').put(limemonController.levelUp);
-router.route('/:limemonId/reset').put(limemonController.reset);
+router.route('/ownerdItems').get(limemonController.findAllOwnerdItems);
+router.route('/item/equip').put(limemonController.equip);
+router.route('/item/unequip').put(limemonController.unequip);
 
 module.exports = router;

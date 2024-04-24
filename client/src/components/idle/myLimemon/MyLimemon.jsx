@@ -2,6 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import TopInfo from "../TopInfo";
+import Item from "./Item";
+
 export default function MyLimemon() {
 
     const [limemonList, setLimemonList] = useState([]);
@@ -18,68 +21,79 @@ export default function MyLimemon() {
         })
     }
 
-    const [equipItems, setEquipItems] = useState([]);
-    const getEquipItems = (limemonId) => {
-        axios({
-            url: `/api/limemon/equipItems?limemonId=${limemonId}`,
-            method: 'GET'
-        }).then((response) => {
-            setEquipItems(response.data.result);
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
-
     useEffect(() => {
         // 라임몬 정보 불러오기
         getLimemonList();
     }, [])
 
-    useEffect(() => {
-        if (limemonList[0]) {
-            getEquipItems(limemonList[0].limemonId);
-        }
-    }, [limemonList])
 
-    // 라임몬 레벨업
-    const levelUp = (limemonId) => {
-        if (limemonList[0].level === 8) {
-            // setIsBetaPopup(true);
-            return;
-        }
-
-        const exp = limemonList[0].exp;
-        const requireExp = limemonList[0].LimemonLevelInfo.requiredExp;
-
-        if (exp < requireExp) {
-            toast.error('Not enough exp')
-            return;
-        }
-
+    const [ownerdItems, setOwnerdItems] = useState([]);
+    const [showItems, setShowItems] = useState([]);
+    const [equipItems, setEquipItems] = useState([]);
+    const [totalPower, setTotalPower] = useState(0);
+    const getOwnerdItems = (limemonId) => {
         axios({
-            url: `/api/limemon/${limemonId}/levelUp`,
-            method: 'PUT'
+            url: `/api/limemon/ownerdItems?limemonId=${limemonId}`,
+            method: 'GET'
         }).then((response) => {
-            if (response.data.success) {
-                getLimemonList();
-            }
+            const ownerdItemsArr = [];
+            const equippedItemsArr = [];
+            let power = 0;
+
+            response.data.result.forEach(result => {
+                const equipYn = result.equipYn;
+                if (equipYn === 'Y') {
+                    equippedItemsArr.push(result);
+                    power += result.Item.power;
+                } else if (equipYn === 'N') {
+                    ownerdItemsArr.push(result);
+                }
+            });
+
+            setEquipItems(equippedItemsArr);
+            setOwnerdItems(ownerdItemsArr);
+            setShowItems(ownerdItemsArr);
+            setTotalPower(power);
+
         }).catch((error) => {
-            // 로그인 세션 에러
-            if (error.response.status === 401) {
-            } else {
-                alert(error.response.data.message);
-            }
+            console.log(error);
         })
     }
 
+    // 장착아이템 파츠별
+    const equippedItemFindByPart = (part) => {
+        return equipItems.find(item => item.Item.part === part);
+    }
+
+    // 보유아이템 파츠별
+    const [tab, setTab] = useState('');
+    const onChangeTab = (selectTab) => {
+        setTab(selectTab);
+    }
+    useEffect(() => {
+        if(tab === ''){
+            setShowItems(ownerdItems);
+        }else{
+            setShowItems(ownerdItems.filter(item => item.Item.part === tab))
+        }
+    }, [tab, ownerdItems])
+
+    
+
+    useEffect(() => {
+        if (limemonList[0]) {
+            getOwnerdItems(limemonList[0].limemonId);
+        }
+    }, [limemonList])
+
     return (
         <div className='h-full'>
-            <div className="mb-5">
-                <h3 className="SUITE-Bold text-2xl text-[#5d5a51] ">MY LIMEMON</h3>
-                <p className="mt-2 text-sm">Grow your Limemon.</p>
-            </div>
-            <div className='flex gap-10 h-[90%]'>
-                <div className="border border-[#7c7a75] rounded-lg w-full bg-[#e3e3e3]">
+            <TopInfo
+                title={'MY LIMEMON'}
+                description={'Grow your Limemon.'}
+            />
+            <div className='flex gap-10 w-full xl:w-2/3 mx-auto h-[90%]'>
+                <div className="border border-[#7c7a75] rounded-lg w-full overflow-y-auto">
                     {/* img */}
                     <div className='pb-[100%]'>
                         {
@@ -97,9 +111,9 @@ export default function MyLimemon() {
                                         equipItems.map((items) => {
                                             return (
                                                 <img
-                                                    src={`/api/img?imgSrc=${items.Item.imgSrc}`}
-                                                    className={items.Item.part === 'BACKGROUND' ? "absolute z-0 w-full rounded-t-lg" : "absolute z-20 w-full rounded-t-lg"}
                                                     key={items.itemId}
+                                                    src={`/api/img?imgSrc=${items.Item.imgSrc}`}
+                                                    className={`absolute w-full rounded-t-lg right-0 ${items.Item.part === 'BACKGROUND' ? 'z-0': 'z-20'}`}
                                                     alt={items.itemName}
                                                 />
                                             )
@@ -116,162 +130,151 @@ export default function MyLimemon() {
                                 </div>
                         }
                     </div>
-                    {/* info */}
-                    <div className='flex flex-col gap-10 px-5 py-10 border-t border-[#7c7a75]'>
-                        <div>
-                            <div className="flex justify-between items-center">
-                                <span>Lvl. {limemonList[0] ? limemonList[0].level : 0}</span>
-                                {
-                                    limemonList[0] ?
-                                        <div>
-                                            <button
-                                                className="rounded-lg shadow bg-yellow-400 text-white px-2 py-1 text-sm uppercase"
-                                                onClick={() => levelUp(limemonList[0].limemonId)}
-                                            >
-                                                Level Up
-                                            </button>
-                                        </div>
-                                        :
-                                        <button
-                                            className="rounded-lg shadow bg-gray-400 text-white px-2 py-1 text-sm uppercase"
-                                            disabled
-                                        >
-                                            Level Up
-                                        </button>
-                                }
-                            </div>
-                            <div className="">
-                                <span>EXP</span>
-                                <span className="relative block rounded-full bg-gray-200">
-                                    <span
-                                        className="absolute inset-0 flex items-center justify-center text-[10px]/4"
-                                    >
-                                        <span className="font-bold text-white">
-                                            {limemonList[0] ? `${limemonList[0].exp} / ${limemonList[0].LimemonLevelInfo.requiredExp}` : '0 / 0'}
-                                        </span>
-                                    </span>
 
-                                    <span
-                                        className="block h-4 rounded-full bg-yellow-400 text-center"
-                                        style={{ width: limemonList[0] ? limemonList[0].exp / limemonList[0].LimemonLevelInfo.requiredExp > 1 ? '100%' : limemonList[0].exp / limemonList[0].LimemonLevelInfo.requiredExp * 100 + '%' : '0%' }}
-                                    ></span>
-                                </span>
-                            </div>
+                    <div className='border-t border-[#7c7a75] p-5 flex flex-col gap-3'>
+
+                        <nav className="flex gap-1 justify-between w-full">
+                            <button
+                                href="#"
+                                className="rounded-lg border border-[#7c7a75] p-2 w-full text-center SUITE-Bold text-[#5d5a51] bg-[#e3e3e3]"
+                                
+                            >
+                                장착
+                            </button>
+
+                            <button
+                                href="#"
+                                className="rounded-lg border border-[#7c7a75] p-2 w-full text-center SUITE-Medium text-[#5d5a51] hover:bg-[#e3e3e3] cursor-not-allowed"
+                                disabled={true}
+                            >
+                                외형
+                            </button>
+                        </nav>
+
+                        <div className='grid grid-cols-7 gap-3'>
+                            {
+                                equippedItemFindByPart('HEAD')
+                                    ? <Item item={equippedItemFindByPart('HEAD')} getOwnerdItems={getOwnerdItems}/>
+                                    : <div className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'><div className='absolute w-full h-full text-center content-center'>모자</div></div>
+                            }
+                            {
+                                equippedItemFindByPart('FACE')
+                                    ? <Item item={equippedItemFindByPart('FACE')} getOwnerdItems={getOwnerdItems}/>
+                                    : <div className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'><div className='absolute w-full h-full text-center content-center'>얼굴</div></div>
+                            }
+                            {
+                                equippedItemFindByPart('TOP')
+                                    ? <Item item={equippedItemFindByPart('TOP')} getOwnerdItems={getOwnerdItems}/>
+                                    : <div className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'><div className='absolute w-full h-full text-center content-center'>상의</div></div>
+                            }
+                            {
+                                equippedItemFindByPart('PANTS')
+                                    ? <Item item={equippedItemFindByPart('PANTS')} getOwnerdItems={getOwnerdItems}/>
+                                    : <div className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'><div className='absolute w-full h-full text-center content-center'>하의</div></div>
+                            }
+                            {
+                                equippedItemFindByPart('WEAPON')
+                                    ? <Item item={equippedItemFindByPart('WEAPON')} getOwnerdItems={getOwnerdItems}/>
+                                    : <div className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'><div className='absolute w-full h-full text-center content-center'>무기</div></div>
+                            }
+                            {
+                                equippedItemFindByPart('BAG')
+                                    ? <Item item={equippedItemFindByPart('BAG')} getOwnerdItems={getOwnerdItems}/>
+                                    : <div className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'><div className='absolute w-full h-full text-center content-center'>가방</div></div>
+                            }
+                            {
+                                equippedItemFindByPart('BACKGROUND')
+                                    ? <Item item={equippedItemFindByPart('BACKGROUND')} getOwnerdItems={getOwnerdItems}/>
+                                    : <div className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'><div className='absolute w-full h-full text-center content-center'>배경</div></div>
+                            }
                         </div>
+
+                        <div className='flex justify-between gap-20'>
+                            <span className='text-3xl'>전투력</span>
+                            <span className='text-3xl'>+{totalPower}</span>
+                        </div>
+
                     </div>
                 </div>
-                <div className="border border-[#7c7a75] rounded-lg w-full overflow-y-auto text-center">
-                    <div className='sticky top-0 z-20 bg-[#e3e3e3]'>
-                        <h2 className='pt-3'>장착아이템</h2>
-                        <div className='grid grid-cols-7 gap-3 p-3 border-b border-[#7c7a75]'>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'>
-                                <div className='relative'>
-                                    <img
-                                        src={'/api/img?imgSrc=limemon/default.png'}
-                                        className="absolute rounded-lg z-10 w-full"
-                                        alt="myLimemon"
-                                    />
-                                </div>
-                            </div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                        </div>
-                    </div>
 
-                    <div className='z-10'>
-                        <h2 className='pt-3'>보유아이템</h2>
-                        <div className='grid grid-cols-7 gap-3 p-3'>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                            <div className='border border-[#7c7a75] rounded-lg pb-[100%]'></div>
-                        </div>
+                <div className="border border-[#7c7a75] rounded-lg w-full p-3">
+                    <div className="border-b border-[#7c7a75] sticky top-0 bg-[#f7f7f7] z-20">
+                        <nav className="-mb-px flex gap-1">
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === '' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('')}
+                            >
+                                전체
+                            </button>
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === 'HEAD' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('HEAD')}
+                            >
+                                모자
+                            </button>
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === 'FACE' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('FACE')}
+                            >
+                                얼굴
+                            </button>
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === 'TOP' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('TOP')}
+                            >
+                                상의
+                            </button>
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === 'PANTS' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('PANTS')}
+                            >
+                                하의
+                            </button>
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === 'WEAPON' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('WEAPON')}
+                            >
+                                무기
+                            </button>
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === 'BAG' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('BAG')}
+                            >
+                                가방
+                            </button>
+                            <button
+                                type="button"
+                                className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === 'BACKGROUND' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
+                                onClick={() => onChangeTab('BACKGROUND')}
+                            >
+                                배경
+                            </button>
+                        </nav>
                     </div>
-                </div>
-                <div className="border border-[#7c7a75] rounded-lg w-full">
-                    <div className='text-center pt-[50%]  uppercase'>
-                        <p className='SUITE-Heavy text-[5rem]'>skill</p>
-                        <span>comming soon</span>
+                    <div className='grid grid-cols-7 gap-3 p-3 border border-[#7c7a75] border-t-[#f7f7f7] h-[94%] overflow-y-auto'>
+                        {/* {
+                            ownerdItems.map((ownerdItem, index) => {
+                                return (
+                                    <Item key={index} item={ownerdItems[index]} getOwnerdItems={getOwnerdItems} />
+                                )
+                            })
+                        } */}
+                        {/* 보유 장비 */}
+                        {[...Array(parseInt(showItems.length > 63 ? showItems.length : 63))].map((n, index) => {
+                            return (
+                                showItems[index]
+                                ?
+                                <Item key={index} item={showItems[index]} getOwnerdItems={getOwnerdItems}/>
+                                : <div key={index} className='border border-dashed border-[#7c7a75] rounded-lg pb-[100%] relative'></div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

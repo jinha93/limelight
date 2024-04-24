@@ -16,6 +16,7 @@ import Raffle from './components/raffle/Raffle';
 import Layout from './components/idle/Layout';
 import MyLimemon from './components/idle/myLimemon/MyLimemon';
 import Quests from './components/idle/quests/Quests';
+import Leaderboard from './components/idle/leaderboard/Leaderboard';
 
 // 색종이 날림 효과
 import JSConfetti from "js-confetti";
@@ -50,7 +51,7 @@ function App() {
           <Route path='/idle/items' element={<div>item</div>} />
           <Route path='/idle/quests' element={<Quests />} />
           <Route path='/idle/shop' element={<div>shop</div>} />
-          <Route path='/idle/leaderBoard' element={<div>leaderBoard</div>} />
+          <Route path='/idle/leaderBoard' element={<Leaderboard />} />
           <Route path='/idle/events' element={<div>event</div>} />
           <Route path='/idle/more1' element={<div>more1</div>} />
           <Route path='/idle/more2' element={<div>more2</div>} />

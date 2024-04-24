@@ -23,10 +23,23 @@ class Items extends Sequelize.Model {
                type: Sequelize.STRING,
                allowNull: false,
             },
+            iconImgSrc: {
+               type: Sequelize.STRING,
+               allowNull: false,
+            },
             part: {
                type: Sequelize.STRING,
                allowNull: true,
-            }
+            },
+            description: {
+               type: Sequelize.STRING,
+               allowNull: true,
+            },
+            power: {
+               type: Sequelize.INTEGER,
+               defaultValue: 0,
+               allowNull: false,
+            },
          },
          {  // 두번째 객체 인수는 테이블 자체에 대한 설정
             sequelize, /* static init 메서드의 매개변수와 연결되는 옵션으로, db.sequelize 객체를 넣어야 한다. */
@@ -43,10 +56,7 @@ class Items extends Sequelize.Model {
 
    // 다른 모델과의 관계
    static associate(db) { // 인자로 index.js에서 만든 여러 테이블이 저장되어있는 db객체를 받을 것이다.
-      db.Items.hasOne(db.UserItem, {
-         foreignKey: 'itemId',
-      })
-      db.Items.hasMany(db.LimemonItem, {
+      db.Items.hasMany(db.OwnerdItems, {
          foreignKey: 'itemId',
       })
       db.Items.hasMany(db.Reward, {

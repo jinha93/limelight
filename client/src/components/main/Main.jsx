@@ -1,8 +1,4 @@
 import lala_long from "../../assets/images/lala-long2.jpg";
-import test1 from "../../assets/images/1.webp";
-import test2 from "../../assets/images/2.webp";
-import test3 from "../../assets/images/3.svg";
-import video from "../../assets/images/beanz2.mp4";
 
 function Main() {
     return (
