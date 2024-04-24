@@ -81,7 +81,8 @@ leaderboard.findRanker = async (req, res) => {
             ],
             where: {
                 limemon_id: {[Op.in]: limemonIdArr}
-            }
+            },
+            order: [['power','DESC']],
         })
         return res.status(CODE.OK).send(UTIL.success(ranker));
     } catch (error) {
