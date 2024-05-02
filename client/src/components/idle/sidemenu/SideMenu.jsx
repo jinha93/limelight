@@ -87,7 +87,7 @@ export default function SideMenu() {
     ];
 
     return (
-        <div className="col-span-3 xl:col-span-2 border-r border-[#7c7a75] overflow-y-auto relative">
+        <div className="hidden md:block md:col-span-3 lg:col-span-2 border-r border-[#7c7a75] overflow-y-auto relative">
 
             {/* Connect Wallet */}
             <Connect />
@@ -112,7 +112,7 @@ export default function SideMenu() {
                                     <summary
                                         className="flex cursor-pointer items-center justify-between px-8 py-2 SUITE-Medium text-[#5d5a51] hover:bg-[#e3e3e3]"
                                     >
-                                        <span className="flex gap-3 items-center">
+                                        <span className="flex gap-3 items-center ">
                                             {menu.icon}{menu.name}
                                         </span>
     

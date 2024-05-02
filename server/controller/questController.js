@@ -30,7 +30,7 @@ quest.findAll = async (req, res) => {
             order: [['updated_at','DESC']],
             include: [{
                 model: Submission,
-                attributes: ['type'],
+                attributes: ['type','value'],
                 //where: {userId: userId},
                 required: true // inner join
             },

@@ -55,9 +55,9 @@ export default function Leaderboard() {
                 title={'Leaderboard'}
                 description={'Check your ranking.'}
             />
-            <div className="w-full h-[90%] grid grid-cols-3 gap-5 px-5">
-                <div className="col-span-2 h-full grid grid-rows-3 gap-5">
-                    <div className="row-span-2 flex gap-5">
+            <div className="w-full h-[90%] lg:grid lg:grid-cols-3 lg:gap-5 px-5">
+                <div className="hidden h-full lg:col-span-2 lg:grid lg:grid-rows-3 gap-5">
+                    <div className="hidden lg:row-span-2 lg:flex lg:gap-5">
                         {
                             ranker.map((data, index) => (
                                 <div className={`w-full h-full border-2 rounded-3xl grid  ${index === 0 ? 'border-yellow-400' : null} ${index === 1 ? 'border-gray-400' : null} ${index === 2 ? 'border-orange-400' : null}`}>
@@ -95,14 +95,14 @@ export default function Leaderboard() {
                                         </div>
                                     </div>
                                     <div className={`content-center text-center ${index === 0 ? 'bg-yellow-400/10 text-yellow-400' : null} ${index === 1 ? 'bg-gray-400/10 text-gary-400' : null} ${index === 2 ? 'bg-orange-400/10 text-orange-400' : null}`}>
-                                        <h2 className='text-3xl'>{data.User.username}</h2>
-                                        <span className='text-2xl'>+ {data.power}</span>
+                                        <h2 className='text-2xl'>{data.User.username}</h2>
+                                        <span className='text-xl'>+ {data.power}</span>
                                     </div>
                                 </div>
                             ))
                         }
                     </div>
-                    <div className='border border-[#7c7a75] rounded-3xl p-5 text-center flex flex-col'>
+                    <div className='hidden lg:block border border-[#7c7a75] rounded-3xl p-5 text-center flex flex-col'>
                         <h2 className='SUITE-Bold text-5xl'>Season Rewards</h2>
                         <div className='flex flex-col h-full justify-center'>
                             <span>Next Season Special Gacha Box * 1</span>
@@ -111,7 +111,7 @@ export default function Leaderboard() {
                     </div>
                 </div>
 
-                <div className="border border-[#7c7a75] rounded-3xl p-5 flex flex-col justify-between overflow-y-auto">
+                <div className="h-full border border-[#7c7a75] rounded-3xl p-5 flex flex-col justify-between overflow-y-auto">
                     <div className='SUITE-Bold bg-[#dcebc2] border border-[#7b9b18] text-[#7b9b18] px-4 py-2 rounded-full flex justify-between'>
                         <h2>My Ranking</h2>
                         <p>#1234</p>

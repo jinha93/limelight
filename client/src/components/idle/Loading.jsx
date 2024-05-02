@@ -13,8 +13,8 @@ export default function Loading(){
     return(
         isLoading
         ?
-        <div className="absolute w-[100vw] h-[100vh] top-0 left-0 bg-black/90 z-[100] flex flex-col items-center justify-center">
-            <img src={LoadingGif} />
+        <div className="absolute w-[100vw] h-[100vh] top-0 left-0 bg-black/80 z-[100] flex flex-col items-center justify-center">
+            <img src={LoadingGif} alt="loading"/>
         </div>
         :
         null

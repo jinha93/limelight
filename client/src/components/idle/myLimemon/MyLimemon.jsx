@@ -95,8 +95,8 @@ export default function MyLimemon() {
                 title={'MY LIMEMON'}
                 description={'Grow your Limemon.'}
             />
-            <div className='flex gap-10 w-full xl:w-2/3 mx-auto h-[90%]'>
-                <div className="border border-[#7c7a75] rounded-lg w-full overflow-y-auto">
+            <div className='lg:flex gap-10 w-full 2xl:w-2/3 mx-auto h-[90%]'>
+                <div className="mb-10 lg:mb-0 border border-[#7c7a75] rounded-lg w-full overflow-y-auto">
                     {/* img */}
                     <div className='pb-[100%]'>
                         {
@@ -154,7 +154,7 @@ export default function MyLimemon() {
                             </button>
                         </nav>
 
-                        <div className='grid grid-cols-7 gap-3'>
+                        <div className='grid grid-cols-7 gap-3 whitespace-nowrap'>
                             {
                                 equippedItemFindByPart('HEAD')
                                     ? <Item item={equippedItemFindByPart('HEAD')} getOwnerdItems={getOwnerdItems}/>
@@ -202,7 +202,7 @@ export default function MyLimemon() {
 
                 <div className="border border-[#7c7a75] rounded-lg w-full p-3">
                     <div className="border-b border-[#7c7a75] sticky top-0 bg-[#f7f7f7] z-20">
-                        <nav className="-mb-px flex gap-1">
+                        <nav className="-mb-px grid grid-cols-5 sm:flex gap-1 whitespace-nowrap">
                             <button
                                 type="button"
                                 className={`rounded-t-lg border border-[#7c7a75] p-2 text-center w-full ${tab === '' ? " border-b-[#f7f7f7] SUITE-Bold" : ""} `}
@@ -261,7 +261,7 @@ export default function MyLimemon() {
                             </button>
                         </nav>
                     </div>
-                    <div className='grid grid-cols-7 gap-3 p-3 border border-[#7c7a75] border-t-[#f7f7f7] h-[94%] overflow-y-auto'>
+                    <div className='grid grid-cols-5 sm:grid-cols-7 gap-3 p-3 border border-[#7c7a75] border-t-[#f7f7f7] h-[94%] overflow-y-auto'>
                         {/* {
                             ownerdItems.map((ownerdItem, index) => {
                                 return (

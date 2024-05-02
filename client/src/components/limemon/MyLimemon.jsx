@@ -102,7 +102,7 @@ export default function MyLimemon() {
 
             <div className='bg min-h-screen pt-32 pb-10 lg:h-screen'>
                 <div className="w-3/4 mx-auto lg:flex gap-5 min-h-full max-h-full">
-                    <div className="bg-white rounded-lg shadow-sm p-10 lg:w-1/3">
+                    <div className="bg-white rounded-lg shadow-sm p-10">
                         <Limemon
                             setIsAlert={setIsAlert}
                             limemonList={limemonList}
@@ -111,7 +111,7 @@ export default function MyLimemon() {
                             setIsBetaPopup={setIsBetaPopup}
                         />
                     </div>
-                    <div className="bg-white rounded-lg shadow-sm p-10 col-span-2 overflow-y-hidden lg:w-2/3 flex">
+                    <div className="bg-white rounded-lg shadow-sm p-10 col-span-2 overflow-y-hidden flex">
                         <div className='w-full border-2 border-gray-900 border-r-0 rounded-l-lg p-5'>
                             {
                                 selectMenu === 'Q' 

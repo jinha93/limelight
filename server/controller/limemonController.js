@@ -216,7 +216,7 @@ limemon.equip = async (req, res) => {
             },{
                 where: {
                     limemonId: limemonId,
-                    [Op.in]: equippedItemIdArr,
+                    itemId: { [Op.in]: equippedItemIdArr },
                 },
                 transaction: t,
             });

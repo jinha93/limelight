@@ -11,7 +11,7 @@ export default function Layout() {
 
                 <SideMenu />
                 
-                <div className="col-span-9 xl:col-span-10 p-8 overflow-y-auto h-full">
+                <div className="col-span-12 md:col-span-9 lg:col-span-10 p-8 overflow-y-auto h-full">
                     {/* 각각 컴포넌트들이 보여질 곳 Outlet으로 받아줌 */}
                     <Outlet/>
                 </div>
