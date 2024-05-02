@@ -58,6 +58,8 @@ export default function AddMission(props) {
         setValue(value);
     }
 
+    
+
     return(
         <dl className="divide-y divide-gray-100 text-sm border rounded-lg px-3 mt-1">
             <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
@@ -74,7 +76,13 @@ export default function AddMission(props) {
                 </dd>
             </div>
             <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                <dt className="font-medium text-gray-900">{type === 'DISCORD_ROLE' ? "DISCORD ROLE" : "Value"}</dt>
+                <dt className="font-medium text-gray-900">
+                    {type === 'TEXT' && "TEXT"}
+                    {type === 'DISCORD_ROLE' && "DISCORD ROLE"}
+                    {type === 'TWITTER_FOLLOW' && "HANDEL"}
+                    {type === 'TWITTER_LIKE' && "TWEET ID"}
+                    {type === 'TWITTER_RETWEET' && "TWEET ID"}
+                </dt>
                 <dd className="text-gray-700 sm:col-span-2">
                     {
                         type === 'DISCORD_ROLE'
@@ -91,8 +99,8 @@ export default function AddMission(props) {
                         </select>
                         :
                         <input
-                            type={type === 'LIMEMON_LEVEL' ? 'number' : 'text'}
                             id="Value"
+                            type={type === 'LIMEMON_LEVEL' ? 'number' : 'text'}
                             placeholder={type === 'DISCORD_ROLE' ? "DISCORD ROLE ID" : "Value"}
                             onChange={(e) => {setValue(e.target.value)}}
                             className="w-full border-none focus:outline-none"

@@ -180,7 +180,13 @@ export default function Quest({ quest, getQuestList }) {
                                 className='bg-[#f48a94] rounded-full text-white px-7'
                                 target='_blank'
                                 rel="noreferrer"
-                                href={`https://twitter.com/intent/${quest.Submission.type.indexOf('LIKE') !== -1 ? 'like' : ''}${quest.Submission.type.indexOf('RETWEET') !== -1 ? 'retweet' : ''}?tweet_id=${quest.Submission.value}`}
+                                href={
+                                    `
+                                    ${quest.Submission.type.indexOf('LIKE') !== -1 ? 'https://twitter.com/intent/like?tweet_id='+quest.Submission.value : ''}
+                                    ${quest.Submission.type.indexOf('RETWEET') !== -1 ? 'https://twitter.com/intent/retweet?tweet_id='+quest.Submission.value : ''}
+                                    ${quest.Submission.type.indexOf('FOLLOW') !== -1 ? 'https://twitter.com/intent/follow?screen_name='+quest.Submission.value : ''}
+                                    `
+                                }
                                 onClick={onChangeClaimed}
                             >
                                 Claim
